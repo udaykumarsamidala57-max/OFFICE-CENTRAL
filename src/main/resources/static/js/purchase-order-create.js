@@ -1,7 +1,7 @@
 (() => {
     const vendor = document.getElementById('vendorSelect');
     const form = document.getElementById('purchaseOrderForm');
-    const money = value => (Math.round((value + Number.EPSILON) * 100) / 100);
+    const money = value => Math.round((value + Number.EPSILON) * 100) / 100;
     const read = (row, selector) => Number.parseFloat(row.querySelector(selector)?.value || '0') || 0;
 
     if (vendor) {
@@ -20,43 +20,48 @@
             const lineDiscount = money(amount * read(row, '.line-discount') / 100);
             const taxable = money(amount - lineDiscount);
             const lineGst = money(taxable * read(row, '.line-gst') / 100);
-            const lineTotal = money(taxable + lineGst);
-            row.querySelector('.line-total').textContent = lineTotal.toFixed(2);
+            row.querySelector('.line-total').textContent = money(taxable + lineGst).toFixed(2);
             base += amount;
             discount += lineDiscount;
             gst += lineGst;
         });
         const serviceCharge = Number.parseFloat(document.getElementById('serviceCharge')?.value || '0') || 0;
         const serviceRate = Number.parseFloat(document.getElementById('serviceGst')?.value || '0') || 0;
-        const serviceGst = money(serviceCharge * serviceRate / 100);
-        const serviceTotal = money(serviceCharge + serviceGst);
-        gst = money(gst + serviceGst);
-        const grand = Math.round(base - discount + gst);
+        const serviceTotal = money(serviceCharge + money(serviceCharge * serviceRate / 100));
+        gst = money(gst + money(serviceCharge * serviceRate / 100));
         document.getElementById('subtotal').textContent = money(base).toFixed(2);
         document.getElementById('discountTotal').textContent = money(discount).toFixed(2);
         document.getElementById('gstTotal').textContent = gst.toFixed(2);
         document.getElementById('serviceTotal').textContent = serviceTotal.toFixed(2);
-        document.getElementById('grandTotal').textContent = String(grand);
+        document.getElementById('grandTotal').textContent = String(Math.round(base - discount + gst));
     }
 
-    form.addEventListener('input', event => {
-        if (event.target.matches('.po-number-input,#serviceCharge,#serviceGst')) updateTotals();
-    });
+    const recalculateForField = event => {
+        if (event.target.matches('.line-qty,.line-rate,.line-discount,.line-gst,#serviceCharge,#serviceGst')) {
+            event.target.setCustomValidity('');
+            updateTotals();
+        }
+    };
+    form.addEventListener('input', recalculateForField);
+    form.addEventListener('change', recalculateForField);
+
     form.addEventListener('submit', event => {
         const vendorSelect = form.querySelector('[name="vendorName"]');
         if (!vendorSelect.value) { event.preventDefault(); vendorSelect.focus(); return; }
         for (const row of form.querySelectorAll('.po-line')) {
-            const qty = read(row, '.line-qty');
-            const max = Number.parseFloat(row.querySelector('.line-qty').max);
-            if (!(qty > 0) || qty > max) {
+            const qtyField = row.querySelector('.line-qty');
+            const qty = Number.parseFloat(qtyField.value);
+            if (!Number.isFinite(qty) || qty <= 0) {
                 event.preventDefault();
-                row.querySelector('.line-qty').focus();
-                row.querySelector('.line-qty').setCustomValidity('Quantity must be positive and cannot exceed the approved indent quantity.');
-                row.querySelector('.line-qty').reportValidity();
+                qtyField.setCustomValidity('Enter a quantity greater than zero.');
+                qtyField.reportValidity();
+                qtyField.focus();
                 return;
             }
-            row.querySelector('.line-qty').setCustomValidity('');
+            qtyField.setCustomValidity('');
         }
     });
+
     updateTotals();
 })();
+

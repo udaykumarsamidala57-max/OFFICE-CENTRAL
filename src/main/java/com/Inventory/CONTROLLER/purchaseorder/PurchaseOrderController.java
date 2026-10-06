@@ -101,8 +101,11 @@ public class PurchaseOrderController {
                             @RequestAttribute(name = SessionKeys.REQUEST_USER_ID, required = false) Integer userId,
                             @RequestAttribute(name = SessionKeys.REQUEST_COMPANY) String company) {
         addSessionModel(model, username, role, department, company);
-        model.addAttribute("canPrintPurchaseOrder", pageAccessService.hasButtonAccess(
-                userId, role, "/purchase-orders/report", "PRINT_PO"));
+        boolean canPrintPurchaseOrder = pageAccessService.hasButtonAccess(
+                userId, role, "/purchase-orders/approvals", "VIEW_PO")
+                || pageAccessService.hasButtonAccess(
+                        userId, role, "/purchase-orders/report", "PRINT_PO");
+        model.addAttribute("canPrintPurchaseOrder", canPrintPurchaseOrder);
         model.addAttribute("canApproveByRole", RoleAccess.isGlobal(role));
         try { model.addAttribute("purchaseOrders", service.findApprovals(search)); }
         catch (DataAccessException ex) {
@@ -157,9 +160,14 @@ public class PurchaseOrderController {
         model.addAttribute("approval", approval == null ? "" : approval);
         try {
             if (printNumber != null && !printNumber.isBlank()) {
-                requireButton(userId, role, "/purchase-orders/report", "PRINT_PO");
+                requirePrintAccess(userId, role);
                 var order = service.findByNumber(printNumber);
                 if (order == null) model.addAttribute("error", "Purchase order was not found.");
+                boolean hasDiscount = order != null && order.getItems() != null
+                        && order.getItems().stream().anyMatch(item ->
+                                (item.getDiscountPercent() != null && item.getDiscountPercent().signum() != 0)
+                                || (item.getDiscountValue() != null && item.getDiscountValue().signum() != 0));
+                model.addAttribute("hasDiscount", hasDiscount);
                 model.addAttribute("printOrder", order);
             } else {
                 model.addAttribute("purchaseOrders", service.findReport(search, fromDate, toDate, approval));
@@ -177,6 +185,16 @@ public class PurchaseOrderController {
         return "purchaseorder/purchase-order-report";
     }
 
+    private void requirePrintAccess(Integer userId, String role) {
+        boolean allowedFromReport = pageAccessService.hasButtonAccess(
+                userId, role, "/purchase-orders/report", "PRINT_PO");
+        boolean allowedFromApprovals = pageAccessService.hasButtonAccess(
+                userId, role, "/purchase-orders/approvals", "VIEW_PO");
+        if (!allowedFromReport && !allowedFromApprovals) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You do not have permission to view or print this purchase order.");
+        }
+    }
     private void requireButton(Integer userId, String role, String path, String code) {
         if (!pageAccessService.hasButtonAccess(userId, role, path, code)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to perform this purchase order action.");
@@ -190,3 +208,6 @@ public class PurchaseOrderController {
         model.addAttribute("selectedCompany", company);
     }
 }
+
+
+

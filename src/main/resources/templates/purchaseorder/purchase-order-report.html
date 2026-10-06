@@ -1,9 +1,332 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Purchase Order Report</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Purchase Order Report - Sandur Residential School</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
+
+    <style th:if="${printOrder != null}">
+        * {
+            box-sizing: border-box;
+        }
+
+        body.po-print-mode {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px 0;
+            background-color: #f3f3f3;
+            color: #181818;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .po-print-sheet {
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px 35px;
+            border-radius: 6px;
+            border: 1px solid #c9c9c9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* Header Banner */
+        header.po-print-header {
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        header.po-print-header img {
+            max-height: 85px;
+            width: auto;
+            display: block;
+            margin: 0 auto 6px auto;
+        }
+
+        .po-print-contact {
+            text-align: center;
+            font-size: 11px;
+            color: #514f4d;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        .po-print-document-title {
+            text-align: center;
+            color: #0176d3;
+            margin: 10px 0 16px 0;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-top: 2px solid #0176d3;
+            border-bottom: 2px solid #0176d3;
+            padding: 5px 0;
+        }
+
+        /* Metadata & Vendor Grid */
+        .po-print-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 14px;
+        }
+
+        .po-print-info-card {
+            background: #fafaf9;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 10px 14px;
+            font-size: 11.5px;
+        }
+
+        .po-print-info-heading {
+            font-weight: 700;
+            color: #0176d3;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 4px;
+        }
+
+        .po-print-info-row {
+            display: flex;
+            margin-bottom: 3px;
+        }
+
+        .po-print-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .po-print-info-row strong {
+            font-weight: 600;
+            color: #514f4d;
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .po-print-info-row span {
+            color: #181818;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .po-print-intro {
+            font-size: 11.5px;
+            color: #514f4d;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        /* Items Table Alignment & Precision */
+        .po-print-table-wrap {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        table.po-print-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            font-size: 11px;
+            table-layout: fixed;
+        }
+
+        table.po-print-table th {
+            background: #fafaf9;
+            color: #3e3e3c;
+            padding: 7px 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border: 1px solid #c9c9c9;
+            font-size: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.po-print-table td {
+            border: 1px solid #e5e5e5;
+            padding: 6px 5px;
+            color: #181818;
+            vertical-align: middle;
+            font-variant-numeric: tabular-nums;
+            word-wrap: break-word;
+        }
+
+        table.po-print-table tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        /* Summary Panel */
+        .po-print-summary-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+
+        .po-print-summary {
+            width: 280px;
+            background: #fafaf9;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 6px 12px;
+        }
+
+        .po-print-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            padding: 3px 0;
+            color: #514f4d;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .po-print-summary-row.po-print-grand-total {
+            border-top: 2px solid #0176d3;
+            margin-top: 4px;
+            padding-top: 5px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #0176d3;
+        }
+
+        /* Conditions Sections */
+        .po-print-conditions-container {
+            page-break-inside: avoid;
+        }
+
+        .po-print-section-title {
+            margin-top: 18px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #0176d3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #0176d3;
+            padding-bottom: 2px;
+            display: inline-block;
+        }
+
+        .po-print-condition-text {
+            font-size: 10.5px;
+            color: #2b2b2b;
+            margin: 4px 0 0 0;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        /* Signature Section */
+        .po-print-signatures {
+            margin-top: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            page-break-inside: avoid;
+        }
+
+        .po-print-stamp-area {
+            min-width: 120px;
+            min-height: 50px;
+        }
+
+        .po-print-approved-stamp {
+            display: inline-block;
+            padding: 5px 12px;
+            border: 2px dashed #2e844a;
+            color: #2e844a;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transform: rotate(-4deg);
+            letter-spacing: 1px;
+            background: #eaf5ea;
+        }
+
+        .po-print-signatory {
+            text-align: right;
+            color: #181818;
+        }
+
+        .po-print-signatory strong {
+            display: block;
+            font-weight: 700;
+            font-size: 11.5px;
+            color: #514f4d;
+            margin-bottom: 40px;
+        }
+
+        .po-print-signatory span {
+            font-weight: 600;
+            font-size: 11.5px;
+            border-top: 1px solid #181818;
+            padding-top: 3px;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .po-print-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* Strict Printable Layout Setup */
+        @page {
+            size: A4 portrait;
+            margin: 10mm;
+        }
+
+        @media print {
+            body.po-print-mode {
+                background-color: #ffffff;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .po-print-sheet {
+                width: 100%;
+                max-width: 100%;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            .po-print-actions {
+                display: none !important;
+            }
+            header.po-print-header img {
+                max-height: 70px;
+            }
+            table.po-print-table th {
+                background-color: #fafaf9 !important;
+            }
+            .po-print-approved-stamp {
+                background-color: #eaf5ea !important;
+            }
+        }
+    </style>
 </head>
 <body class="app-body po-page" th:classappend="${printOrder != null} ? ' po-print-mode' : ''">
 <th:block th:if="${printOrder == null}"><div th:replace="~{fragments/app-header :: appHeader('po-report')}"></div></th:block>
@@ -47,19 +370,91 @@
     </th:block>
 
     <section class="po-print-sheet" th:if="${printOrder != null}" id="printOrder">
-        <div class="po-print-brand"><span class="po-print-mark">OC</span><div><strong>OFFICE CENTRAL</strong><small th:text="${selectedCompany}">Company</small></div><span class="po-print-approved" th:if="${printOrder.approval == 'Approved'}">APPROVED</span></div>
-        <div class="po-print-title"><span>PROCUREMENT DOCUMENT</span><h1>Purchase Order</h1></div>
-        <div class="po-print-meta"><div><small>PO NUMBER</small><strong th:text="${printOrder.number}">PO0001</strong></div><div><small>DATE</small><strong th:text="${printOrder.formattedDate}">Date</strong></div><div><small>STATUS</small><strong th:text="${printOrder.approval ?: 'Pending'}">Pending</strong></div></div>
-        <div class="po-print-parties"><section><h2>Supplier</h2><strong th:text="${printOrder.vendorName}">Vendor</strong><p th:text="${printOrder.vendorAddress}">Address</p><small th:text="|GSTIN: ${printOrder.vendorGstin ?: '—'}|">GSTIN</small></section><section><h2>Bill to</h2><p th:text="${printOrder.billingAddress ?: selectedCompany}">Billing address</p></section></div>
-        <div class="po-table-scroll"><table class="po-legacy-table po-print-table"><thead><tr><th>Sl.No</th><th>Item Description</th><th>UOM</th><th>Qty</th><th>Rate</th><th>Amount</th><th>Disc Val</th><th>GST Val</th><th>Net Amt</th></tr></thead><tbody><tr th:each="item,stat : ${printOrder.items}"><td th:text="${stat.count}">1</td><td th:text="${item.description}">Item</td><td th:text="${item.uom ?: '—'}">—</td><td class="numeric" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.amount,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.discountValue,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.gstValue,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.netAmount,1,2)}">0.00</td></tr></tbody></table></div>
-        <div class="po-print-totals"><div><span>Total Discount</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalDiscount,1,2)}|">₹ 0.00</strong></div><div><span>Total GST</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalGst,1,2)}|">₹ 0.00</strong></div><div><span>Service Charges</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.serviceCharge,1,2)}|">₹ 0.00</strong></div><div class="po-print-grand"><span>Grand Total</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalAmount,1,2)}|">₹ 0.00</strong></div></div>
-        <div class="po-print-conditions"><section><h2>Terms and Conditions</h2><p th:text="${printOrder.termsConditions}">Terms</p></section><section><h2>General Conditions</h2><p th:text="${printOrder.generalConditions}">Conditions</p></section></div>
-        <div class="po-signature"><span>Prepared by<br><strong th:text="${loggedInUser}">User</strong></span><span>Authorized signatory<br><strong th:text="${selectedCompany}">Company</strong></span></div>
-        <div class="po-print-actions"><a class="po-button secondary" th:href="@{/purchase-orders/report}">Back to report</a><button class="po-button primary" type="button" onclick="window.print()">Print / Save as PDF</button></div>
+        <header class="po-print-header"><img th:src="@{/Header.png}" alt="Sandur Residential School"></header>
+        <div class="po-print-contact">Website: <strong>www.sandurschool.edu.in</strong> &nbsp;|&nbsp; Email: <strong>srsadmin@sandurschool.com</strong> &nbsp;|&nbsp; Ph: <strong>08395-260246</strong></div>
+        <div class="po-print-document-title">Purchase Order</div>
+        <div class="po-print-details-grid">
+            <section class="po-print-info-card"><div class="po-print-info-heading">Order Reference</div>
+                <div class="po-print-info-row"><strong>PO Number:</strong><span th:text="${printOrder.number}">PO0001</span></div>
+                <div class="po-print-info-row"><strong>Date:</strong><span th:text="${printOrder.formattedDate}">06 October 2026</span></div>
+            </section>
+            <section class="po-print-info-card"><div class="po-print-info-heading">Vendor Details</div>
+                <div class="po-print-info-row"><strong>Vendor Name:</strong><span th:text="${printOrder.vendorName}">Vendor</span></div>
+                <div class="po-print-info-row"><strong>GSTIN:</strong><span th:text="${printOrder.vendorGstin ?: '-'}">-</span></div>
+                <div class="po-print-info-row"><strong>Address:</strong><span th:text="${printOrder.vendorAddress ?: '-'}">-</span></div>
+            </section>
+        </div>
+        <p class="po-print-intro">We are pleased to place our order for the supply of the below items on the terms and conditions mentioned below:</p>
+        <div class="po-print-table-wrap">
+            <table class="po-print-table">
+                <thead>
+                    <tr>
+                        <th style="width:5%">Sl.</th>
+                        <th th:style="${hasDiscount} ? 'width:25%' : 'width:41%'">Item Description</th>
+                        <th style="width:8%">UOM</th>
+                        <th style="width:8%">Qty</th>
+                        <th style="width:9%">Rate</th>
+                        <th style="width:9%">Amount</th>
+                        <th th:if="${hasDiscount}" style="width:7%">Disc %</th>
+                        <th th:if="${hasDiscount}" style="width:9%">Disc Val</th>
+                        <th style="width:6%">GST %</th>
+                        <th style="width:8%">GST Val</th>
+                        <th style="width:10%">Net Amt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item,stat : ${printOrder.items}">
+                        <td class="text-center" th:text="${stat.count}">1</td>
+                        <td class="text-left" th:text="${item.description}">Item</td>
+                        <td class="text-center" th:text="${item.uom ?: '-'}">-</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(item.amount,1,2)}">0.00</td>
+                        <td th:if="${hasDiscount}" class="text-right" th:text="${#numbers.formatDecimal(item.discountPercent,1,2)}">0.00</td>
+                        <td th:if="${hasDiscount}" class="text-right" th:text="${#numbers.formatDecimal(item.discountValue,1,2)}">0.00</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(item.gstPercent,1,2)}">0.00</td>
+                        <td class="text-right" th:text="${#numbers.formatDecimal(item.gstValue,1,2)}">0.00</td>
+                        <td class="text-right" style="font-weight:600;" th:text="${#numbers.formatDecimal(item.netAmount,1,2)}">0.00</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(printOrder.items)}">
+                        <td th:colspan="${hasDiscount ? 11 : 9}" class="text-center">No items found for this purchase order.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="po-print-summary-wrap">
+            <div class="po-print-summary">
+                <div class="po-print-summary-row" th:if="${hasDiscount}"><span>Total Discount:</span><span th:text="${#numbers.formatDecimal(printOrder.totalDiscount,1,2)}">0.00</span></div>
+                <div class="po-print-summary-row"><span>Total GST:</span><span th:text="${#numbers.formatDecimal(printOrder.totalGst,1,2)}">0.00</span></div>
+                <div class="po-print-summary-row" th:if="${printOrder.serviceCharge != null and printOrder.serviceCharge.signum() != 0}"><span>Service Charges:</span><span th:text="${#numbers.formatDecimal(printOrder.serviceCharge,1,2)}">0.00</span></div>
+                <div class="po-print-summary-row po-print-grand-total"><span>Grand Total:</span><span th:text="${#numbers.formatDecimal(printOrder.totalAmount,1,2)}">0.00</span></div>
+            </div>
+        </div>
+        <div class="po-print-conditions-container">
+            <th:block th:if="${printOrder.termsConditions != null and !#strings.isEmpty(printOrder.termsConditions)}">
+                <div class="po-print-section-title">Terms and Conditions</div>
+                <p class="po-print-condition-text" th:text="${printOrder.termsConditions}">-</p>
+            </th:block>
+            <th:block th:if="${printOrder.generalConditions != null and !#strings.isEmpty(printOrder.generalConditions)}">
+                <div class="po-print-section-title">General Conditions</div>
+                <p class="po-print-condition-text" th:text="${printOrder.generalConditions}">-</p>
+            </th:block>
+        </div>
+        <div class="po-print-signatures">
+            <div class="po-print-stamp-area">
+                <span class="po-print-approved-stamp" th:if="${printOrder.approval == 'Approved'}">Approved</span>
+            </div>
+            <div class="po-print-signatory">
+                <strong>For SANDUR RESIDENTIAL SCHOOL</strong>
+                <span>Authorized Signatory</span>
+            </div>
+        </div>
+        <div class="po-print-actions">
+            <a class="po-button secondary" th:href="@{/purchase-orders/report}">Back to report</a>
+            <button class="po-button primary" type="button" onclick="window.print()"><i class="fa fa-print" aria-hidden="true"></i> Print / Save as PDF</button>
+        </div>
     </section>
 </div></main>
 <script th:src="@{/js/purchase-order-report.js}" defer></script>
-</body></html>
-
-
-
+</body>
+</html>

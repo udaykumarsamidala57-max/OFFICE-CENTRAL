@@ -50,7 +50,14 @@ public class LoginSessionInterceptor implements HandlerInterceptor {
             Integer userId = userIdValue instanceof Number ? ((Number) userIdValue).intValue() : null;
             String role = (String) session.getAttribute(SessionKeys.ROLE);
             try {
-                if (!pageAccessService.hasPageAccess(userId, role, path)) {
+                boolean hasPageAccess = pageAccessService.hasPageAccess(userId, role, path);
+                boolean approvalPrintRequest = "/purchase-orders/report".equals(path)
+                        && request.getParameter("printNumber") != null
+                        && !request.getParameter("printNumber").isBlank();
+                boolean hasApprovalPrintAccess = approvalPrintRequest
+                        && pageAccessService.hasButtonAccess(userId, role,
+                                "/purchase-orders/approvals", "VIEW_PO");
+                if (!hasPageAccess && !hasApprovalPrintAccess) {
                     LOGGER.warn("Blocked page {} for user {} with role [{}]", path,
                             session.getAttribute(SessionKeys.USERNAME), role);
                     response.sendError(HttpStatus.FORBIDDEN.value(), "This page is not assigned to your account or role.");
@@ -65,3 +72,4 @@ public class LoginSessionInterceptor implements HandlerInterceptor {
         return true;
     }
 }
+

@@ -85,13 +85,12 @@ public class PurchaseOrderService {
             line.setItemId(source.getItemId());
             line.setDescription(source.getDescription());
             line.setUom(source.getUom());
-            BigDecimal quantity = decimal(quantities[i], "Quantity");
-            BigDecimal maxQuantity = source.getQuantity() == null ? ZERO : source.getQuantity();
-            if (quantity.signum() <= 0 || quantity.compareTo(maxQuantity) > 0) {
-                throw new IllegalArgumentException("Quantity for " + source.getDescription() + " must be greater than zero and no more than the approved indent quantity.");
+            BigDecimal quantity = decimal(quantities[i], "Quantity").setScale(2, RoundingMode.HALF_UP);
+            if (quantity.signum() <= 0) {
+                throw new IllegalArgumentException("Quantity for " + source.getDescription() + " must be greater than zero.");
             }
-            line.setQuantity(quantity.setScale(2, RoundingMode.HALF_UP));
-            line.setRate(decimal(rates[i], "Rate"));
+            line.setQuantity(quantity);
+            line.setRate(decimal(rates[i], "Rate").setScale(2, RoundingMode.HALF_UP));
             line.setDiscountPercent(percent(discounts[i], "Discount"));
             line.setGstPercent(percent(gstRates[i], "GST"));
             PurchaseOrderLine old = merged.get(line.getItemId());
@@ -176,7 +175,7 @@ public class PurchaseOrderService {
     private BigDecimal decimal(String value, String label) {
         try {
             BigDecimal result = new BigDecimal(value == null ? "" : value.trim());
-            if (result.signum() < 0 || result.precision() > 16 || result.scale() > 4) throw new NumberFormatException();
+            if (result.signum() < 0) throw new NumberFormatException();
             return result;
         } catch (NumberFormatException ex) { throw new IllegalArgumentException(label + " must be a valid non-negative number."); }
     }
@@ -191,3 +190,6 @@ public class PurchaseOrderService {
     private String trimToNull(String value) { return blank(value) ? null : value.trim(); }
     private boolean blank(String value) { return value == null || value.trim().isEmpty(); }
 }
+
+
+
