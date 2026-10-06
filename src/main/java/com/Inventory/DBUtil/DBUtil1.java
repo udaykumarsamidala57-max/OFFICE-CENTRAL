@@ -15,7 +15,7 @@ import com.zaxxer.hikari.HikariDataSource;
 /** Creates one pooled connection source for each allowed company database. */
 public final class DBUtil1 {
 
-    private static final String HOST = setting("DB_HOST", "jdbc:mysql://shuttle.proxy.rlwy.net");
+    private static final String HOST = normalizeHost(setting("DB_HOST", "shuttle.proxy.rlwy.net"));
     private static final String PORT = setting("DB_PORT", "26985");
     private static final String USER = setting("DB_USER", "root");
     private static final String PASSWORD = setting("DB_PASSWORD", "vSZVibKCzvcovcGjaLlxrTddrjiNPVQn");
@@ -49,6 +49,13 @@ public final class DBUtil1 {
                 .orElseThrow(() -> new IllegalArgumentException("Unsupported company selection."));
     }
 
+    private static String normalizeHost(String host) {
+        String normalized = host == null ? "" : host.trim();
+        normalized = normalized.replaceFirst("(?i)^jdbc:mysql://", "");
+        int pathStart = normalized.indexOf('/');
+        if (pathStart >= 0) normalized = normalized.substring(0, pathStart);
+        return normalized.trim();
+    }
     private static DataSource createLazyDataSource(String company) {
         return new AbstractDataSource() {
             private HikariDataSource pool() {
@@ -68,7 +75,7 @@ public final class DBUtil1 {
     }
     private static HikariDataSource createDataSource(String company) {
         if (HOST.isBlank() || PORT.isBlank() || USER.isBlank() || PASSWORD.isBlank()) {
-            throw new IllegalStateException("Set DB_HOST, DB_PORT, DB_USER, and DB_PASSWORD environment variables before connecting to a company database.");
+            throw new IllegalStateException("Set DB_PASSWORD in the cloud environment before connecting to a company database.");
         }
 
         String database = DATABASES.get(company);
@@ -93,6 +100,9 @@ public final class DBUtil1 {
         return value == null || value.isBlank() ? fallback : value.trim();
     }
 }
+
+
+
 
 
 

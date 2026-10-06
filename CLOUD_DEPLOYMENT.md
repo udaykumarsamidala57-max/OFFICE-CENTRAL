@@ -4,10 +4,10 @@ Build the container from the project root with `docker build -t officecentral .`
 
 Configure these environment variables in the provider's secret/environment settings:
 
-- `DB_HOST`: MySQL host reachable from the cloud container
-- `DB_PORT`: MySQL port
-- `DB_USER`: MySQL username
-- `DB_PASSWORD`: MySQL password (store as a secret)
+- `DB_HOST`: optional override; defaults to the configured MySQL hostname (host only, no JDBC scheme)
+- `DB_PORT`: optional override; defaults to the configured MySQL port
+- `DB_USER`: optional override; defaults to the configured MySQL username
+- `DB_PASSWORD`: MySQL password (required; store as a cloud secret)
 - `PORT`: HTTP port assigned by the provider (defaults to 8080)
 - `SESSION_COOKIE_SECURE`: set to `true` when HTTPS terminates at the cloud proxy
 
@@ -17,4 +17,5 @@ The database account, network allowlist, and required application tables must be
 
 
 If your cloud provider builds from source instead of using Docker, use mvn clean package. Do not pass pom.xml as a Maven profile (-P pom.xml); Maven profiles are declared by the project and pom.xml is the project descriptor, not a profile name.
+
 
