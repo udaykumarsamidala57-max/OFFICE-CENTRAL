@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select company | Office Central ERP</title>
+    <title>Select Store | Office Central ERP</title>
     <link rel="stylesheet" th:href="@{/css/app-theme.css}">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
@@ -11,14 +11,14 @@
 <main class="auth-card company-card">
   
    
-    <h1>Select a company</h1>
-    <p class="intro">Signed in as <strong th:text="${username}">user</strong>. Choose the company database for this session.</p>
+    <h1>Select a Store</h1>
+    <p class="intro">Signed in as <strong th:text="${username}">user</strong>. Choose the Store database for this session.</p>
 
     <div class="notice notice-error" role="alert" th:if="${error}" th:text="${error}"></div>
 
     <form th:action="@{/select-company}" method="post">
         <fieldset class="company-options" th:if="${!#lists.isEmpty(companies)}">
-            <legend class="visually-hidden">Available companies</legend>
+            <legend class="visually-hidden">Available Stores</legend>
             <label class="company-option" th:each="company, iter : ${companies}">
                 <input type="radio" name="company" th:value="${company}" required
                        th:checked="${company == selectedCompany or (selectedCompany == null and iter.index == 0)}">

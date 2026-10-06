@@ -18,9 +18,9 @@
         </th:block>
         <p class="app-nav-empty" th:if="${#lists.isEmpty(navigationPages)}">No pages are assigned to your account.</p>
         <div class="sidebar-footer">
-            <span class="sidebar-footer-label">Current company</span>
+            <span class="sidebar-footer-label">Current Store</span>
             <strong th:text="${selectedCompany}">SRS</strong>
-            <a th:href="@{/select-company}" class="change-company">Change company</a>
+            <a th:href="@{/select-company}" class="change-company">Change Store</a>
         </div>
     </aside>
     <header class="app-topbar">

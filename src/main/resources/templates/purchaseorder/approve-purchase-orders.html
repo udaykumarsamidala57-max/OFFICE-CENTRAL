@@ -20,7 +20,7 @@
     </div>
     <section class="po-table-card">
         <div class="po-table-scroll"><table class="po-legacy-table po-approval-table" id="approvalTable">
-            <thead><tr><th>PO Number</th><th>PO Date</th><th>Vendor Name</th><th>Total Amount</th><th>Approval Status</th><th>Action</th><th>Print</th><th>Items</th></tr></thead>
+            <thead><tr><th>PO Number</th><th>PO Date</th><th>Vendor Name</th><th>Total Amount</th><th>Approval Status</th><th>Action</th><th>Print</th><th>GRN</th><th>Items</th></tr></thead>
             <tbody>
             <th:block th:each="po : ${purchaseOrders}">
                 <tr class="po-master-row" th:attr="data-raw-date=${po.dateIso},data-nested-id=${po.id}">
@@ -34,16 +34,17 @@
                         <form th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_PO')) and canApproveByRole}" th:action="@{/purchase-orders/approvals}" method="post" onsubmit="return confirm('Are you sure you want to approve this record?')"><input type="hidden" name="action" value="approve"><input type="hidden" name="poNumber" th:value="${po.number}"><button type="submit" class="po-button primary small" th:disabled="${po.approval == 'Approved'}">Approve</button></form>
                     </div></td>
                     <td data-label="Print"><a class="po-button secondary small" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_PO')}" th:href="@{/purchase-orders/report(printNumber=${po.number})}" target="_blank">View / Print</a></td>
+                    <td data-label="GRN"><a class="po-button primary small" th:if="${(isSuperAdmin or allowedButtonCodes.contains('CREATE_GRN')) and po.approval == 'Approved' and (po.status == 'Open' or po.status == 'Partially Received')}" th:href="@{/grn/entry(poNumber=${po.number})}">GRN Entry</a></td>
                     <td data-label="Items"><button type="button" class="po-button secondary small po-expand-button" th:id="|btn-${po.id}|" th:if="${isSuperAdmin or allowedButtonCodes.contains('SHOW_PO_ITEMS')}" th:attr="data-row-id=${po.id}">Show Items</button></td>
                 </tr>
-                <tr class="po-nested-row" th:id="|row-nested-${po.id}|" style="display:none"><td colspan="8" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
+                <tr class="po-nested-row" th:id="|row-nested-${po.id}|" style="display:none"><td colspan="9" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
                     <div class="po-table-scroll"><table class="po-items-table"><thead><tr><th>Item ID</th><th>Description</th><th>PO Quantity</th><th>Received Qty</th><th>Balance to Receive</th><th>Rate</th><th>Discount %</th><th>GST %</th></tr></thead><tbody>
                         <tr th:each="item : ${po.items}"><td data-label="Item ID" th:text="${item.itemId}">1</td><td data-label="Description" class="po-item-description" th:text="${item.description}">Item</td><td data-label="PO Quantity" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td data-label="Received Qty" th:text="${#numbers.formatDecimal(item.receivedQty,1,2)}">0.00</td><td data-label="Balance to Receive" class="po-balance-cell" th:classappend="${item.balanceToReceive.signum() > 0} ? ' balance-pending' : ''" th:text="${#numbers.formatDecimal(item.balanceToReceive,1,2)}">0.00</td><td data-label="Rate" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td data-label="Discount %" th:text="${#numbers.formatDecimal(item.discountPercent,1,2)}">0.00</td><td data-label="GST %" th:text="${#numbers.formatDecimal(item.gstPercent,1,2)}">0.00</td></tr>
                         <tr th:if="${#lists.isEmpty(po.items)}"><td colspan="8" class="po-empty">No items found for this PO.</td></tr>
                     </tbody></table></div>
                 </div></td></tr>
             </th:block>
-            <tr th:if="${#lists.isEmpty(purchaseOrders)}"><td colspan="8" class="po-empty">No Purchase Orders Found</td></tr>
+            <tr th:if="${#lists.isEmpty(purchaseOrders)}"><td colspan="9" class="po-empty">No Purchase Orders Found</td></tr>
             </tbody>
         </table></div>
         <div class="po-filter-empty" id="dateFilterEmpty" hidden>No Purchase Orders Found within selected dates.</div>

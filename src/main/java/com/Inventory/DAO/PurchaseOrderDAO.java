@@ -157,7 +157,7 @@ public class PurchaseOrderDAO {
                 String itemPlaceholders = String.join(",", java.util.Collections.nCopies(batch.size(), "?"));
                 jdbc.query("SELECT i.PO_id, i.po_no, i.item_id, i.description, i.qty, i.rate, i.amount, i.discount_percent, "
                                 + "i.discount_value, i.gst_percent, i.gst_value, i.net_amount, m.UOM, "
-                                + "COALESCE(s.balance_qty,0) AS balance_qty, COALESCE((SELECT SUM(g.qty_received) FROM grn_items g "
+                                + "COALESCE(s.balance_qty,0) AS balance_qty, COALESCE((SELECT SUM(g.qty_accepted) FROM grn_items g "
                                 + "WHERE g.po_item_id=i.po_item_id),0) AS received_qty FROM po_items i "
                                 + "LEFT JOIN item_master m ON i.item_id=m.Item_id LEFT JOIN stock s ON i.item_id=s.item_id "
                                 + "WHERE i.PO_id IN (" + itemPlaceholders + ") ORDER BY i.PO_id, i.sl_no", rs -> {
@@ -194,7 +194,7 @@ public class PurchaseOrderDAO {
     private List<PurchaseOrderLine> findItems(int poId) {
         return jdbc.query("SELECT i.po_item_id, i.po_no, i.item_id, i.description, i.qty, i.rate, i.amount, i.discount_percent, "
                         + "i.discount_value, i.gst_percent, i.gst_value, i.net_amount, m.UOM, COALESCE(s.balance_qty,0) AS balance_qty, "
-                        + "COALESCE((SELECT SUM(g.qty_received) FROM grn_items g WHERE g.po_item_id=i.po_item_id),0) AS received_qty "
+                        + "COALESCE((SELECT SUM(g.qty_accepted) FROM grn_items g WHERE g.po_item_id=i.po_item_id),0) AS received_qty "
                         + "FROM po_items i LEFT JOIN item_master m ON i.item_id=m.Item_id LEFT JOIN stock s ON i.item_id=s.item_id "
                         + "WHERE i.PO_id=? ORDER BY i.sl_no",
                 (rs, row) -> mapItem(rs), poId);

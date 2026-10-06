@@ -24,7 +24,7 @@ public final class DBUtil1 {
             "SRS", "inventory",
             "SANPOLY BOYS", "SANPOLY_INVENTORY",
             "SANPOLY GIRLS", "SANPOLY_INVENTORY2",
-            "SRS HOSTEL","SRS_HOSTEL");
+            "SRS_HOSTEL","SRS_HOSTEL");
 
     private static final Map<String, HikariDataSource> POOLS = new ConcurrentHashMap<>();
     private static final Map<String, DataSource> DATA_SOURCES = new ConcurrentHashMap<>();

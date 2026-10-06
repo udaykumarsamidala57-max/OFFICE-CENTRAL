@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GRN Report</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/grn.css(v=20261007)}">
+</head>
+<body class="app-body grn-page" th:classappend="${printGrn != null} ? ' grn-print-mode' : ''">
+<th:block th:if="${printGrn == null}"><div th:replace="~{fragments/app-header :: appHeader('grn-report')}"></div></th:block>
+<main class="app-main-content grn-content" th:classappend="${printGrn != null} ? ' grn-print-content' : ''"><div class="grn-shell">
+    <th:block th:if="${printGrn == null}">
+        <div class="grn-page-heading"><div><span class="grn-eyebrow">INVENTORY RECEIPTS</span><h1>GRN Report</h1></div>
+            <div class="grn-heading-actions"><span class="grn-count">Records <strong th:text="${#lists.size(records)}">0</strong></span><button id="exportGrnCsv" type="button" class="grn-button success" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_GRN')}">Download CSV</button></div>
+        </div>
+        <div class="grn-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="grn-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
+        <form method="get" th:action="@{/grn/report}" class="grn-filter-card">
+            <label>Search<input name="search" th:value="${search}" placeholder="GRN, PO, vendor or invoice"></label>
+            <label>From Date<input type="date" name="fromDate" th:value="${fromDate}"></label>
+            <label>To Date<input type="date" name="toDate" th:value="${toDate}"></label>
+            <div class="grn-filter-actions"><button type="submit" class="grn-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_GRN')}">Apply Filters</button><a class="grn-button secondary" th:href="@{/grn/report}">Clear</a></div>
+        </form>
+        <div class="grn-report-toolbar"><div><button type="button" class="grn-button quiet" id="expandAllGrn">Expand All</button><button type="button" class="grn-button quiet" id="collapseAllGrn">Collapse All</button></div><span>Goods Receipt Register</span></div>
+        <div class="grn-empty-card" th:if="${#lists.isEmpty(records)}">No GRN records found for the selected filters.</div>
+        <article class="grn-record-card" th:each="record : ${records}"
+                 th:attr="data-grn=${record.grnNo},data-date=${record.formattedGrnDate},data-po=${record.poNumber},data-vendor=${record.vendorName},data-invoice=${record.invoiceNo},data-invoice-date=${record.formattedInvoiceDate},data-received-by=${record.receivedBy},data-remarks=${record.remarks}">
+            <div class="grn-record-heading"><div class="grn-record-main"><strong class="grn-record-number" th:text="${record.grnNo}">GRN0001</strong><span class="grn-record-date" th:text="${record.formattedGrnDate}">06 Oct 2026</span><span class="grn-record-status" th:text="${record.status}">Completed</span><div class="grn-record-vendor"><span th:text="${record.vendorName}">Vendor</span><span>PO <b th:text="${record.poNumber}">PO0001</b></span></div></div>
+                <div class="grn-record-actions"><button type="button" class="grn-button quiet grn-toggle" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_GRN_ITEMS')}" th:attr="data-target=|grn-items-${record.id}|">Items <span th:text="${#lists.size(record.items)}">0</span></button><a class="grn-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_GRN')}" th:href="@{/grn/report(printNumber=${record.grnNo})}" target="_blank">Print</a></div>
+            </div>
+            <div class="grn-record-meta"><div><small>Invoice Reference</small><strong th:text="|${record.invoiceNo} (${record.formattedInvoiceDate})|">Invoice</strong></div><div><small>Vendor GSTIN</small><strong th:text="${record.vendorGstin ?: '-'}">-</strong></div><div><small>Received By</small><strong th:text="${record.receivedBy}">User</strong></div><div><small>GRN Remarks</small><strong th:text="${record.remarks ?: '-'}">-</strong></div></div>
+            <div class="grn-item-panel" th:id="|grn-items-${record.id}|" hidden><div class="grn-table-wrap"><table class="grn-report-table"><thead><tr><th>Item Description</th><th>Qty Ordered</th><th>Qty Received</th><th>Qty Accepted</th><th>Qty Rejected</th><th>Remarks</th></tr></thead><tbody>
+                <tr th:each="item : ${record.items}"><td class="grn-item-name" th:text="${item.description}">Item</td><td class="grn-number" th:text="${#numbers.formatDecimal(item.orderedQty,1,2)}">0.00</td><td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyReceived,1,2)}">0.00</td><td class="grn-number grn-accepted" th:text="${#numbers.formatDecimal(item.qtyAccepted,1,2)}">0.00</td><td class="grn-number grn-rejected" th:text="${#numbers.formatDecimal(item.qtyRejected,1,2)}">0.00</td><td th:text="${item.remarks ?: '-'}">-</td></tr>
+                <tr th:if="${#lists.isEmpty(record.items)}"><td colspan="6" class="grn-empty">No line items saved.</td></tr>
+            </tbody></table></div></div>
+        </article>
+    </th:block>
+
+    <section class="grn-print-sheet" th:if="${printGrn != null}" id="printGrn">
+        <div th:replace="~{fragments/purchase-order-header :: purchaseOrderHeader}"></div>
+        <h1 class="grn-print-title">Goods Receipt Note (GRN)</h1>
+        <table class="grn-print-info"><tbody>
+            <tr><td colspan="2"><b>PO No:</b> <span th:text="${printGrn.poNumber}">PO0001</span></td></tr>
+            <tr><td><b>GRN No:</b> <span th:text="${printGrn.grnNo}">GRN0001</span></td><td><b>GRN Date:</b> <span th:text="${printGrn.grnDate}">2026-10-07</span></td></tr>
+            <tr><td><b>Vendor Name:</b> <span th:text="${printGrn.vendorName}">Vendor</span></td><td><b>GSTIN:</b> <span th:text="${printGrn.vendorGstin ?: '-'}">-</span></td></tr>
+            <tr><td colspan="2"><b>Vendor Address:</b> <span th:text="${printGrn.vendorAddress ?: '-'}">-</span></td></tr>
+            <tr><td><b>Invoice No:</b> <span th:text="${printGrn.invoiceNo}">-</span></td><td><b>Invoice Date:</b> <span th:text="${printGrn.invoiceDate}">-</span></td></tr>
+            <tr><td><b>Received By:</b> <span th:text="${printGrn.receivedBy}">-</span></td><td><b>Remarks:</b> <span th:text="${printGrn.remarks ?: '-'}">-</span></td></tr>
+        </tbody></table>
+        <div class="grn-table-wrap"><table class="grn-print-table"><thead><tr><th>Sl.No</th><th>Item Description</th><th>Qty Received</th><th>Qty Accepted</th><th>Qty Rejected</th><th>Remarks</th></tr></thead><tbody>
+            <tr th:each="item,stat : ${printGrn.items}"><td th:text="${stat.count}">1</td><td class="grn-item-name" th:text="${item.description}">Item</td><td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyReceived,1,2)}">0.00</td><td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyAccepted,1,2)}">0.00</td><td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyRejected,1,2)}">0.00</td><td th:text="${item.remarks ?: '-'}">-</td></tr>
+            <tr th:if="${#lists.isEmpty(printGrn.items)}"><td colspan="6">No items found for this GRN.</td></tr>
+        </tbody></table></div>
+        <div class="grn-print-signatures"><div><b>Store In-Charge</b></div><div><b>Authorized Signatory</b><span>RECEIVED</span></div></div>
+        <div class="grn-print-actions"><a class="grn-button secondary" th:href="@{/grn/report}">Back to report</a><button type="button" class="grn-button primary" onclick="window.print()">Print / Save PDF</button></div>
+    </section>
+</div></main>
+<script th:src="@{/js/grn-report.js(v=20261007)}" defer></script>
+</body>
+</html>

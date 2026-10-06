@@ -10,7 +10,9 @@ INSERT IGNORE INTO app_pages (page_code, page_name, page_url) VALUES
     ('PAGE_ACCESS', 'Page Access', '/admin/page-access'),
     ('CREATE_PURCHASE_ORDER', 'Create Purchase Order', '/purchase-orders/create'),
     ('APPROVE_PURCHASE_ORDERS', 'Approve Purchase Orders', '/purchase-orders/approvals'),
-    ('PURCHASE_ORDER_REPORT', 'Purchase Order Report', '/purchase-orders/report');
+    ('PURCHASE_ORDER_REPORT', 'Purchase Order Report', '/purchase-orders/report'),
+    ('GRN_ENTRY', 'GRN Entry', '/grn/entry'),
+    ('GRN_REPORT', 'GRN Report', '/grn/report');
 
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'ADD_ITEM', '+ Add Item' FROM app_pages WHERE page_code='CREATE_INDENT';
@@ -73,6 +75,20 @@ INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'DELETE_PO', 'Delete pending PO' FROM app_pages WHERE page_code='APPROVE_PURCHASE_ORDERS';
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'APPROVE_PO', 'Approve purchase order' FROM app_pages WHERE page_code='APPROVE_PURCHASE_ORDERS';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'CREATE_GRN', 'Create GRN' FROM app_pages WHERE page_code='APPROVE_PURCHASE_ORDERS';
+
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'SAVE_GRN', 'Save GRN' FROM app_pages WHERE page_code='GRN_ENTRY';
+
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'FILTER_GRN', 'Apply GRN filters' FROM app_pages WHERE page_code='GRN_REPORT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'EXPORT_GRN', 'Download GRN CSV' FROM app_pages WHERE page_code='GRN_REPORT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'VIEW_GRN_ITEMS', 'Show / hide GRN items' FROM app_pages WHERE page_code='GRN_REPORT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'PRINT_GRN', 'Print GRN' FROM app_pages WHERE page_code='GRN_REPORT';
 
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'FILTER_PO', 'Apply report filters' FROM app_pages WHERE page_code='PURCHASE_ORDER_REPORT';
