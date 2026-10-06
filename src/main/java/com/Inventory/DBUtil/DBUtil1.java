@@ -22,8 +22,9 @@ public final class DBUtil1 {
 
     private static final Map<String, String> DATABASES = Map.of(
             "SRS", "inventory",
-            "Sanpoly", "SANPOLY_INVENTORY",
-            "Sanpoly2", "SANPOLY_INVENTORY2");
+            "SANPOLY BOYS", "SANPOLY_INVENTORY",
+            "SANPOLY GIRLS", "SANPOLY_INVENTORY2",
+            "SRS HOSTEL","SRS_HOSTEL");
 
     private static final Map<String, HikariDataSource> POOLS = new ConcurrentHashMap<>();
     private static final Map<String, DataSource> DATA_SOURCES = new ConcurrentHashMap<>();
