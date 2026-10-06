@@ -1,62 +1,172 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GRN Entry</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/grn.css(v=20261007)}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GRN Entry - Salesforce Inventory Management</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/grn.css(v=20261007)}">
+    <link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
 </head>
-<body class="app-body grn-page">
+<body class="app-body po-page">
 <div th:replace="~{fragments/app-header :: appHeader('grn-entry')}"></div>
-<main class="app-main-content grn-content"><div class="grn-shell">
-    <div class="grn-page-heading"><div><span class="grn-eyebrow">INVENTORY RECEIPTS</span><h1>Goods Received Note</h1></div><a class="grn-button secondary" th:href="@{/grn/report}">GRN Report</a></div>
-    <div class="grn-alert success" th:if="${success}" th:text="${success}" role="status"></div>
-    <div class="grn-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
 
-    <section class="grn-card grn-search-card">
-        <form method="get" th:action="@{/grn/entry}" class="grn-search-form">
-            <label for="poNumber">Purchase Order Number</label>
-            <div class="grn-search-row"><input id="poNumber" name="poNumber" th:value="${poNumber}" placeholder="Enter approved PO number" required>
-                <button type="submit" class="grn-button primary">Load PO</button></div>
-            <small>Only approved purchase orders with a remaining balance can be received.</small>
-        </form>
-    </section>
+<main class="app-main-content po-content">
+    <div class="po-shell">
 
-    <form th:if="${entry != null}" method="post" th:action="@{/grn/entry}" class="grn-entry-form" onsubmit="return confirm('Save this Goods Received Note? Accepted quantities will update stock.')">
-        <input type="hidden" name="poNumber" th:value="${entry.poNumber}">
-        <section class="grn-card">
-            <div class="grn-card-heading"><div><span class="grn-eyebrow">RECEIPT DETAILS</span><h2>Purchase Order <strong th:text="${entry.poNumber}">PO0001</strong></h2></div><span class="grn-status-pill">Approved PO</span></div>
-            <div class="grn-form-grid">
-                <label>Vendor Name<input th:value="${entry.vendorName}" readonly></label>
-                <label>Invoice Number <em>*</em><input name="invoiceNo" maxlength="100" required placeholder="Supplier invoice number"></label>
-                <label>Invoice Date <em>*</em><input type="date" name="invoiceDate" required></label>
-                <label>Received By <em>*</em><input name="receivedBy" maxlength="100" th:value="${defaultReceivedBy}" required></label>
-                <label>GRN Date <em>*</em><input type="date" name="grnDate" th:value="${today}" required></label>
-                <label class="grn-wide-field">GRN Remarks<input name="remarks" maxlength="500" placeholder="Optional receipt notes"></label>
+        <!-- Salesforce SLDS Record Header -->
+        <header class="po-object-header">
+            <div class="po-object-title">
+                <div class="po-object-icon" aria-hidden="true">GRN</div>
+                <div>
+                    <span class="po-object-subtitle">Inventory Receipts</span>
+                    <h1>Goods Received Note</h1>
+                </div>
             </div>
+            <a class="po-button secondary" th:href="@{/grn/report}">GRN Report</a>
+        </header>
+
+        <!-- System Banner Alerts -->
+        <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div>
+        <div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+        <!-- PO SEARCH PANEL -->
+        <section class="po-table-card" style="margin-bottom: 1.5rem;">
+            <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+                <div>
+                    <span class="po-object-subtitle">Search Record</span>
+                    <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">Locate Purchase Order</h2>
+                </div>
+            </div>
+            <form method="get" th:action="@{/grn/entry}" style="padding: 1.25rem;">
+                <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                    Purchase Order Number
+                    <div style="display: flex; gap: 8px; margin-top: 6px;">
+                        <input class="po-filter-input" id="poNumber" name="poNumber" th:value="${poNumber}" placeholder="Enter approved PO number (e.g. PO0001)" required style="flex: 1;">
+                        <button type="submit" class="po-button primary">Load PO</button>
+                    </div>
+                </label>
+                <p style="margin: 8px 0 0; font-size: 0.75rem; color: var(--text-muted);">Only approved purchase orders with a remaining balance can be received.</p>
+            </form>
         </section>
 
-        <section class="grn-card grn-lines-card">
-            <div class="grn-card-heading"><div><span class="grn-eyebrow">QUANTITY CHECK</span><h2>Line Items</h2></div><p>Accepted quantity updates stock. Rejected quantity is recorded only.</p></div>
-            <div class="grn-table-wrap"><table class="grn-entry-table">
-                <thead><tr><th>Item</th><th>UOM</th><th>Ordered</th><th>Previously Accepted</th><th>Balance</th><th>Received</th><th>Accepted</th><th>Rejected</th><th>Item Remarks</th></tr></thead>
-                <tbody>
-                <tr th:each="item : ${entry.items}">
-                    <td class="grn-item-name"><strong th:text="${item.description}">Item</strong><small th:text="|Item ID: ${item.itemId}|">Item ID</small><input type="hidden" name="poItemId" th:value="${item.poItemId}"></td>
-                    <td data-label="UOM" th:text="${item.uom ?: '-'}">-</td>
-                    <td data-label="Ordered" class="grn-number" th:text="${#numbers.formatDecimal(item.orderedQty,1,2)}">0.00</td>
-                    <td data-label="Previously Accepted" class="grn-number" th:text="${#numbers.formatDecimal(item.alreadyAccepted,1,2)}">0.00</td>
-                    <td data-label="Balance" class="grn-number grn-balance" th:text="${#numbers.formatDecimal(item.remainingQty,1,2)}">0.00</td>
-                    <td data-label="Received"><input type="number" name="qtyReceived" min="0" step="0.01" value="0.00" required></td>
-                    <td data-label="Accepted"><input type="number" name="qtyAccepted" min="0" step="0.01" value="0.00" required></td>
-                    <td data-label="Rejected"><input type="number" name="qtyRejected" min="0" step="0.01" value="0.00" required></td>
-                    <td data-label="Item Remarks"><input type="text" name="itemRemarks" maxlength="500" placeholder="Optional"></td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(entry.items)}"><td colspan="9" class="grn-empty">No remaining quantities for this PO.</td></tr>
-                </tbody>
-            </table></div>
-            <div class="grn-form-actions"><a class="grn-button secondary" th:href="@{/purchase-orders/approvals}">Cancel</a><button class="grn-button primary" type="submit" th:disabled="${#lists.isEmpty(entry.items)}">Save GRN</button></div>
-        </section>
-    </form>
-</div></main>
+        <!-- GRN FORM SECTION -->
+        <form th:if="${entry != null}" method="post" th:action="@{/grn/entry}" onsubmit="return confirm('Save this Goods Received Note? Accepted quantities will update stock.')">
+            <input type="hidden" name="poNumber" th:value="${entry.poNumber}">
+
+            <!-- SECTION 01: RECEIPT DETAILS -->
+            <section class="po-table-card" style="margin-bottom: 1.5rem;">
+                <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+                    <div>
+                        <span class="po-object-subtitle">Section 01</span>
+                        <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">
+                            Receipt Details for Purchase Order <strong th:text="${entry.poNumber}" style="color: var(--slds-brand);">PO0001</strong>
+                        </h2>
+                    </div>
+                    <div style="margin-left: auto;">
+                        <span class="po-badge approved">Approved PO</span>
+                    </div>
+                </div>
+
+                <div style="padding: 1.25rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                            Vendor Name
+                            <input class="po-filter-input" th:value="${entry.vendorName}" readonly style="background-color: var(--surface-alt); font-weight: 600;">
+                        </label>
+
+                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                            Invoice Number <span style="color: var(--danger);">*</span>
+                            <input class="po-filter-input" name="invoiceNo" maxlength="100" required placeholder="Supplier invoice number">
+                        </label>
+
+                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                            Invoice Date <span style="color: var(--danger);">*</span>
+                            <input class="po-filter-input" type="date" name="invoiceDate" required>
+                        </label>
+
+                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                            Received By <span style="color: var(--danger);">*</span>
+                            <input class="po-filter-input" name="receivedBy" maxlength="100" th:value="${defaultReceivedBy}" required>
+                        </label>
+
+                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                            GRN Date <span style="color: var(--danger);">*</span>
+                            <input class="po-filter-input" type="date" name="grnDate" th:value="${today}" required>
+                        </label>
+                    </div>
+
+                    <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                        GRN Remarks
+                        <input class="po-filter-input" name="remarks" maxlength="500" placeholder="Optional receipt notes">
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 02: LINE ITEMS & QUANTITY CHECK -->
+            <section class="po-table-card">
+                <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+                    <div>
+                        <span class="po-object-subtitle">Section 02</span>
+                        <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">Quantity Verification & Stock Entry</h2>
+                    </div>
+                </div>
+
+                <div class="po-table-scroll">
+                    <table class="po-table">
+                        <thead>
+                            <tr>
+                                <th class="po-item-description">Item Description</th>
+                                <th style="width: 70px;">UOM</th>
+                                <th class="po-amount-cell" style="width: 100px;">Ordered</th>
+                                <th class="po-amount-cell" style="width: 120px;">Prev. Accepted</th>
+                                <th class="po-amount-cell" style="width: 100px;">Balance</th>
+                                <th style="width: 110px;">Received</th>
+                                <th style="width: 110px;">Accepted</th>
+                                <th style="width: 110px;">Rejected</th>
+                                <th>Item Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${entry.items}">
+                                <td class="po-item-description">
+                                    <strong th:text="${item.description}">Item</strong>
+                                    <span style="display: block; font-size: 0.6875rem; color: var(--text-muted);" th:text="|Item ID: ${item.itemId}|">Item ID</span>
+                                    <input type="hidden" name="poItemId" th:value="${item.poItemId}">
+                                </td>
+                                <td th:text="${item.uom ?: '-'}">-</td>
+                                <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.orderedQty, 1, 2)}">0.00</td>
+                                <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.alreadyAccepted, 1, 2)}">0.00</td>
+                                <td class="po-amount-cell" style="color: var(--palette-warning); font-weight: 700;" th:text="${#numbers.formatDecimal(item.remainingQty, 1, 2)}">0.00</td>
+                                <td>
+                                    <input class="po-filter-input" type="number" name="qtyReceived" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right;">
+                                </td>
+                                <td>
+                                    <input class="po-filter-input" type="number" name="qtyAccepted" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right; border-color: var(--palette-approved-border);">
+                                </td>
+                                <td>
+                                    <input class="po-filter-input" type="number" name="qtyRejected" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right; border-color: var(--palette-danger-border);">
+                                </td>
+                                <td>
+                                    <input class="po-filter-input" type="text" name="itemRemarks" maxlength="500" placeholder="Optional" style="width: 100%;">
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(entry.items)}">
+                                <td colspan="9" class="po-empty">No remaining quantities available for receipt on this Purchase Order.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: var(--surface-alt); border-top: 1px solid var(--border-color);">
+                    <a class="po-button secondary" th:href="@{/purchase-orders/approvals}">Cancel</a>
+                    <button class="po-button primary" type="submit" th:disabled="${#lists.isEmpty(entry.items)}">Save GRN</button>
+                </div>
+            </section>
+        </form>
+
+    </div>
+</main>
 </body>
 </html>
