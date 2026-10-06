@@ -15,10 +15,10 @@ import com.zaxxer.hikari.HikariDataSource;
 /** Creates one pooled connection source for each allowed company database. */
 public final class DBUtil1 {
 
-    private static final String HOST = setting("DB_HOST", "");
-    private static final String PORT = setting("DB_PORT", "");
-    private static final String USER = setting("DB_USER", "");
-    private static final String PASSWORD = setting("DB_PASSWORD", "");
+    private static final String HOST = setting("DB_HOST", "jdbc:mysql://shuttle.proxy.rlwy.net");
+    private static final String PORT = setting("DB_PORT", "26985");
+    private static final String USER = setting("DB_USER", "root");
+    private static final String PASSWORD = setting("DB_PASSWORD", "vSZVibKCzvcovcGjaLlxrTddrjiNPVQn");
 
     private static final Map<String, String> DATABASES = Map.of(
             "SRS", "inventory",
