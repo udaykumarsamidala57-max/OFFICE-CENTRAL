@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page &amp; Button Setup</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/page-catalog.css}">
+</head>
+<body class="app-body">
+<div th:replace="~{fragments/app-header :: appHeader('page-catalog')}"></div>
+<main class="app-main-content page-catalog-content">
+    <section class="catalog-shell">
+        <header class="catalog-heading">
+            <div><span class="catalog-kicker">ADMINISTRATION</span><h1>Page &amp; button setup</h1>
+                <p>Register application pages and define the actions available on each page.</p></div>
+            <span class="catalog-count" th:text="|${#lists.size(pages)} pages|">0 pages</span>
+        </header>
+
+        <div class="catalog-message success" th:if="${success}" th:text="${success}" role="status"></div>
+        <div class="catalog-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+        <section class="catalog-panel create-panel">
+            <div class="panel-heading"><div><h2>Create a page</h2><p>Add the page route used by this application.</p></div></div>
+            <form class="page-form" th:if="${isSuperAdmin or allowedButtonCodes.contains('CREATE_PAGE')}" th:action="@{/admin/page-catalog/page/save}" method="post">
+                <label>Page code<input name="code" maxlength="100" placeholder="INDENT_REPORT" required></label>
+                <label>Page name<input name="name" maxlength="150" placeholder="Indent Report" required></label>
+                <label>Application URL<input name="url" maxlength="255" placeholder="/IndentlistServlet" required></label>
+                <button class="catalog-button primary" type="submit">Create page</button>
+            </form>
+            <small class="field-help">Use uppercase codes with letters, numbers, and underscores. URLs must start with /.</small>
+        </section>
+
+        <section class="page-list" aria-label="Registered pages">
+            <article class="catalog-panel page-card" th:each="page : ${pages}">
+                <header class="page-card-heading">
+                    <div class="page-identity"><span class="page-mark" aria-hidden="true">P</span><div>
+                        <h2 th:text="${page.name}">Page name</h2><div class="page-meta"><code th:text="${page.code}">PAGE_CODE</code><span th:text="${page.url}">/page</span></div>
+                    </div></div>
+                    <span class="button-count" th:text="|${#lists.size(page.buttons)} buttons|">0 buttons</span>
+                </header>
+
+                <details class="edit-page-details" th:if="${isSuperAdmin or allowedButtonCodes.contains('EDIT_PAGE')}">
+                    <summary>Edit page details</summary>
+                    <form class="page-form edit-page-form" th:action="@{/admin/page-catalog/page/save}" method="post">
+                        <input type="hidden" name="id" th:value="${page.id}">
+                        <label>Page code<input name="code" maxlength="100" th:value="${page.code}" required></label>
+                        <label>Page name<input name="name" maxlength="150" th:value="${page.name}" required></label>
+                        <label>Application URL<input name="url" maxlength="255" th:value="${page.url}" required></label>
+                        <button class="catalog-button primary" type="submit">Save changes</button>
+                    </form>
+                </details>
+
+                <div class="button-section">
+                    <h3>Buttons and actions</h3>
+                    <div class="empty-buttons" th:if="${#lists.isEmpty(page.buttons)}">No buttons registered for this page.</div>
+                    <div class="button-row" th:each="button : ${page.buttons}">
+                        <form class="button-form" th:if="${isSuperAdmin or allowedButtonCodes.contains('EDIT_BUTTON')}" th:action="@{/admin/page-catalog/button/save}" method="post">
+                            <input type="hidden" name="id" th:value="${button.id}">
+                            <input type="hidden" name="pageId" th:value="${page.id}">
+                            <label class="button-code">Code<input name="code" maxlength="100" th:value="${button.code}" required></label>
+                            <label class="button-name">Button name<input name="name" maxlength="150" th:value="${button.name}" required></label>
+                            <button class="catalog-button secondary" type="submit">Save</button>
+                        </form>
+                        <form th:if="${isSuperAdmin or allowedButtonCodes.contains('DELETE_BUTTON')}" th:action="@{/admin/page-catalog/button/delete}" method="post" onsubmit="return confirm('Delete this button definition?')">
+                            <input type="hidden" name="id" th:value="${button.id}">
+                            <button class="catalog-button danger" type="submit" aria-label="Delete button">Delete</button>
+                        </form>
+                    </div>
+                    <form class="button-form add-button-form" th:if="${isSuperAdmin or allowedButtonCodes.contains('ADD_BUTTON')}" th:action="@{/admin/page-catalog/button/save}" method="post">
+                        <input type="hidden" name="pageId" th:value="${page.id}">
+                        <label class="button-code">New button code<input name="code" maxlength="100" placeholder="EXPORT_CSV" required></label>
+                        <label class="button-name">Button name<input name="name" maxlength="150" placeholder="Download CSV" required></label>
+                        <button class="catalog-button primary" type="submit">Add button</button>
+                    </form>
+                </div>
+
+                <form class="delete-page-form" th:if="${isSuperAdmin or allowedButtonCodes.contains('DELETE_PAGE')}" th:action="@{/admin/page-catalog/page/delete}" method="post" onsubmit="return confirm('Delete this page and its button definitions?')">
+                    <input type="hidden" name="id" th:value="${page.id}">
+                    <button class="text-danger" type="submit">Delete page</button>
+                </form>
+            </article>
+            <div class="catalog-empty" th:if="${#lists.isEmpty(pages)}">No pages registered yet. Create the first page above.</div>
+        </section>
+    </section>
+</main>
+</body>
+</html>

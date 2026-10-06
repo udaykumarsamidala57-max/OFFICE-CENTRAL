@@ -1,0 +1,36 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="appHeader(activePage)" th:remove="tag">
+    <div class="app-overlay" id="appOverlay"></div>
+    <aside class="app-sidebar" id="appSidebar" aria-label="Main navigation">
+        <a class="app-brand" th:href="@{/IndentServlet}">
+            <span class="brand-symbol" aria-hidden="true">OC</span>
+            <span><strong>OFFICE CENTRAL</strong><small>ERP WORKSPACE</small></span>
+        </a>
+        <div class="nav-section-label">Inventory platform</div>
+        <th:block th:if="${!#lists.isEmpty(navigationPages)}">
+            <a class="app-nav-link"
+               th:each="navPage : ${navigationPages}"
+               th:href="@{${navPage.url}}"
+               th:classappend="${currentRequestPath == navPage.url or #strings.startsWith(currentRequestPath, navPage.url + '/') } ? ' active' : ''"
+               th:attr="aria-current=${currentRequestPath == navPage.url or #strings.startsWith(currentRequestPath, navPage.url + '/') ? 'page' : null}">
+                <span class="nav-icon" aria-hidden="true">▤</span>
+                <span th:text="${navPage.name}">Application page</span>
+            </a>
+        </th:block>
+        <p class="app-nav-empty" th:if="${#lists.isEmpty(navigationPages)}">No pages are assigned to your account.</p>
+        <div class="sidebar-footer">
+            <span class="sidebar-footer-label">Current company</span>
+            <strong th:text="${selectedCompany}">SRS</strong>
+            <a th:href="@{/select-company}" class="change-company">Change company</a>
+        </div>
+    </aside>
+    <header class="app-topbar">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <div class="topbar-company"><span class="company-indicator"></span><span class="company-caption">COMPANY</span><strong th:text="${selectedCompany}">SRS</strong></div>
+        <div class="topbar-session">
+            <div class="user-avatar" aria-hidden="true" th:text="${#strings.substring(loggedInUser, 0, 1).toUpperCase()}">U</div>
+            <div class="user-details"><strong th:text="${loggedInUser}">user</strong><span><span th:text="${userRole}">Role</span><span th:if="${!#strings.isEmpty(userDepartment)}" th:text="| · ${userDepartment}|"> · Department</span></span></div>
+            <form th:action="@{/logout}" method="post" class="topbar-logout"><button type="submit" aria-label="Sign out" title="Sign out">↪</button></form>
+        </div>
+    </header>
+    <script th:src="@{/js/app-shell.js}" defer></script>
+</div>

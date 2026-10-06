@@ -1,0 +1,44 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in | Office Central ERP</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css(v=20261006)}">
+    <link rel="stylesheet" th:href="@{/css/auth.css(v=4)}">
+</head>
+<body class="slds-auth-page">
+<main class="slds-auth-container">
+    <div class="slds-auth-card">
+        <div class="slds-auth-brand">
+            <span class="slds-brand-mark" aria-hidden="true">OC</span>
+            <span class="slds-brand-title">Office Central ERP</span>
+        </div>
+
+        <h1 class="slds-auth-title">Sign in</h1>
+
+        <div class="slds-alert slds-alert--error" role="alert" th:if="${error}" th:text="${error}"></div>
+        <div class="slds-alert slds-alert--success" role="status" th:if="${message}" th:text="${message}"></div>
+
+        <form th:action="@{/login}" method="post" autocomplete="on" class="slds-auth-form">
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="username">
+                    Username <span class="slds-required">*</span>
+                </label>
+                <input id="username" name="username" type="text" class="slds-input" maxlength="50"
+                       autocomplete="username" required autofocus>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="password">
+                    Password <span class="slds-required">*</span>
+                </label>
+                <input id="password" name="password" type="password" class="slds-input" maxlength="100"
+                       autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="slds-btn slds-btn--brand slds-btn--full">Sign in</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

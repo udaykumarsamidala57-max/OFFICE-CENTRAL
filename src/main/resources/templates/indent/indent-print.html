@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|Indent ${indentNumber}|">Indent</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/indent-list.css}">
+    <style>
+        .print-sheet { max-width: 850px; margin: 24px auto; padding: 30px; background: var(--surface); border: 1px solid var(--border-color); }
+        .print-title { padding: 12px 0; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); text-align: center; text-transform: uppercase; }
+        .print-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin: 18px 0; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-main); }
+        .print-meta div:last-child { grid-column: 1 / -1; }
+        .print-meta strong { display: inline-block; min-width: 115px; color: var(--text-muted); }
+        .print-table { min-width: 0; }
+        .print-table td { text-align: center; }
+        .print-table td:nth-child(2) { text-align: left; }
+        .print-actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
+        .signature { display: flex; justify-content: flex-end; margin-top: 52px; }
+        .signature span { min-width: 190px; padding-top: 6px; border-top: 1px solid var(--text-main); text-align: center; }
+        @media (max-width: 600px) { .print-sheet { margin: 10px auto; padding: 14px; } .print-meta { grid-template-columns: 1fr; } .print-meta div:last-child { grid-column: auto; } }
+        @media print { body { padding: 0; background: var(--palette-white); } .print-sheet { margin: 0; padding: 0; border: 0; } .print-actions, .session-context { display: none !important; } }
+    </style>
+</head>
+<body>
+<main class="print-sheet" th:if="${!#lists.isEmpty(items)}">
+    <div class="session-context">
+        <span>Company: <strong th:text="${selectedCompany}">SRS</strong></span>
+        <span>·</span><span>Signed in as <strong th:text="${loggedInUser}">user</strong></span>
+        <a th:href="@{/IndentlistServlet}" class="switch-company">Back to report</a>
+    </div>
+    <header class="print-title"><h1>Indent Request</h1></header>
+    <section class="print-meta">
+        <div><strong>Indent No:</strong><span th:text="${indentNumber}">1001</span></div>
+        <div><strong>Date:</strong><span th:text="${items[0].date}">2026-10-05</span></div>
+        <div><strong>Department:</strong><span th:text="${items[0].department}">Store</span></div>
+        <div><strong>Requested By:</strong><span th:text="${items[0].requestedBy}">user</span></div>
+        <div><strong>Type:</strong><span th:text="${items[0].type}">Purchase</span></div>
+        <div><strong>Purpose:</strong><span th:text="${items[0].purpose}">Purpose</span></div>
+    </section>
+    <div class="table-scroll">
+        <table class="print-table">
+            <thead><tr><th>#</th><th>Item</th><th>UOM</th><th>Available Qty</th><th>Requested Qty</th><th>Status</th></tr></thead>
+            <tbody>
+            <tr th:each="item, iter : ${items}">
+                <td th:text="${iter.count}">1</td><td th:text="${item.itemName}">Item</td>
+                <td th:text="${item.uom}">Nos</td><td th:text="${item.balanceQty}">0</td>
+                <td th:text="${item.qty}">1</td>
+                <td th:text="${#strings.equalsIgnoreCase(item.indentStatus, 'PO') ? 'Approved' : (#strings.isEmpty(item.levelTwoStatus) ? 'Pending' : item.levelTwoStatus)}">Pending</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="signature"><span>Authorized Signatory</span></div>
+    <div class="print-actions"><button class="button button-primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_INDENT')}" onclick="window.print()">Print Indent</button><a class="button button-secondary" th:if="${isSuperAdmin or allowedButtonCodes.contains('RETURN_TO_REPORT')}" th:href="@{/IndentlistServlet}">Back to report</a></div>
+</main>
+<main class="print-sheet" th:if="${#lists.isEmpty(items)}"><h1>Indent not found</h1><p>No indent is available for this number under your account.</p><a class="button button-secondary" th:href="@{/IndentlistServlet}">Back to report</a></main>
+</body>
+</html>

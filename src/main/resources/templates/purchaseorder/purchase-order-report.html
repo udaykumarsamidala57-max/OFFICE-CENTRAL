@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Purchase Order Report</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
+</head>
+<body class="app-body po-page" th:classappend="${printOrder != null} ? ' po-print-mode' : ''">
+<th:block th:if="${printOrder == null}"><div th:replace="~{fragments/app-header :: appHeader('po-report')}"></div></th:block>
+<main class="app-main-content po-content" th:classappend="${printOrder != null} ? ' po-print-content' : ''"><div class="po-shell">
+    <th:block th:if="${printOrder == null}">
+        <div class="po-object-header">
+            <div class="po-object-title"><span class="po-object-icon">PO</span><div><span class="po-object-subtitle">Purchase Order Management</span><h1>Purchase Order Report</h1></div></div>
+            <button class="po-button excel" type="button" id="exportPurchaseOrderReport" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_PO_REPORT')}">Export Master Sheets</button>
+        </div>
+        <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div><div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+        <div class="po-filter">
+            <label>PO From Date<input type="date" id="filterFromDate" class="po-filter-input"></label>
+            <label>PO To Date<input type="date" id="filterToDate" class="po-filter-input"></label>
+            <div class="po-filter-buttons"><button type="button" class="po-button primary" id="applyDateFilter" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_PO')}">Go</button><button type="button" class="po-button secondary" id="clearDateFilter">Clear</button></div>
+        </div>
+        <section class="po-table-card">
+            <div class="po-table-scroll"><table class="po-legacy-table po-report-table" id="purchaseOrderReportTable">
+                <thead><tr><th>PO Number</th><th>PO Date</th><th>Vendor Name</th><th>Status</th><th>Approval Status</th><th>Total Amount</th><th>Line Items Grid</th><th>Print Action</th></tr></thead>
+                <tbody>
+                <th:block th:each="po : ${purchaseOrders}">
+                    <tr class="po-master-row" th:attr="data-raw-date=${po.dateIso},data-nested-id=${po.id}">
+                        <td data-label="PO Number" class="po-number-cell" th:text="${po.number}">PO0001</td><td data-label="PO Date" th:text="${po.date}">2026-10-06</td><td data-label="Vendor Name" class="po-vendor-cell" th:text="${po.vendorName}">Vendor</td>
+                        <td data-label="Status"><span class="po-badge neutral" th:text="${po.status ?: 'Open'}">Open</span></td><td data-label="Approval Status"><span class="po-badge" th:classappend="${po.approval == 'Approved'} ? ' approved' : ' pending'" th:text="${po.approval ?: 'Pending'}">Pending</span></td>
+                        <td data-label="Total Amount" class="po-amount-cell" th:text="${#numbers.formatDecimal(po.totalAmount,1,2)}">0.00</td>
+                        <td data-label="Line Items Grid"><button type="button" class="po-button secondary small po-expand-button" th:id="|btn-${po.id}|" th:if="${isSuperAdmin or allowedButtonCodes.contains('SHOW_PO_ITEMS')}" th:attr="data-row-id=${po.id}">Show Items</button></td>
+                        <td data-label="Print Action"><a class="po-button secondary small" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_PO')}" th:href="@{/purchase-orders/report(printNumber=${po.number})}" target="_blank">View / Print</a></td>
+                    </tr>
+                    <tr class="po-nested-row" th:id="|row-nested-${po.id}|" style="display:none"><td colspan="8" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2>Item Details Breakdown Matrix</h2>
+                        <div class="po-table-scroll"><table class="po-items-table po-report-items-table"><thead><tr><th>Sl No</th><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th><th>Discount</th><th>GST</th><th>Net Amount</th></tr></thead><tbody>
+                            <tr th:each="item,stat : ${po.items}" th:attr="data-item-id=${item.itemId}"><td data-label="Sl No" th:text="${stat.count}">1</td><td data-label="Description" class="po-item-description" th:text="${item.description}">Item</td><td data-label="Qty" class="numeric" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td data-label="Rate" class="numeric" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td data-label="Amount" class="numeric" th:text="${#numbers.formatDecimal(item.amount,1,2)}">0.00</td><td data-label="Discount" class="numeric" th:text="${#numbers.formatDecimal(item.discountValue,1,2)}">0.00</td><td data-label="GST" class="numeric" th:text="${#numbers.formatDecimal(item.gstValue,1,2)}">0.00</td><td data-label="Net Amount" class="numeric" th:text="${#numbers.formatDecimal(item.netAmount,1,2)}">0.00</td></tr>
+                            <tr th:if="${#lists.isEmpty(po.items)}"><td colspan="8" class="po-empty">No items found for this PO.</td></tr>
+                        </tbody></table></div>
+                        <div class="po-summary-box"><div><span>Total Discount:</span><strong th:text="${#numbers.formatDecimal(po.totalDiscount,1,2)}">0.00</strong></div><div><span>Total Tax (GST):</span><strong th:text="${#numbers.formatDecimal(po.totalGst,1,2)}">0.00</strong></div><div class="po-summary-net"><span>Net Value:</span><strong th:text="${#numbers.formatDecimal(po.totalAmount,1,2)}">0.00</strong></div><p><b>Terms &amp; Conditions:</b> <span th:text="${po.termsConditions ?: '—'}">Terms</span></p></div>
+                    </div></td></tr>
+                </th:block>
+                <tr th:if="${#lists.isEmpty(purchaseOrders)}"><td colspan="8" class="po-empty">No Purchase Orders Found</td></tr>
+                </tbody>
+            </table></div>
+            <div class="po-filter-empty" id="dateFilterEmpty" hidden>No Purchase Orders Found within selected dates.</div>
+        </section>
+    </th:block>
+
+    <section class="po-print-sheet" th:if="${printOrder != null}" id="printOrder">
+        <div class="po-print-brand"><span class="po-print-mark">OC</span><div><strong>OFFICE CENTRAL</strong><small th:text="${selectedCompany}">Company</small></div><span class="po-print-approved" th:if="${printOrder.approval == 'Approved'}">APPROVED</span></div>
+        <div class="po-print-title"><span>PROCUREMENT DOCUMENT</span><h1>Purchase Order</h1></div>
+        <div class="po-print-meta"><div><small>PO NUMBER</small><strong th:text="${printOrder.number}">PO0001</strong></div><div><small>DATE</small><strong th:text="${printOrder.formattedDate}">Date</strong></div><div><small>STATUS</small><strong th:text="${printOrder.approval ?: 'Pending'}">Pending</strong></div></div>
+        <div class="po-print-parties"><section><h2>Supplier</h2><strong th:text="${printOrder.vendorName}">Vendor</strong><p th:text="${printOrder.vendorAddress}">Address</p><small th:text="|GSTIN: ${printOrder.vendorGstin ?: '—'}|">GSTIN</small></section><section><h2>Bill to</h2><p th:text="${printOrder.billingAddress ?: selectedCompany}">Billing address</p></section></div>
+        <div class="po-table-scroll"><table class="po-legacy-table po-print-table"><thead><tr><th>Sl.No</th><th>Item Description</th><th>UOM</th><th>Qty</th><th>Rate</th><th>Amount</th><th>Disc Val</th><th>GST Val</th><th>Net Amt</th></tr></thead><tbody><tr th:each="item,stat : ${printOrder.items}"><td th:text="${stat.count}">1</td><td th:text="${item.description}">Item</td><td th:text="${item.uom ?: '—'}">—</td><td class="numeric" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.amount,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.discountValue,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.gstValue,1,2)}">0.00</td><td class="numeric" th:text="${#numbers.formatDecimal(item.netAmount,1,2)}">0.00</td></tr></tbody></table></div>
+        <div class="po-print-totals"><div><span>Total Discount</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalDiscount,1,2)}|">₹ 0.00</strong></div><div><span>Total GST</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalGst,1,2)}|">₹ 0.00</strong></div><div><span>Service Charges</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.serviceCharge,1,2)}|">₹ 0.00</strong></div><div class="po-print-grand"><span>Grand Total</span><strong th:text="|₹ ${#numbers.formatDecimal(printOrder.totalAmount,1,2)}|">₹ 0.00</strong></div></div>
+        <div class="po-print-conditions"><section><h2>Terms and Conditions</h2><p th:text="${printOrder.termsConditions}">Terms</p></section><section><h2>General Conditions</h2><p th:text="${printOrder.generalConditions}">Conditions</p></section></div>
+        <div class="po-signature"><span>Prepared by<br><strong th:text="${loggedInUser}">User</strong></span><span>Authorized signatory<br><strong th:text="${selectedCompany}">Company</strong></span></div>
+        <div class="po-print-actions"><a class="po-button secondary" th:href="@{/purchase-orders/report}">Back to report</a><button class="po-button primary" type="button" onclick="window.print()">Print / Save as PDF</button></div>
+    </section>
+</div></main>
+<script th:src="@{/js/purchase-order-report.js}" defer></script>
+</body></html>
+
+
+

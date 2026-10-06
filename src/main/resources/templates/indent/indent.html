@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Indent</title>
+
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/indent.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="app-body">
+<div th:replace="~{fragments/app-header :: appHeader('create')}"></div>
+
+<div class="app-main-content">
+<div class="container">
+
+    <h2>Create Indent</h2>
+
+    <form th:action="@{/IndentServlet}" method="post" id="indentForm">
+
+        <!-- ===================== INDENT DETAILS ===================== -->
+        <div class="row">
+
+            <div class="field">
+                <label for="indentNo">Indent No</label>
+                <input type="text"
+                       id="indentNo"
+                       th:value="${nextIndentNo}"
+                       readonly>
+            </div>
+
+            <div class="field">
+                <label for="date">Date</label>
+                <input type="date"
+                       id="date"
+                       name="date"
+                       required>
+            </div>
+
+            <div class="field">
+                <label for="indentType">Indent Type</label>
+                <select id="indentType"
+                        name="indentType"
+                        required>
+                    <option value="">Select</option>
+                    <option value="Purchase">Purchase</option>
+                    <option value="Issue">Issue</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- ===================== SELECTION ===================== -->
+        <div class="row">
+
+            <div class="field">
+                <label for="department">Department</label>
+                <select id="department"
+                        name="department"
+                        required
+                        onchange="loadCategories()">
+                    <option value="">Select Department</option>
+
+                    <option th:each="d : ${masterData.departments}"
+                            th:value="${d.departmentName}"
+                            th:text="${d.departmentName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="category">Category</label>
+                <select id="category"
+                        required
+                        onchange="loadSubCategories()">
+                    <option value="">Select Category</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="subcategory">Sub-Category</label>
+                <select id="subcategory"
+                        required
+                        onchange="loadItemsForSelection()">
+                    <option value="">Select Sub-Category</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div id="selectionInfo"
+             style="display:none; margin:10px 0; padding:10px;">
+            <strong>Current Selection:</strong>
+            <span id="selectedDepartment"></span>
+            /
+            <span id="selectedCategory"></span>
+            /
+            <span id="selectedSubCategory"></span>
+        </div>
+
+        <!-- ===================== ITEMS TABLE ===================== -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>UOM</th>
+                    <th>Stock</th>
+                    <th>Purpose</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="itemTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Add one item from the current selection. -->
+        <button type="button"
+                class="add"
+                th:if="${isSuperAdmin or allowedButtonCodes.contains('ADD_ITEM')}"
+                onclick="addItem()">
+            + Add Item
+        </button>
+
+        <!-- ===================== HIDDEN VALUES ===================== -->
+        <input type="hidden" name="itemIds" id="itemIds">
+        <input type="hidden" name="itemNames" id="itemNames">
+        <input type="hidden" name="quantities" id="quantities">
+        <input type="hidden" name="purposes" id="purposes">
+        <input type="hidden" name="uoms" id="uoms">
+
+        <!-- ===================== SAVE ===================== -->
+        <button type="submit" class="save" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_INDENT')}">
+            Save Indent
+        </button>
+
+    </form>
+</div>
+</div>
+
+<script th:inline="javascript">
+
+const INDENT_BASE_URL = /*[[@{/IndentServlet}]]*/ "/IndentServlet";
+const CAN_REMOVE_ITEM = /*[[${isSuperAdmin or allowedButtonCodes.contains('REMOVE_ITEM')}]]*/ false;
+let currentItems = [];
+
+/* =============================================================
+   PAGE LOAD
+   ============================================================= */
+$(document).ready(function () {
+    const dateInput = document.getElementById("date");
+    if (!dateInput.value) {
+        const now = new Date();
+        const localDate =
+            now.getFullYear() + "-" +
+            String(now.getMonth() + 1).padStart(2, "0") + "-" +
+            String(now.getDate()).padStart(2, "0");
+
+        dateInput.value = localDate;
+    }
+});
+
+/* =============================================================
+   LOAD CATEGORIES
+   ============================================================= */
+function loadCategories() {
+    const department = $("#department").val();
+
+    resetSelect("#category", "Select Category");
+    resetSelect("#subcategory", "Select Sub-Category");
+
+    currentItems = [];
+    hideSelection();
+
+    if (!department) return;
+
+    $("#category").prop("disabled", true);
+    $("#subcategory").prop("disabled", true);
+
+    $.ajax({
+        url: INDENT_BASE_URL + "/categories",
+        type: "GET",
+        data: { department: department },
+        dataType: "json",
+        success: function (data) {
+            if (!Array.isArray(data) || data.length === 0) {
+                alert("No categories found for the selected department.");
+                return;
+            }
+
+            $.each(data, function (index, category) {
+                if (category.category) {
+                    $("#category").append(
+                        $("<option>", {
+                            value: category.category,
+                            text: category.category
+                        })
+                    );
+                }
+            });
+        },
+        error: function (xhr) {
+            console.error("Category loading error:", xhr.status, xhr.responseText);
+            alert("Unable to load categories for the selected department.");
+        },
+        complete: function () {
+            $("#category").prop("disabled", false);
+        }
+    });
+}
+
+/* =============================================================
+   LOAD SUB-CATEGORIES
+   ============================================================= */
+function loadSubCategories() {
+    const department = $("#department").val();
+    const category = $("#category").val();
+
+    resetSelect("#subcategory", "Select Sub-Category");
+
+    currentItems = [];
+    hideSelection();
+
+    if (!department || !category) return;
+
+    $("#subcategory").prop("disabled", true);
+
+    $.ajax({
+        url: INDENT_BASE_URL + "/subcategories",
+        type: "GET",
+        data: {
+            department: department,
+            category: category
+        },
+        dataType: "json",
+        success: function (data) {
+            if (!Array.isArray(data) || data.length === 0) {
+                alert("No sub-categories found for the selected category.");
+                return;
+            }
+
+            $.each(data, function (index, subCategory) {
+                if (subCategory.subCategory) {
+                    $("#subcategory").append(
+                        $("<option>", {
+                            value: subCategory.subCategory,
+                            text: subCategory.subCategory
+                        })
+                    );
+                }
+            });
+        },
+        error: function (xhr) {
+            console.error("Sub-category loading error:", xhr.status, xhr.responseText);
+            alert("Unable to load sub-categories.");
+        },
+        complete: function () {
+            $("#subcategory").prop("disabled", false);
+        }
+    });
+}
+
+/* =============================================================
+   LOAD ITEMS
+   ============================================================= */
+function loadItemsForSelection() {
+    const department = $("#department").val();
+    const category = $("#category").val();
+    const subCategory = $("#subcategory").val();
+
+    currentItems = [];
+    hideSelection();
+
+    if (!department || !category || !subCategory) return;
+
+    $.ajax({
+        url: INDENT_BASE_URL + "/items",
+        type: "GET",
+        data: {
+            category: category,
+            subCategory: subCategory
+        },
+        dataType: "json",
+        success: function (data) {
+            currentItems = Array.isArray(data) ? data : [];
+
+            $("#selectedDepartment").text(department);
+            $("#selectedCategory").text(category);
+            $("#selectedSubCategory").text(subCategory);
+
+            $("#selectionInfo").show();
+
+            if (currentItems.length === 0) {
+                alert("No items found for the selected Category and Sub-Category.");
+            }
+        },
+        error: function (xhr) {
+            currentItems = [];
+            console.error("Item loading error:", xhr.status, xhr.responseText);
+            alert("Unable to load items.");
+        }
+    });
+}
+
+/* =============================================================
+   ADD ITEM ROW
+   ============================================================= */
+function addItem() {
+    const department = $("#department").val();
+    const category = $("#category").val();
+    const subCategory = $("#subcategory").val();
+
+    if (!department || !category || !subCategory) {
+        alert("Please select Department, Category and Sub-Category first.");
+        return;
+    }
+
+    if (!currentItems || currentItems.length === 0) {
+        alert("No items found for the selected Category and Sub-Category.");
+        return;
+    }
+
+    const rowId = "row_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+
+    const row = $(
+        `<tr id="${rowId}">
+            <td data-label="Item">
+                <select class="item" required onchange="setItem(this)">
+                    ${getItemOptionsHtml(currentItems)}
+                </select>
+            </td>
+
+            <td data-label="Quantity">
+                <input type="number"
+                       class="qty"
+                       min="0.01"
+                       step="0.01"
+                       required>
+            </td>
+
+            <td data-label="UOM" class="uom"></td>
+            <td data-label="Stock" class="stock"></td>
+
+            <td data-label="Purpose">
+                <input type="text" class="purpose">
+            </td>
+
+            <td data-label="Action">
+                ${CAN_REMOVE_ITEM ? '<button type="button" class="remove" onclick="removeItem(this)">Remove</button>' : ''}
+            </td>
+        </tr>`
+    );
+
+    row.data("items", currentItems.slice());
+
+    $("#itemTable").append(row);
+    row.find(".item").focus();
+}
+
+/* =============================================================
+   CREATE ITEM OPTIONS
+   ============================================================= */
+function getItemOptionsHtml(items) {
+    let html = '<option value="">Select Item</option>';
+
+    $.each(items, function (index, item) {
+        html +=
+            '<option value="' + index + '">' +
+            escapeHtml(item.itemName || "") +
+            '</option>';
+    });
+
+    return html;
+}
+
+/* =============================================================
+   SET SELECTED ITEM DETAILS
+   ============================================================= */
+function setItem(selectElement) {
+    const row = $(selectElement).closest("tr");
+    const index = $(selectElement).val();
+    const items = row.data("items");
+
+    if (index === "" || index === null || !items) {
+        row.find(".uom").text("");
+        row.find(".stock").text("");
+        return;
+    }
+
+    const item = items[Number(index)];
+
+    if (!item) {
+        row.find(".uom").text("");
+        row.find(".stock").text("");
+        return;
+    }
+
+    row.find(".uom").text(item.uom || "");
+    row.find(".stock").text(item.stock != null ? item.stock : 0);
+}
+
+/* =============================================================
+   REMOVE ROW
+   ============================================================= */
+function removeItem(buttonElement) {
+    $(buttonElement).closest("tr").remove();
+}
+
+/* =============================================================
+   FORM SUBMIT
+   ============================================================= */
+$("#indentForm").on("submit", function (e) {
+    const rows = $("#itemTable tr");
+
+    if (rows.length === 0) {
+        alert("Please add at least one item.");
+        e.preventDefault();
+        return;
+    }
+
+    const ids = [];
+    const names = [];
+    const quantities = [];
+    const purposes = [];
+    const uoms = [];
+
+    let validCount = 0;
+
+    rows.each(function () {
+        const row = $(this);
+        const select = row.find(".item");
+        const index = select.val();
+        const items = row.data("items");
+
+        if (index === "" || index === null || !items) return;
+
+        const item = items[Number(index)];
+        if (!item) return;
+
+        const quantity = row.find(".qty").val();
+        if (!quantity || parseFloat(quantity) <= 0) return;
+
+        ids.push(item.itemId);
+        names.push(cleanValue(item.itemName));
+        quantities.push(quantity);
+        purposes.push(cleanValue(row.find(".purpose").val()));
+        uoms.push(cleanValue(item.uom));
+
+        validCount++;
+    });
+
+    if (validCount === 0) {
+        alert("Please select valid items and enter quantities.");
+        e.preventDefault();
+        return;
+    }
+
+    if (ids.length !== validCount ||
+        names.length !== validCount ||
+        quantities.length !== validCount ||
+        purposes.length !== validCount ||
+        uoms.length !== validCount) {
+
+        alert("Please check all item rows.");
+        e.preventDefault();
+        return;
+    }
+
+    $("#itemIds").val(ids.join(","));
+    $("#itemNames").val(names.join(","));
+    $("#quantities").val(quantities.join(","));
+    $("#purposes").val(purposes.join(","));
+    $("#uoms").val(uoms.join(","));
+});
+
+/* =============================================================
+   HELPERS
+   ============================================================= */
+function resetSelect(selector, placeholder) {
+    $(selector)
+        .empty()
+        .append(
+            $("<option>", {
+                value: "",
+                text: placeholder
+            })
+        );
+}
+
+function hideSelection() {
+    $("#selectionInfo").hide();
+}
+
+function cleanValue(value) {
+    if (value === null || value === undefined) return "";
+    return String(value).replace(/,/g, " ").trim();
+}
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) return "";
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+</script>
+
+</body>
+</html>

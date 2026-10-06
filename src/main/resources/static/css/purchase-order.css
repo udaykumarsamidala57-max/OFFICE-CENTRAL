@@ -1,0 +1,462 @@
+/* ==========================================================================
+   SALESFORCE LIGHTNING DESIGN SYSTEM (SLDS) - PURCHASE ORDER SYSTEM
+   ========================================================================== */
+
+/* --- SLDS DESIGN TOKENS --- */
+:root {
+  /* Brand & Core Action Colors */
+  --slds-brand: #0176D3;
+  --slds-brand-hover: #014486;
+  --slds-brand-active: #013262;
+  --slds-brand-light: #F3F8FE;
+  
+  /* Salesforce Dark Slate Base */
+  --slds-slate-dark: #182B49;
+  --slds-slate-header: #032D60;
+  
+  /* Neutral Text & High-Contrast Visual Hierarchy */
+  --text-main: #181818;        /* True visual contrast (WCAG AAA) */
+  --text-muted: #444444;       /* Comfortable reading gray (WCAG AA) */
+  --text-label: #3E3E3E;       /* Strong, crisp field label color */
+  --surface: #FFFFFF;
+  --surface-alt: #F3F5F8;      /* Light gray container background */
+  
+  /* Borders & Shadows */
+  --border-color: #C9C9C9;
+  --border-subtle: #E5E5E5;
+  --palette-focus-ring: #0176D3;
+  --shadow-card: 0 2px 4px 0 rgba(0, 0, 0, 0.10);
+  --shadow-header: 0 2px 2px 0 rgba(0, 0, 0, 0.10);
+
+  /* Status Colors (SLDS Standards) */
+  --palette-approved-light: #E6F8F0;
+  --palette-approved-border: #45C65A;
+  --palette-approved: #2E844A;
+  --palette-success-hover: #1C532E;
+
+  --palette-warning-light: #FEF8E7;
+  --palette-warning-border: #DD7A01;
+  --palette-warning: #A95800;
+
+  --palette-danger-light: #BA0517;
+  --palette-danger-bg: #FEF1F1;
+  --palette-danger-border: #EA001E;
+  --danger: #BA0517;
+
+  --palette-neutral-bg: #F3F5F8;
+  --palette-neutral-border: #C9C9C9;
+}
+
+/* Base Body Override */
+body.po-page {
+  margin: 0;
+  padding: 0;
+  background: var(--surface-alt);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.8125rem; /* 13px SLDS standard */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- CENTERED SCREEN LAYOUT --- */
+body.po-page .po-content { 
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 82px 24px 32px; 
+}
+
+body.po-page .po-shell { 
+  width: 100%;
+  max-width: 1550px; 
+  margin: 0 auto;
+}
+
+/* --- OBJECT HEADER / RECORD HEADER --- */
+body.po-page .po-object-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-header);
+}
+
+body.po-page .po-object-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.po-page .po-object-icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--slds-brand);
+  border-radius: 0.25rem;
+  background: var(--slds-brand);
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+body.po-page .po-object-subtitle {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+body.po-page .po-heading h1, 
+body.po-page .po-object-header h1 {
+  margin: 0;
+  color: var(--slds-slate-dark);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* --- MESSAGES --- */
+.po-message {
+  margin-bottom: 1rem;
+  padding: 10px 14px;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.po-message.success {
+  border-color: var(--palette-approved-border);
+  background: var(--palette-approved-light);
+  color: var(--palette-approved);
+}
+
+.po-message.error {
+  border-color: var(--palette-danger-border);
+  background: var(--palette-danger-bg);
+  color: var(--danger);
+}
+
+/* --- FILTER BAR (Vertically Aligned) --- */
+body.po-page .po-filter {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+body.po-page .po-filter label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+body.po-page .po-filter-input {
+  height: 36px;
+  min-width: 180px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background: #FFFFFF;
+  color: var(--text-main);
+  font-size: 0.8125rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.po-filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Focus states */
+body.po-page .po-filter input:focus, 
+body.po-page .po-field input:focus, 
+body.po-page .po-field select:focus, 
+body.po-page .po-field textarea:focus {
+  outline: 0;
+  border-color: var(--slds-brand);
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.25);
+}
+
+/* --- CARDS & TABLES (PERFECT CENTER ALIGNMENT) --- */
+body.po-page .po-table-card {
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.po-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.po-table, 
+.po-legacy-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  font-size: 0.8125rem;
+}
+
+/* Table Headers (Dark Slate, Center Aligned) */
+body.po-page .po-table th, 
+body.po-page .po-legacy-table th {
+  padding: 12px;
+  border-bottom: 2px solid var(--border-color);
+  background: var(--slds-slate-header);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Table Cells (Middle & Center Aligned) */
+body.po-page .po-table td, 
+body.po-page .po-legacy-table td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 0.8125rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Align text-heavy columns to left for legibility */
+body.po-page .po-vendor-cell,
+body.po-page .po-item-description {
+  text-align: left !important;
+}
+
+/* Right-align numeric totals */
+body.po-page .po-amount-cell {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: right !important;
+}
+
+body.po-page .po-number-cell {
+  color: var(--slds-brand);
+  font-weight: 700;
+}
+
+/* Alternate Rows & Hover */
+body.po-page .po-table tbody tr:nth-child(even), 
+body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) {
+  background: #FAFAFA;
+}
+
+body.po-page .po-table tbody tr:hover, 
+body.po-page .po-legacy-table tbody tr.po-master-row:hover td {
+  background: var(--slds-brand-light);
+}
+
+/* --- BUTTONS & ACTIONS --- */
+.po-action-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+body.po-page .po-button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+body.po-page .po-button.primary, 
+body.po-page .po-button.excel {
+  border-color: var(--slds-brand);
+  background: var(--slds-brand);
+  color: #FFFFFF;
+}
+
+body.po-page .po-button.primary:hover, 
+body.po-page .po-button.excel:hover {
+  border-color: var(--slds-brand-hover);
+  background: var(--slds-brand-hover);
+  color: #FFFFFF;
+}
+
+body.po-page .po-button.secondary {
+  border-color: var(--border-color);
+  background: #FFFFFF;
+  color: var(--slds-brand);
+}
+
+body.po-page .po-button.secondary:hover {
+  border-color: var(--slds-brand);
+  background: var(--slds-brand-light);
+  color: var(--slds-brand-hover);
+}
+
+body.po-page .po-button.danger {
+  border-color: var(--palette-danger-border);
+  background: #FFFFFF;
+  color: var(--danger);
+}
+
+body.po-page .po-button.danger:hover {
+  background: var(--danger);
+  color: #FFFFFF;
+}
+
+body.po-page .po-button.small {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 0.75rem;
+}
+
+body.po-page .po-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* --- BADGES --- */
+body.po-page .po-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border: 1px solid var(--palette-warning-border);
+  border-radius: 0.25rem;
+  background: var(--palette-warning-light);
+  color: var(--palette-warning);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+body.po-page .po-badge.approved {
+  border-color: var(--palette-approved-border);
+  background: var(--palette-approved-light);
+  color: var(--palette-approved);
+}
+
+body.po-page .po-badge.neutral {
+  border-color: var(--palette-neutral-border);
+  background: var(--palette-neutral-bg);
+  color: var(--text-muted);
+}
+
+/* --- NESTED EXPANDABLE ITEMS BLOCK --- */
+.po-nested-row {
+  background: var(--surface-alt);
+}
+
+.po-nested-cell {
+  padding: 0 !important;
+}
+
+.po-items-block {
+  box-sizing: border-box;
+  margin: 10px 14px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--slds-brand);
+  border-radius: 0.25rem;
+  background: #FFFFFF;
+  box-shadow: var(--shadow-card);
+}
+
+.po-items-block h2 {
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--slds-slate-dark);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.po-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.po-items-table th {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  background: var(--surface-alt);
+  color: var(--slds-slate-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.po-items-table td {
+  padding: 8px 10px;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  text-align: center;
+}
+
+.po-balance-cell.balance-pending {
+  color: var(--palette-warning);
+  font-weight: 700;
+}
+
+/* --- EMPTY / FILTER STATES --- */
+.po-empty, .po-filter-empty {
+  padding: 16px !important;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: center !important;
+}
+.po-filter-empty {
+  margin: 12px;
+  border: 1px dashed var(--palette-danger-border);
+  border-radius: 0.25rem;
+  background: var(--palette-danger-bg);
+  color: var(--danger);
+}
+
+/* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+  body.po-page .po-content { 
+    padding: 76px 12px 16px; 
+  }
+  body.po-page .po-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  body.po-page .po-filter-input {
+    width: 100%;
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Purchase Order</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
+</head>
+<body class="app-body po-page">
+<div th:replace="~{fragments/app-header :: appHeader('po-create')}"></div>
+<main class="app-main-content po-content">
+    <div class="po-shell">
+        <header class="po-heading"><div><span class="po-kicker">PROCUREMENT</span><h1>Create purchase order</h1><p>Build a PO from approved indents routed to Purchase.</p></div>
+            <span class="po-company-chip"><span class="po-dot"></span><span th:text="${selectedCompany}">Company</span></span></header>
+        <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div>
+        <div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+        <section class="po-panel" th:if="${!draftMode}">
+            <div class="po-panel-heading"><div><span class="po-step">01</span><div><h2>Approved indents</h2><p>Select the items to include in this purchase order.</p></div></div><span class="po-count" th:text="|${#lists.size(eligibleIndents)} available|">0 available</span></div>
+            <form th:action="@{/purchase-orders/create}" method="get" id="indentSelectionForm">
+                <div class="po-table-wrap">
+                    <table class="po-table">
+                        <thead><tr><th class="po-select-col">Select</th><th>Indent</th><th>Item</th><th>Quantity</th><th>UOM</th></tr></thead>
+                        <tbody>
+                        <tr th:each="line : ${eligibleIndents}">
+                            <td data-label="Select"><label class="po-row-select"><input type="checkbox" name="selectedIds" th:value="${line.indentId}"><span class="sr-only" th:text="|Select ${line.description}|">Select item</span></label></td>
+                            <td data-label="Indent"><span class="po-mono" th:text="${line.indentNo}">IND-0001</span></td>
+                            <td data-label="Item"><strong th:text="${line.description}">Item</strong></td>
+                            <td data-label="Quantity" class="numeric" th:text="${#numbers.formatDecimal(line.quantity,1,2)}">0.00</td>
+                            <td data-label="UOM" th:text="${line.uom ?: '—'}">—</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(eligibleIndents)}"><td colspan="5" class="po-empty">No approved indents are waiting for a purchase order.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="po-form-actions"><span class="po-hint">Only approved indents with no PO raised are listed.</span><button class="po-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('PREPARE_PO')}" th:disabled="${#lists.isEmpty(eligibleIndents)}">Continue to PO details <span aria-hidden="true">→</span></button></div>
+            </form>
+        </section>
+
+        <section class="po-panel" th:if="${draftMode}">
+            <div class="po-panel-heading"><div><span class="po-step">02</span><div><h2>Purchase order details</h2><p>Confirm vendor and commercial terms before saving.</p></div></div><span class="po-count" th:text="|${#lists.size(draftItems)} items|">0 items</span></div>
+            <form th:action="@{/purchase-orders/create}" method="post" id="purchaseOrderForm" class="po-form">
+                <div class="po-fields-grid">
+                    <label class="po-field vendor-field">Vendor
+                        <select name="vendorName" id="vendorSelect" required>
+                            <option value="">Select vendor</option>
+                            <option th:each="vendor : ${vendors}" th:value="${vendor.name}" th:text="${vendor.name}" th:attr="data-gstin=${vendor.gstin},data-address=${vendor.address}">Vendor</option>
+                        </select>
+                    </label>
+                    <label class="po-field">Vendor GSTIN<input type="text" id="vendorGstin" readonly></label>
+                    <label class="po-field">Quotation number<input type="text" name="quotationNo" maxlength="100" placeholder="Optional"></label>
+                    <label class="po-field">PO number<input type="text" th:value="${nextPONumber}" readonly></label>
+                    <label class="po-field">PO date<input type="date" name="poDate" th:value="${today}" required></label>
+                    <label class="po-field">Service charge<input type="number" name="serviceCharge" id="serviceCharge" min="0" step="0.01" value="0"></label>
+                    <label class="po-field">Service GST %<input type="number" name="serviceGst" id="serviceGst" min="0" max="100" step="0.01" value="18"></label>
+                    <label class="po-field address-field">Vendor address<textarea id="vendorAddress" readonly rows="2"></textarea></label>
+                    <label class="po-field address-field">Billing address<textarea name="billingAddress" rows="2" placeholder="Enter billing address"></textarea></label>
+                </div>
+                <div class="po-table-wrap po-line-wrap">
+                    <table class="po-table po-lines-table">
+                        <thead><tr><th>Indent</th><th>Item</th><th>UOM</th><th>PO qty</th><th>Rate</th><th>Discount %</th><th>GST %</th><th class="numeric">Line total</th></tr></thead>
+                        <tbody>
+                        <tr class="po-line" th:each="line : ${draftItems}">
+                            <td data-label="Indent"><span class="po-mono" th:text="${line.indentNo}">IND-0001</span><input type="hidden" name="indentId" th:value="${line.indentId}"></td>
+                            <td data-label="Item"><strong th:text="${line.description}">Item</strong><input type="hidden" name="itemName" th:value="${line.description}"><input type="hidden" name="itemId" th:value="${line.itemId}"></td>
+                            <td data-label="UOM" th:text="${line.uom ?: '—'}">—</td>
+                            <td data-label="PO qty"><input class="po-number-input line-qty" type="number" name="qty" min="0.01" step="0.01" th:max="${line.quantity}" th:value="${#numbers.formatDecimal(line.quantity,1,2)}" required><small th:text="|of ${#numbers.formatDecimal(line.quantity,1,2)} approved|">of approved</small></td>
+                            <td data-label="Rate"><input class="po-number-input line-rate" type="number" name="rate" min="0" step="0.01" value="0" required></td>
+                            <td data-label="Discount %"><input class="po-number-input line-discount" type="number" name="discPercent" min="0" max="100" step="0.01" value="0" required></td>
+                            <td data-label="GST %"><input class="po-number-input line-gst" type="number" name="gstPercent" min="0" max="100" step="0.01" value="18" required></td>
+                            <td data-label="Line total" class="numeric"><strong class="line-total">0.00</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="po-bottom-grid">
+                    <div class="po-conditions">
+                        <label class="po-field">Terms and conditions<textarea name="termsConditions" rows="4">1. Delivery must be completed within the agreed time.
+2. Goods are subject to inspection and approval.
+3. GST will be charged as applicable.
+4. Damaged or defective items must be replaced at no extra cost.
+5. Payment will be released after delivery and verification.</textarea></label>
+                        <label class="po-field">General conditions<textarea name="generalConditions" rows="4">1. Quote the PO number on invoices and delivery challans.
+2. Supplier must comply with applicable statutory regulations.
+3. This PO is valid when approved by an authorized signatory.</textarea></label>
+                    </div>
+                    <aside class="po-summary" aria-label="Purchase order totals">
+                        <div><span>Items before discount</span><strong id="subtotal">0.00</strong></div>
+                        <div><span>Discount</span><strong id="discountTotal">0.00</strong></div>
+                        <div><span>GST including service GST</span><strong id="gstTotal">0.00</strong></div>
+                        <div><span>Service charge incl. GST</span><strong id="serviceTotal">0.00</strong></div>
+                        <div class="summary-grand"><span>Grand total</span><strong id="grandTotal">0</strong></div>
+                        <p>Grand total is rounded to the nearest rupee.</p>
+                    </aside>
+                </div>
+                <div class="po-form-actions"><a class="po-button secondary" th:href="@{/purchase-orders/create}">Back to indent selection</a><button class="po-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_PO')}">Save and submit for approval</button></div>
+            </form>
+        </section>
+    </div>
+</main>
+<script th:src="@{/js/purchase-order-create.js}" defer></script>
+</body>
+</html>
+
+

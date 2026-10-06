@@ -1,0 +1,17 @@
+.git
+.gitignore
+.settings
+.classpath
+.factorypath
+.project
+.idea
+.vscode
+target
+build
+*.log
+.env
+.env.*
+!.env.example
+Dockerfile*
+README*
+HELP.md

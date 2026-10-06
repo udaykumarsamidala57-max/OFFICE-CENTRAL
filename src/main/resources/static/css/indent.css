@@ -1,0 +1,351 @@
+/* ==========================================================================
+   INDENT PAGE — Ultra-Compact, Strict, Modern & Confident
+   ========================================================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    margin: 0;
+    padding: 1rem 0.5rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.session-context {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+    font-size: .85rem;
+}
+
+.session-context strong { color: var(--primary); }
+.switch-company { color: var(--primary); font-weight: 700; margin-left: auto; text-decoration: none; }
+.switch-company:hover { color: var(--accent-hover); text-decoration: underline; }
+.logout-form { margin-left: auto; }
+.logout-button {
+    padding: .4rem .65rem;
+    color: var(--primary);
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+.logout-button:hover { background: var(--row-hover); }
+
+h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+h2::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--accent), var(--palette-transparent));
+}
+
+/* Flash Alert Message */
+.alert {
+    padding: 0.625rem 0.875rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: var(--palette-warning-light);
+    border: 1px solid var(--palette-warning-border);
+    color: var(--palette-purchase);
+}
+
+/* ==========================================================================
+   FORM & GRID LAYOUT
+   ========================================================================== */
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.45rem 0.625rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    color: var(--text-main);
+    transition: var(--transition);
+    appearance: none;
+    height: 34px;
+}
+
+input[readonly] {
+    background-color: var(--bg-main);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+select {
+    background-image: linear-gradient(45deg, var(--palette-transparent) 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, var(--palette-transparent) 50%);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 13px) 14px, calc(100% - 8px) 14px;
+    background-size: 5px 5px;
+    padding-right: 1.75rem;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--theme-focus);
+}
+
+/* ==========================================================================
+   TABLE DESIGN
+   ========================================================================== */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+th, td {
+    padding: 0.5rem 0.625rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+th {
+    background-color: var(--table-header);
+    color: var(--palette-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr {
+    transition: var(--transition);
+}
+
+tbody tr:hover {
+    background-color: var(--row-hover);
+}
+
+td input,
+td select {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.825rem;
+    height: 30px;
+}
+
+td input.qty {
+    width: 80px;
+    display: inline-block;
+    text-align: right;
+}
+
+.uom,
+.stock {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.uom {
+    margin-left: 0.35rem;
+}
+
+.stock {
+    text-align: left;
+}
+
+/* ==========================================================================
+   BUTTONS & ACTIONS
+   ========================================================================== */
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.875rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    line-height: 1;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+.add {
+    background-color: var(--accent);
+    color: var(--palette-white);
+    margin-top: 0.75rem;
+}
+
+.add:hover {
+    background-color: var(--accent-hover);
+}
+
+.remove {
+    background-color: var(--palette-transparent);
+    color: var(--danger);
+    border: 1px solid var(--palette-danger-border-soft);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+.remove:hover {
+    background-color: var(--danger);
+    color: var(--palette-white);
+}
+
+.save {
+    background-color: var(--primary);
+    color: var(--palette-white);
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.65rem;
+    font-size: 0.925rem;
+}
+
+.save:hover {
+    background-color: var(--primary-hover);
+}
+
+/* ==========================================================================
+   STRICT & CONFIDENT MOBILE LAYOUT
+   ========================================================================== */
+
+@media (max-width: 640px) {
+    body {
+        padding: 0.25rem;
+    }
+
+    .container {
+        padding: 0.875rem;
+        border-radius: 4px;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background-color: var(--palette-white);
+        box-shadow: var(--shadow-sm);
+    }
+
+    td {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        align-items: center;
+        padding: 0.35rem 0;
+        border-bottom: 1px dashed var(--border-color);
+        text-align: right;
+    }
+
+    td:last-child {
+        border-bottom: none;
+        padding-top: 0.5rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        font-size: 0.725rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        text-align: left;
+    }
+
+    td input,
+    td select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    td input.qty {
+        width: 100%;
+        text-align: left;
+    }
+
+    .stock {
+        text-align: right;
+    }
+
+    .add, .save {
+        width: 100%;
+    }
+}
+
+

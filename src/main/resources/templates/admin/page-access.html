@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Access</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/page-catalog.css}">
+    <link rel="stylesheet" th:href="@{/css/page-access.css}">
+</head>
+<body class="app-body">
+<div th:replace="~{fragments/app-header :: appHeader('page-access')}"></div>
+<main class="app-main-content page-catalog-content">
+    <section class="catalog-shell">
+        <header class="catalog-heading"><div><span class="catalog-kicker">ADMINISTRATION</span><h1>Page access</h1>
+            <p>Choose a user or role, then grant only the pages and actions they need.</p></div>
+            <span class="access-policy-note">Changes apply to the selected target</span></header>
+        <div class="catalog-message success" th:if="${success}" th:text="${success}" role="status"></div>
+        <div class="catalog-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+        <form class="catalog-panel access-filter" th:action="@{/admin/page-access}" method="get" id="accessFilter">
+            <div class="access-filter-heading"><span class="access-step">01</span><div><strong>Select target</strong><small>Choose a user or role to load its current permissions.</small></div></div>
+            <label>Grant access to
+                <select name="subjectType" id="subjectType">
+                    <option value="USER" th:selected="${subjectType == 'USER'}">A user</option>
+                    <option value="ROLE" th:selected="${subjectType == 'ROLE'}">A role</option>
+                </select>
+            </label>
+            <label id="userChoice">User
+                <select name="userId">
+                    <option value="">Select user</option>
+                    <option th:each="user : ${users}" th:value="${user.id}"
+                            th:selected="${selectedUserId != null and user.id == selectedUserId}"
+                            th:text="|${user.username} (${user.role})|">username (role)</option>
+                </select>
+            </label>
+            <label id="roleChoice">Role
+                <select name="role">
+                    <option value="">Select role</option>
+                    <option th:each="availableRole : ${roles}" th:value="${availableRole}"
+                            th:selected="${availableRole == selectedRole}" th:text="${availableRole}">Admin</option>
+                </select>
+            </label>
+            <button class="catalog-button primary" type="submit">Load permissions</button>
+        </form>
+
+        <div class="access-help"><span class="access-help-mark" aria-hidden="true">i</span><span><strong>How access works</strong> — Grant page access first, then choose the actions allowed on that page. Removing page access also removes its button grants.</span></div>
+
+        <section class="access-page-list" aria-label="Page and button permissions">
+            <div class="access-list-heading" th:if="${!#lists.isEmpty(accessPages)}"><div><span class="access-step">02</span><strong>Pages and actions</strong></div><span th:text="|${#lists.size(accessPages)} pages|">0 pages</span></div>
+            <details class="catalog-panel access-page-card" th:each="entry : ${accessPages}">
+                <summary class="access-page-heading"><span class="access-page-icon" aria-hidden="true">▤</span><div class="access-page-identity"><h2 th:text="${entry.page.name}">Page name</h2>
+                    <div class="page-meta"><code th:text="${entry.page.code}">PAGE_CODE</code><span class="access-page-url" th:text="${entry.page.url}">/page</span></div></div>
+                    <span class="access-action-count" th:text="|${#lists.size(entry.page.buttons)} actions|">0 actions</span><span class="access-expand" aria-hidden="true"></span></summary>
+                <form th:action="@{/admin/page-access/save}" method="post" class="permission-form">
+                    <input type="hidden" name="subjectType" th:value="${subjectType}">
+                    <input type="hidden" name="userId" th:if="${subjectType == 'USER' and selectedUserId != null}" th:value="${selectedUserId}">
+                    <input type="hidden" name="role" th:if="${subjectType == 'ROLE' and selectedRole != null}" th:value="${selectedRole}">
+                    <input type="hidden" name="pageId" th:value="${entry.page.id}">
+                    <label class="page-access-toggle"><input class="page-grant-checkbox" type="checkbox" name="pageAccess" value="true" th:checked="${entry.pageGranted}" th:disabled="${superAdminSubject}">
+                        <span class="page-toggle-track" aria-hidden="true"></span><span class="page-toggle-copy"><strong>Page access</strong><small>Allow this target to open this page</small></span></label>
+                    <div class="access-actions-heading" th:if="${!#lists.isEmpty(entry.page.buttons)}"><strong>Allowed actions</strong><span>Choose each action separately</span></div>
+                    <div class="access-button-list" th:if="${!#lists.isEmpty(entry.page.buttons)}">
+                        <label class="access-button" th:each="button : ${entry.page.buttons}">
+                            <input type="checkbox" name="buttonIds" th:value="${button.id}"
+                                   th:checked="${entry.grantedButtonIds.contains(button.id)}" th:disabled="${!entry.pageGranted or superAdminSubject}">
+                            <span class="action-check" aria-hidden="true">✓</span><span class="access-button-copy"><strong th:text="${button.name}">Button name</strong><code th:text="${button.code}">ACTION</code></span>
+                        </label>
+                    </div>
+                    <p class="no-page-buttons" th:if="${#lists.isEmpty(entry.page.buttons)}">This page has no button definitions. Add buttons in Page &amp; button setup.</p>
+                    <div class="permission-footer">
+                        <span class="select-target-required" th:if="${(subjectType == 'USER' and selectedUserId == null) or (subjectType == 'ROLE' and #strings.isEmpty(selectedRole))}">Choose a user or role above first.</span>
+                        <button class="catalog-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_ACCESS')}" th:disabled="${superAdminSubject or (subjectType == 'USER' and selectedUserId == null) or (subjectType == 'ROLE' and #strings.isEmpty(selectedRole))}">Save access</button>
+                    </div>
+                </form>
+            </details>
+            <div class="catalog-empty" th:if="${#lists.isEmpty(accessPages)}">No pages are registered. Add pages in Page &amp; button setup first.</div>
+        </section>
+    </section>
+</main>
+<script th:src="@{/js/page-access.js}" defer></script>
+</body>
+</html>

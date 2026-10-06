@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Approve Purchase Orders</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/purchase-order.css(v=20261006)}">
+</head>
+<body class="app-body po-page">
+<div th:replace="~{fragments/app-header :: appHeader('po-approvals')}"></div>
+<main class="app-main-content po-content"><div class="po-shell">
+    <div class="po-object-header">
+        <div class="po-object-title"><span class="po-object-icon">PO</span><div><span class="po-object-subtitle">Procurement Release Workflow</span><h1>Purchase Orders</h1></div></div>
+        <button class="po-button excel" type="button" id="exportApprovalExcel" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_PO_APPROVALS')}">Download Excel Report</button>
+    </div>
+    <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div><div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
+    <div class="po-filter">
+        <label>PO From Date<input type="date" id="filterFromDate" class="po-filter-input"></label>
+        <label>PO To Date<input type="date" id="filterToDate" class="po-filter-input"></label>
+        <div class="po-filter-buttons"><button type="button" class="po-button primary" id="applyDateFilter" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_PO_APPROVALS')}">Apply Filter</button><button type="button" class="po-button secondary" id="clearDateFilter">Clear</button></div>
+    </div>
+    <section class="po-table-card">
+        <div class="po-table-scroll"><table class="po-legacy-table po-approval-table" id="approvalTable">
+            <thead><tr><th>PO Number</th><th>PO Date</th><th>Vendor Name</th><th>Total Amount</th><th>Approval Status</th><th>Action</th><th>Print</th><th>Items</th></tr></thead>
+            <tbody>
+            <th:block th:each="po : ${purchaseOrders}">
+                <tr class="po-master-row" th:attr="data-raw-date=${po.dateIso},data-nested-id=${po.id}">
+                    <td data-label="PO Number" class="po-number-cell" th:text="${po.number}">PO0001</td>
+                    <td data-label="PO Date" th:text="${po.formattedDate}">06-October-2026</td>
+                    <td data-label="Vendor Name" class="po-vendor-cell" th:text="${po.vendorName}">Vendor</td>
+                    <td data-label="Total Amount" class="po-amount-cell" th:text="${#numbers.formatDecimal(po.totalAmount,1,2)}">0.00</td>
+                    <td data-label="Approval Status"><span class="po-badge" th:classappend="${po.approval == 'Approved'} ? ' approved' : ' pending'" th:text="${po.approval ?: 'Pending'}">Pending</span></td>
+                    <td data-label="Action"><div class="po-action-group">
+                        <form th:if="${isSuperAdmin or allowedButtonCodes.contains('DELETE_PO')}" th:action="@{/purchase-orders/approvals}" method="post" onsubmit="return confirm('Are you sure you want to delete this record?')"><input type="hidden" name="action" value="delete"><input type="hidden" name="poNumber" th:value="${po.number}"><button type="submit" class="po-button danger small" th:disabled="${po.approval == 'Approved'}">Delete</button></form>
+                        <form th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_PO')) and canApproveByRole}" th:action="@{/purchase-orders/approvals}" method="post" onsubmit="return confirm('Are you sure you want to approve this record?')"><input type="hidden" name="action" value="approve"><input type="hidden" name="poNumber" th:value="${po.number}"><button type="submit" class="po-button primary small" th:disabled="${po.approval == 'Approved'}">Approve</button></form>
+                    </div></td>
+                    <td data-label="Print"><a class="po-button secondary small" th:if="${canPrintPurchaseOrder and (isSuperAdmin or allowedButtonCodes.contains('VIEW_PO'))}" th:href="@{/purchase-orders/report(printNumber=${po.number})}" target="_blank">View / Print</a></td>
+                    <td data-label="Items"><button type="button" class="po-button secondary small po-expand-button" th:id="|btn-${po.id}|" th:if="${isSuperAdmin or allowedButtonCodes.contains('SHOW_PO_ITEMS')}" th:attr="data-row-id=${po.id}">Show Items</button></td>
+                </tr>
+                <tr class="po-nested-row" th:id="|row-nested-${po.id}|" style="display:none"><td colspan="8" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
+                    <div class="po-table-scroll"><table class="po-items-table"><thead><tr><th>Item ID</th><th>Description</th><th>PO Quantity</th><th>Received Qty</th><th>Balance to Receive</th><th>Rate</th><th>Discount %</th><th>GST %</th></tr></thead><tbody>
+                        <tr th:each="item : ${po.items}"><td data-label="Item ID" th:text="${item.itemId}">1</td><td data-label="Description" class="po-item-description" th:text="${item.description}">Item</td><td data-label="PO Quantity" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td data-label="Received Qty" th:text="${#numbers.formatDecimal(item.receivedQty,1,2)}">0.00</td><td data-label="Balance to Receive" class="po-balance-cell" th:classappend="${item.balanceToReceive.signum() > 0} ? ' balance-pending' : ''" th:text="${#numbers.formatDecimal(item.balanceToReceive,1,2)}">0.00</td><td data-label="Rate" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td data-label="Discount %" th:text="${#numbers.formatDecimal(item.discountPercent,1,2)}">0.00</td><td data-label="GST %" th:text="${#numbers.formatDecimal(item.gstPercent,1,2)}">0.00</td></tr>
+                        <tr th:if="${#lists.isEmpty(po.items)}"><td colspan="8" class="po-empty">No items found for this PO.</td></tr>
+                    </tbody></table></div>
+                </div></td></tr>
+            </th:block>
+            <tr th:if="${#lists.isEmpty(purchaseOrders)}"><td colspan="8" class="po-empty">No Purchase Orders Found</td></tr>
+            </tbody>
+        </table></div>
+        <div class="po-filter-empty" id="dateFilterEmpty" hidden>No Purchase Orders Found within selected dates.</div>
+    </section>
+</div></main>
+<script th:src="@{/js/purchase-order-report.js}" defer></script>
+</body></html>
+
+
