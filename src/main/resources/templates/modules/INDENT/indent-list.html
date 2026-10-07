@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Indent Report</title>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/INDENT/indent-list.css}">
+</head>
+<body class="app-body">
+<div th:replace="~{fragments/app-header :: appHeader('report')}"></div>
+<div class="app-main-content report-content">
+<main class="report-shell">
+    <section class="report-card">
+        <header class="report-heading">
+            <div class="report-icon" aria-hidden="true">IR</div>
+            <div><h1>Indent Report</h1><p>Recent indent requests</p></div>
+            <span class="record-count"><strong id="visibleCount" th:text="${#lists.size(indents)}">0</strong> records</span>
+        </header>
+
+        <section class="filters" aria-label="Filter indents">
+            <label class="filter-field keyword-field">Search
+                <input type="search" id="keywordSearch" placeholder="Search any field…" autocomplete="off">
+            </label>
+            <label class="filter-field">From date<input type="date" id="fromDate"></label>
+            <label class="filter-field">To date<input type="date" id="toDate"></label>
+            <label class="filter-field">Department
+                <select id="deptFilter">
+                    <option value="">All departments</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Housekeeping">Housekeeping</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Dininghall">Dining Hall</option>
+                    <option value="Dining Hall">Dining Hall</option>
+                    <option value="RO Plant">RO Plant</option>
+                    <option value="Store">Store</option>
+                    <option value="Academics">Academics</option>
+                    <option value="Finance">Finance</option>
+                </select>
+            </label>
+            <div class="filter-actions">
+                <button type="button" class="button button-primary" id="filterButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_REPORT')}">Apply</button>
+                <button type="button" class="button button-secondary" id="resetButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('RESET_FILTER')}">Reset</button>
+                <button type="button" class="button button-secondary" id="csvButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_CSV')}">Download CSV</button>
+                <button type="button" class="button button-secondary" id="printButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_REPORT')}">Print</button>
+            </div>
+        </section>
+
+        <div class="table-scroll">
+            <table id="dataTable">
+                <thead>
+                    <tr class="column-header">
+                        <th data-sort="number">ID</th><th data-sort="text">Item</th><th data-sort="number">Avl</th>
+                        <th data-sort="number">Req</th><th data-sort="text">UOM</th>
+                        <th data-sort="text">Purpose</th><th data-sort="text">I/C</th>
+                        <th data-sort="text">L1 Approved By</th><th data-sort="text">L2</th><th data-sort="text">L2 Approved By</th>
+                        <th data-sort="text">Indent Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="indentRows">
+                <th:block th:each="item, iterStat : ${indents}">
+                <tr class="indent-group-header" th:if="${iterStat.first or !#strings.equals(item.indentNo, indents[iterStat.index - 1].indentNo)}">
+                    <td colspan="12">
+                        <div class="indent-header report-indent-header">
+                            <div class="indent-no">
+                                <strong th:text="|Indent #${item.indentNo}|">Indent #1001</strong>
+                                <span class="badge" th:classappend="${#strings.equalsIgnoreCase(item.type, 'Purchase')} ? ' badge-purchase' : (${#strings.equalsIgnoreCase(item.type, 'Issue')} ? ' badge-issue' : '')" th:text="${item.type}">Purchase</span>
+                            </div>
+                            <div th:text="${item.date}">2026-10-05</div>
+                            <div th:text="${item.department}">Store</div>
+                            <div th:text="${item.requestedBy}">User</div>
+                            <div class="status-text" th:text="${#strings.isEmpty(item.indentStatus) ? 'Pending' : item.indentStatus}">Pending</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="data-row" th:attr="data-indent-no=${item.indentNo},data-report-date=${item.date},data-department=${item.department},data-search=${item.indentNo + ' ' + item.type + ' ' + item.date + ' ' + item.department + ' ' + item.requestedBy}">
+                    <td data-label="ID" th:text="${item.id}">1</td>
+                    <td data-label="Item" class="item-name" th:text="${item.itemName}">Item</td>
+                    <td data-label="Available Qty" class="stock-value" th:text="${item.balanceQty}">0</td>
+                    <td data-label="Requested Qty" class="requested-qty" th:text="${item.qty}">1</td>
+                    <td data-label="UOM" th:text="${item.uom}">Nos</td>
+                    <td data-label="Purpose" th:text="${item.purpose}">Purpose</td>
+                    <td data-label="L1 Status">
+                        <span class="status" th:classappend="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')} ? ' approved' : ' pending'" th:text="${#strings.isEmpty(item.levelOneStatus) ? 'Pending' : item.levelOneStatus}">Pending</span>
+                        <small class="approval-date" th:text="${item.levelOneApprovedDate != null ? 'Approved: ' + #dates.format(item.levelOneApprovedDate, 'dd MMM yyyy') : 'Approved: -'}">Approved: -</small>
+                    </td>
+                    <td data-label="L1 Approved By" th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">-</td>
+                    <td data-label="L2 Status">
+                        <span class="status" th:classappend="${#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved')} ? ' approved' : ' pending'" th:text="${#strings.isEmpty(item.levelTwoStatus) ? 'Pending' : item.levelTwoStatus}">Pending</span>
+                        <small class="approval-date" th:text="${item.levelTwoApprovedDate != null ? 'Approved: ' + #dates.format(item.levelTwoApprovedDate, 'dd MMM yyyy') : 'Approved: -'}">Approved: -</small>
+                    </td>
+                    <td data-label="L2 Approved By" th:text="${#strings.isEmpty(item.levelTwoApprovedBy) ? '-' : item.levelTwoApprovedBy}">-</td>
+                    <td data-label="Indent Status" th:text="${item.indentStatus}">-</td>
+                    <td data-label="Action"><a class="row-action" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_PRINT')}" th:href="@{/IndentPrint(IndentNumber=${item.indentNo})}">View / Print</a></td>
+                </tr>
+                </th:block>
+                <tr th:if="${#lists.isEmpty(indents)}" id="emptyRow"><td colspan="12" class="empty-state">No indent records found.</td></tr>
+                <tr id="noMatches" hidden><td colspan="12" class="empty-state">No matching indents.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</div>
+<script th:src="@{/js/INDENT/indent-list.js}"></script>
+</body>
+</html>

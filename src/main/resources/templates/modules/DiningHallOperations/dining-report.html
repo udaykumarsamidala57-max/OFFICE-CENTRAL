@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dining Hall Consumption Report</title>
+  
+  <!-- Modern Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+  <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+  <link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}">
+</head>
+<body class="app-body dining-page">
+  <div th:replace="~{fragments/app-header :: appHeader('dining-report')}"></div>
+
+  <main class="app-main-content dining-content">
+    <div class="dining-shell dining-report-shell">
+      
+      <!-- Top Header Card -->
+      <div class="dining-heading">
+        <div class="header-title-group">
+          <div class="header-icon">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <div>
+            <span class="dining-eyebrow">DINING HALL OPERATIONS</span>
+            <h1>Dining Hall Consumption Report</h1>
+            <p class="dh-report-subtitle">Monthly aggregate and session-wise breakdown</p>
+          </div>
+        </div>
+        <div class="dining-heading-actions">
+          <a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a>
+          <a class="dh-button secondary" th:href="@{/dining-hall/consumption/entry}">New Consumption</a>
+        </div>
+      </div>
+
+      <div class="dh-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+      <!-- Filter Panel -->
+      <form class="dh-filter dh-report-filter" method="get" th:action="@{/dining-hall/consumption/report}">
+        <label>
+          Month
+          <input type="month" name="reportMonth" th:value="${reportMonth}" required>
+        </label>
+        <label>
+          Session
+          <select name="mealSession">
+            <option value="">All Sessions</option>
+            <option th:each="meal : ${sessions}" 
+                    th:value="${meal}" 
+                    th:text="${meal}" 
+                    th:selected="${meal == mealSession}">Meal</option>
+          </select>
+        </label>
+        <button class="dh-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_DINING_REPORT')}">
+          <i class="fa-solid fa-magnifying-glass"></i> Run Report
+        </button>
+      </form>
+
+      <!-- Calendar Grid Card -->
+      <section class="dh-calendar-card" aria-label="Monthly consumption calendar">
+        <table class="dh-calendar">
+          <thead>
+            <tr>
+              <th>Sun</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="week : ${calendarWeeks}">
+              <td th:each="cell : ${week}" th:classappend="${cell['empty']} ? ' empty-day' : ''">
+                <th:block th:if="${!cell['empty']}">
+                  
+                  <div class="dh-calendar-day">
+                    <span th:text="${cell.day}">1</span>
+                    <b th:if="${cell.total.signum() > 0}" th:text="${#numbers.formatDecimal(cell.total, 1, 0)}">0</b>
+                  </div>
+
+                  <!-- Session List -->
+                  <div class="dh-calendar-sessions">
+                    <button type="button" 
+                            class="dh-session-trigger" 
+                            th:each="meal : ${cell.sessions}" 
+                            th:classappend="| ${meal.color}|" 
+                            th:attr="onclick=|toggleDiningModal('session-modal-${meal.id}', true)|">
+                      <span class="dh-session-name">
+                        <i class="fa-solid" th:classappend="${meal.icon != null ? meal.icon : 'fa-utensils'}"></i>
+                        <span th:text="${meal.name}">Lunch</span>
+                      </span>
+                      <b th:text="${#numbers.formatDecimal(meal.value, 1, 0)}">0</b>
+                    </button>
+                  </div>
+
+                  <!-- Session Details Modal -->
+                  <div class="dh-report-modal" 
+                       th:each="meal : ${cell.sessions}" 
+                       th:id="|session-modal-${meal.id}|" 
+                       onclick="if(event.target===this)toggleDiningModal(this.id, false)">
+                    
+                    <section class="dh-report-modal-card" role="dialog" aria-modal="true" th:attr="aria-label=|${#temporals.format(cell.date,'dd MMMM yyyy')} · ${meal.name}|">
+                      <header>
+                        <div class="modal-title-container">
+                          <small><i class="fa-solid fa-circle-info"></i> DINING HALL · SESSION DETAILS</small>
+                          <h2 th:text="|${#temporals.format(cell.date,'dd MMMM yyyy')} · ${meal.name}|">Date · Lunch</h2>
+                        </div>
+                        <button type="button" aria-label="Close" th:attr="onclick=|toggleDiningModal('session-modal-${meal.id}', false)|">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </header>
+
+                      <div class="dh-modal-table-wrap">
+                        <table class="dh-modal-table">
+                          <thead>
+                            <tr>
+                              <th style="text-align: left;">Item Name</th>
+                              <th style="text-align: center; width: 80px;">Qty</th>
+                              <th style="text-align: right; width: 110px;">Value</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="item : ${meal.items}">
+                              <td style="text-align: left;" th:text="${item.item}">Item</td>
+                              <td style="text-align: center;" th:text="${#numbers.formatDecimal(item.quantity, 1, 2)}">0</td>
+                              <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.value, 1, 2)}">0.00</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <footer>
+                        <span>Total Session Cost</span>
+                        <strong th:text="${#numbers.formatDecimal(meal.value, 1, 2)}">0.00</strong>
+                      </footer>
+                    </section>
+
+                  </div>
+                </th:block>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="dh-calendar-empty" th:if="${#lists.isEmpty(calendarWeeks)}">
+          Choose a month and run the report to view consumption.
+        </div>
+      </section>
+	
+      <!-- Grand Total Summary -->
+      <div class="dh-grand-total">
+        <span>Grand Total Volume</span>
+        <strong th:text="${#numbers.formatDecimal(reportTotal, 1, 2)}">0.00</strong>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleDiningModal(id, open) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.toggle('is-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        document.querySelectorAll('.dh-report-modal.is-open').forEach(modal => toggleDiningModal(modal.id, false));
+      }
+    });
+  </script>
+</body>
+</html>

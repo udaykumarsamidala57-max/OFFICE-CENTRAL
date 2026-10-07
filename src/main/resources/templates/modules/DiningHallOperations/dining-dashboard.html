@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dining Hall Dashboard</title>
+  
+  <!-- Modern Typography & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+  <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+  <link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}">
+</head>
+<body class="app-body dining-page">
+  <div th:replace="~{fragments/app-header :: appHeader('dining-dashboard')}"></div>
+
+  <main class="app-main-content dining-content">
+    <div class="dining-shell dining-report-shell">
+      
+      <!-- Dashboard Top Header Card -->
+      <div class="report-header-card">
+        <div class="header-title-group">
+          <div class="header-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <h2>Dining Hall Dashboard</h2>
+            <p>Consumption trends, session statistics, and calendar insights</p>
+          </div>
+        </div>
+        <div class="dining-heading-actions">
+          <a class="dh-button primary" th:href="@{/dining-hall/consumption/entry}">New Consumption</a>
+          <a class="dh-button secondary" th:href="@{/dining-hall/consumption/report}">Consumption Report</a>
+          <a class="dh-button secondary" th:href="@{/dining-hall/consumption/edit}">Edit Entries</a>
+        </div>
+      </div>
+
+      <div class="dh-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+      <!-- KPI Summary Metrics Grid -->
+      <section class="dh-metrics">
+        <article class="dh-metric">
+          <span>Today</span>
+          <strong th:text="|₹ ${#numbers.formatDecimal(metrics.today,1,2)}|">₹ 0.00</strong>
+        </article>
+        <article class="dh-metric">
+          <span>This Week</span>
+          <strong th:text="|₹ ${#numbers.formatDecimal(metrics.week,1,2)}|">₹ 0.00</strong>
+        </article>
+        <article class="dh-metric">
+          <span>This Month</span>
+          <strong th:text="|₹ ${#numbers.formatDecimal(metrics.month,1,2)}|">₹ 0.00</strong>
+        </article>
+        <article class="dh-metric">
+          <span>Total Consumption</span>
+          <strong th:text="|₹ ${#numbers.formatDecimal(metrics.allTime,1,2)}|">₹ 0.00</strong>
+        </article>
+      </section>
+
+      <!-- Date Range Filter -->
+      <form class="filter-panel" method="get" th:action="@{/dining-hall/dashboard}">
+        <div class="filter-grid dashboard-filter-grid">
+          <div class="filter-item">
+            <label>From Date</label>
+            <input type="date" name="fromDate" class="form-input" th:value="${fromDate}" required>
+          </div>
+          <div class="filter-item">
+            <label>To Date</label>
+            <input type="date" name="toDate" class="form-input" th:value="${toDate}" required>
+          </div>
+          <div class="filter-actions-group">
+            <button class="btn-brand" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_DINING_DASHBOARD')}">
+              <i class="fa-solid fa-filter"></i> Filter Trend
+            </button>
+            <a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Clear Filter</a>
+          </div>
+        </div>
+      </form>
+
+      <!-- Dashboard Grid: Daily Trend & Latest Session Split -->
+      <div class="dh-dashboard-grid">
+        <!-- Daily Trend Bar Chart Card -->
+        <section class="dh-card">
+          <div class="dh-card-title">
+            <div>
+              <span class="dining-eyebrow">SELECTED DATE RANGE · ALL TIME BY DEFAULT</span>
+              <h2>Day-Wise Consumption Trend</h2>
+            </div>
+          </div>
+          <div class="dh-bars" th:if="${!#lists.isEmpty(dailyRows)}">
+            <div class="dh-bar-row" th:each="row : ${dailyRows}">
+              <time th:text="${#dates.format(row.date,'dd MMM yyyy')}">Date</time>
+              <div class="dh-bar-track"><span th:style="|width:${row.barPercent}%|"></span></div>
+              <strong th:text="|₹ ${#numbers.formatDecimal(row.value,1,2)}|">₹ 0.00</strong>
+            </div>
+          </div>
+          <div class="dh-empty" th:if="${#lists.isEmpty(dailyRows)}">No consumption records in this date range.</div>
+        </section>
+
+        <!-- Session Split Card -->
+        <section class="dh-card">
+          <div class="dh-card-title">
+            <div>
+              <span class="dining-eyebrow" th:text="${latestSessionDate ?: 'NO RECORDS'}">Latest day</span>
+              <h2>Session Split (Latest Day)</h2>
+            </div>
+          </div>
+          <div class="dh-session-list">
+            <div class="dh-session-row" th:each="row : ${sessionRows}">
+              <span th:text="${row.session}">Lunch</span>
+              <small th:text="|${#numbers.formatDecimal(row.quantity,1,2)} qty · ${row.count} entries|">0 qty</small>
+              <strong th:text="|₹ ${#numbers.formatDecimal(row.value,1,2)}|">₹ 0.00</strong>
+            </div>
+            <div class="dh-empty" th:if="${#lists.isEmpty(sessionRows)}">No session records yet.</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Calendar Days & Session View Card -->
+      <section class="calendar-card dh-dashboard-calendar">
+        <div class="dh-calendar-heading">
+          <div>
+            <span class="dining-eyebrow">MONTHLY VIEW</span>
+            <h2 th:text="${dashboardMonth}">2026-10</h2>
+          </div>
+          <strong th:text="|₹ ${#numbers.formatDecimal(calendarTotal,1,2)}|">₹ 0.00</strong>
+        </div>
+
+        <table class="calendar-table">
+          <thead>
+            <tr>
+              <th>Sun</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="week : ${calendarWeeks}">
+              <td th:each="cell : ${week}" th:classappend="${cell['empty']} ? ' empty-day' : ''">
+                <th:block th:if="${!cell['empty']}">
+                  
+                  <!-- Day Header & Total Badge -->
+                  <div class="day-header">
+                    <span class="day-number" th:text="${cell.day}">1</span>
+                    <span class="day-total-badge" 
+                          th:if="${cell.total != null and cell.total.signum() > 0}" 
+                          th:text="${#numbers.formatDecimal(cell.total,1,0)}">0</span>
+                  </div>
+
+                  <!-- Session Triggers List -->
+                  <div class="session-list">
+                    <div type="button" 
+                         class="session-trigger" 
+                         th:each="meal : ${cell.sessions}" 
+                         th:classappend="| ${meal.color}|" 
+                         th:attr="onclick=|toggleModal('session-modal-${meal.id}', true)|">
+                      
+                      <span class="session-name">
+                        <i class="fa-solid fa-mug-saucer" th:if="${#strings.equalsIgnoreCase(meal.name, 'Morning Drink')}"></i>
+                        <i class="fa-solid fa-bread-slice" th:if="${#strings.equalsIgnoreCase(meal.name, 'Break Fast')}"></i>
+                        <i class="fa-solid fa-plate-wheat" th:if="${#strings.equalsIgnoreCase(meal.name, 'Lunch')}"></i>
+                        <i class="fa-solid fa-cookie-bite" th:if="${#strings.equalsIgnoreCase(meal.name, 'Snacks')}"></i>
+                        <i class="fa-solid fa-mug-hot" th:if="${#strings.equalsIgnoreCase(meal.name, 'Staff Tea')}"></i>
+                        <i class="fa-solid fa-bowl-rice" th:if="${#strings.equalsIgnoreCase(meal.name, 'Dinner')}"></i>
+                        <i class="fa-solid fa-utensils" th:if="${!#strings.equalsIgnoreCase(meal.name, 'Morning Drink') and !#strings.equalsIgnoreCase(meal.name, 'Break Fast') and !#strings.equalsIgnoreCase(meal.name, 'Lunch') and !#strings.equalsIgnoreCase(meal.name, 'Snacks') and !#strings.equalsIgnoreCase(meal.name, 'Staff Tea') and !#strings.equalsIgnoreCase(meal.name, 'Dinner')}"></i>
+                        
+                        <span th:text="${meal.name}">Lunch</span>
+                      </span>
+
+                      <span class="session-val" th:text="${#numbers.formatDecimal(meal.value,1,0)}">0</span>
+                    </div>
+                  </div>
+
+                  <!-- Session Details Breakdown Modal -->
+                  <div th:each="meal : ${cell.sessions}" 
+                       th:id="|session-modal-${meal.id}|" 
+                       class="custom-modal" 
+                       onclick="if(event.target===this) toggleModal(this.id, false)">
+                    
+                    <div class="custom-modal-content">
+                      <div class="custom-modal-header">
+                        <div class="modal-title-container">
+                          <div class="modal-preheading">
+                            <i class="fa-solid fa-circle-info"></i> DINING HALL · SESSION DETAILS
+                          </div>
+                          <h3 th:text="|${#temporals.format(cell.date,'dd MMMM yyyy')} · ${meal.name}|">Date · Session</h3>
+                        </div>
+                        <button type="button" class="close-modal-btn" th:attr="onclick=|toggleModal('session-modal-${meal.id}', false)|">
+                          <i class="fa-solid fa-xmark"></i>
+                        </button>
+                      </div>
+
+                      <div class="custom-modal-body">
+                        <table class="modal-table">
+                          <thead>
+                            <tr>
+                              <th style="text-align: left;">Item Name</th>
+                              <th style="text-align: center; width: 80px;">Qty</th>
+                              <th style="text-align: right; width: 110px;">Value</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="item : ${meal.items}">
+                              <td style="text-align: left; font-weight: 500;" th:text="${item.item}">Item Name</td>
+                              <td style="text-align: center;" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td>
+                              <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.value,1,2)}">0.00</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div class="modal-footer-summary">
+                        <div class="modal-stat-pill">
+                          <span class="modal-stat-label">Total Session Cost</span>
+                          <span class="modal-stat-val highlight" th:text="|₹ ${#numbers.formatDecimal(meal.value,1,2)}|">₹ 0.00</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </th:block>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+  </main>
+
+  <script th:src="@{/js/DiningHallOperations/dining-hall.js(v=20261006)}"></script>
+</body>
+</html>

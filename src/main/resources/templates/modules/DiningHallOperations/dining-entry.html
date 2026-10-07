@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dining Hall Consumption</title>
+  <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}"></head>
+<body class="app-body dining-page"><div th:replace="~{fragments/app-header :: appHeader('dining-entry')}"></div>
+<main class="app-main-content dining-content"><div class="dining-shell">
+  <div class="dining-heading"><div><span class="dining-eyebrow">DINING HALL OPERATIONS</span><h1>Consumption Entry</h1></div><div class="dining-heading-actions"><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a><a class="dh-button secondary" th:href="@{/dining-hall/consumption/report}">Consumption Report</a><a class="dh-button secondary" th:href="@{/dining-hall/consumption/edit}">Edit Entries</a></div></div>
+  <div class="dh-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="dh-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
+  <form method="post" th:action="@{/dining-hall/consumption/entry}" id="diningForm" onsubmit="return validateDiningForm()">
+    <section class="dh-card"><div class="dh-card-title"><div><span class="dining-eyebrow">CONSUMPTION DETAILS</span><h2>Issue Information</h2></div><span class="dh-issue-number">Issue <strong th:text="${issueNo}">ISS1</strong></span></div>
+      <div class="dh-form-grid"><label>Department<input value="Dining Hall" readonly></label><label>Issued To<input name="issuedTo" maxlength="150" placeholder="Recipient name" required></label>
+        <label>Meal Session<select name="mealSession" required><option value="">Select session</option><option th:each="meal : ${sessions}" th:value="${meal}" th:text="${meal}">Meal</option></select></label>
+        <label>Issue Date<input type="date" name="issueDate" th:value="${today}" required></label>
+      </div>
+    </section>
+    <section class="dh-card"><div class="dh-card-title"><div><span class="dining-eyebrow">STOCK MOVEMENT</span><h2>Consumption Items</h2></div><button type="button" class="dh-button secondary" id="addDiningItem" th:if="${isSuperAdmin or allowedButtonCodes.contains('ADD_DINING_ITEM')}">+ Add Item</button></div>
+      <div class="dh-table-wrap"><table class="dh-table" id="diningItems"><thead><tr><th>Category</th><th>Subcategory</th><th>Item</th><th>UOM</th><th>Stock</th><th>Qty Issued</th><th>Remarks</th><th>Action</th></tr></thead><tbody></tbody></table></div>
+      <div class="dh-actions"><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Cancel</a><button class="dh-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_DINING_CONSUMPTION')}">Save Consumption</button></div>
+    </section>
+  </form>
+</div></main>
+<script th:inline="javascript">window.diningData={categories:[[${masterData.categories}]],subcategories:[[${masterData.subcategories}]],items:[[${masterData.items}]],canRemove:[[${isSuperAdmin or allowedButtonCodes.contains('REMOVE_DINING_ITEM')}]]};</script>
+<script th:src="@{/js/DiningHallOperations/dining-hall.js(v=20261006)}" defer></script></body></html>

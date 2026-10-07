@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit Dining Hall Consumption</title>
+  <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}"></head>
+<body class="app-body dining-page"><div th:replace="~{fragments/app-header :: appHeader('dining-edit')}"></div>
+<main class="app-main-content dining-content"><div class="dining-shell">
+  <div class="dining-heading"><div><span class="dining-eyebrow">DINING HALL OPERATIONS</span><h1>Edit Consumption Entries</h1></div><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a></div>
+  <div class="dh-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="dh-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
+  <form class="dh-filter dh-date-search" method="get" th:action="@{/dining-hall/consumption/edit}"><label>Consumption Date<input type="date" name="selectedDate" th:value="${selectedDate}" required></label><button class="dh-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('LOAD_DINING_EDIT')}">Load Entries</button></form>
+  <form method="post" th:if="${!#lists.isEmpty(consumptions)}" th:action="@{/dining-hall/consumption/edit}" onsubmit="return confirm('Save selected changes to consumption, stock, and ledger?')">
+    <input type="hidden" name="selectedDate" th:value="${selectedDate}">
+    <section class="dh-card"><div class="dh-card-title"><div><span class="dining-eyebrow" th:text="${selectedDate}">Date</span><h2>Consumption Records</h2></div><button class="dh-button secondary" type="button" id="selectAllDiningEdit">Select All</button></div>
+      <div class="dh-table-wrap"><table class="dh-table"><thead><tr><th class="dh-check-col">Save</th><th>Issue No</th><th>Item</th><th>UOM</th><th>Department</th><th>Issued To</th><th>Quantity</th><th>Unit Price</th><th>Value</th><th>Remarks</th></tr></thead><tbody>
+        <tr th:each="row : ${consumptions}"><td data-label="Save" class="dh-check-col"><input class="dh-edit-check" type="checkbox" name="selectedIssueId" th:value="${row.id}" th:id="|edit-${row.id}|"></td><td data-label="Issue No" class="dh-issue-number" th:text="${row.issueNo}">ISS1</td><td data-label="Item" th:text="${row.item}">Item</td><td data-label="UOM" th:text="${row.uom ?: '-'}">-</td>
+          <td data-label="Department"><input value="Dining Hall" readonly></td><td data-label="Issued To"><input type="text" th:name="|issued_to_${row.id}|" th:value="${row.recipient}" th:attr="data-check=|edit-${row.id}|"></td>
+          <td data-label="Quantity"><input type="number" min="0" step="0.0001" th:name="|qty_issued_${row.id}|" th:value="${row.quantity}" th:attr="data-check=|edit-${row.id}|"></td><td data-label="Unit Price" class="dh-number" th:text="${#numbers.formatDecimal(row.price,1,2)}">0.00</td>
+          <td data-label="Value" class="dh-number" th:text="${#numbers.formatDecimal(row.total,1,2)}">0.00</td><td data-label="Remarks"><input type="text" th:name="|remarks_${row.id}|" th:value="${row.remarks}" th:attr="data-check=|edit-${row.id}|"></td></tr>
+      </tbody></table></div>
+      <div class="dh-actions"><a class="dh-button secondary" th:href="@{/dining-hall/consumption/edit}">Clear</a><button class="dh-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_DINING_EDIT')}">Save Selected Changes</button></div>
+    </section>
+  </form>
+</div></main><script th:src="@{/js/DiningHallOperations/dining-hall.js(v=20261006)}" defer></script></body></html>

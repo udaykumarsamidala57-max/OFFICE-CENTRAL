@@ -16,7 +16,11 @@ INSERT IGNORE INTO app_pages (page_code, page_name, page_url) VALUES
     ('ISSUE_STOCK', 'Issue Stock', '/issues/entry'),
     ('ISSUE_REPORT', 'Stock Issue Report', '/issues/report'),
     ('STOCK_ON_HAND', 'Stock on Hand', '/stock'),
-    ('STOCK_REPORT', 'Stock Summary Report', '/stock/report');
+    ('STOCK_REPORT', 'Stock Summary Report', '/stock/report'),
+    ('DINING_CONSUMPTION_ENTRY', 'Dining Hall Consumption Entry', '/dining-hall/consumption/entry'),
+    ('DINING_DASHBOARD', 'Dining Hall Dashboard', '/dining-hall/dashboard'),
+    ('DINING_CONSUMPTION_REPORT', 'Dining Hall Consumption Report', '/dining-hall/consumption/report'),
+    ('DINING_CONSUMPTION_EDIT', 'Edit Dining Hall Consumption', '/dining-hall/consumption/edit');
 
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'ADD_ITEM', '+ Add Item' FROM app_pages WHERE page_code='CREATE_INDENT';
@@ -110,6 +114,23 @@ INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'FILTER_STOCK_REPORT', 'Filter stock summary report' FROM app_pages WHERE page_code='STOCK_REPORT';
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'EXPORT_STOCK_REPORT', 'Export stock summary report' FROM app_pages WHERE page_code='STOCK_REPORT';
+
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'ADD_DINING_ITEM', 'Add consumption item row' FROM app_pages WHERE page_code='DINING_CONSUMPTION_ENTRY';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'REMOVE_DINING_ITEM', 'Remove consumption item row' FROM app_pages WHERE page_code='DINING_CONSUMPTION_ENTRY';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'SAVE_DINING_CONSUMPTION', 'Save Dining Hall consumption' FROM app_pages WHERE page_code='DINING_CONSUMPTION_ENTRY';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'FILTER_DINING_DASHBOARD', 'Filter dining dashboard dates' FROM app_pages WHERE page_code='DINING_DASHBOARD';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'FILTER_DINING_REPORT', 'Filter Dining Hall consumption report' FROM app_pages WHERE page_code='DINING_CONSUMPTION_REPORT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'EXPORT_DINING_REPORT', 'Export Dining Hall consumption report' FROM app_pages WHERE page_code='DINING_CONSUMPTION_REPORT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'LOAD_DINING_EDIT', 'Load entries for editing' FROM app_pages WHERE page_code='DINING_CONSUMPTION_EDIT';
+INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
+SELECT page_id, 'SAVE_DINING_EDIT', 'Save selected consumption changes' FROM app_pages WHERE page_code='DINING_CONSUMPTION_EDIT';
 
 INSERT IGNORE INTO app_page_buttons (page_id, button_code, button_name)
 SELECT page_id, 'FILTER_PO', 'Apply report filters' FROM app_pages WHERE page_code='PURCHASE_ORDER_REPORT';
