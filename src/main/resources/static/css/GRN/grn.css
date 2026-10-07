@@ -783,11 +783,11 @@ body.grn-print-mode .grn-shell {
   }
 }
 
-/* GRN forms and tables: teal receipt-slip bands and fine row stripes. */
-body.grn-page, body.po-page.grn-entry-page { --slds-brand: var(--module-grn-accent); --slds-brand-blue: var(--module-grn-accent); --slds-brand-hover: var(--module-grn-header); --slds-brand-blue-hover: var(--module-grn-header); --slds-brand-light: var(--module-grn-soft); --slds-slate-header: var(--module-grn-header); --accent: var(--module-grn-accent); }
-body.po-page.grn-entry-page .po-table-card, .grn-card, .grn-filter-card { border-top: 3px solid var(--module-grn-accent); }
-body.po-page.grn-entry-page .po-filter, .grn-filter-card { background-image: linear-gradient(110deg, var(--module-grn-soft), var(--surface) 62%); }
-body.po-page.grn-entry-page .po-filter-input, .grn-search-row input, .grn-form-grid input, .grn-filter-card input { border-left: 3px solid color-mix(in srgb, var(--module-grn-accent) 58%, var(--border-color)); }
-body.po-page.grn-entry-page .po-table th, .grn-report-table th, .grn-print-table th { background-color: var(--module-grn-header); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-grn-pattern) 12px 14px); }
-.grn-report-table tbody tr:nth-child(even) td, .grn-print-table tbody tr:nth-child(even) td { background-color: var(--module-grn-soft); }
+/* Shared Create INDENT palette and diagonal table pattern. */
+body.grn-page { --slds-brand: var(--module-accent); --slds-brand-blue: var(--module-accent); --slds-brand-hover: var(--palette-blue-hover); --slds-brand-blue-hover: var(--palette-blue-hover); --slds-brand-light: var(--module-accent-soft); --slds-slate-header: var(--module-accent-strong); --accent: var(--module-accent); }
+.grn-card, .grn-filter-card { border-top: 4px solid var(--module-accent); }
+.grn-filter-card { background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
+.grn-search-row input, .grn-form-grid input, .grn-filter-card input { border-left: 3px solid var(--module-accent); }
+.grn-report-table th, .grn-print-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); color: var(--palette-white); }
+.grn-report-table tbody tr:nth-child(even) td, .grn-report-table tbody tr:hover td, .grn-print-table tbody tr:nth-child(even) td { background-color: var(--module-accent-soft); }
 

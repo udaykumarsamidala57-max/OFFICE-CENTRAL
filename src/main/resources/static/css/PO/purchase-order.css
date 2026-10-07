@@ -493,11 +493,11 @@ body.po-print-mode .po-shell { width: 100%; max-width: none; margin: 0; }
   .po-print-table-wrap { overflow: visible; }
 }
 
-/* PO forms and tables: amber ledger accent with a diagonal header motif. */
-body.po-page { --slds-brand: var(--module-po-accent); --slds-brand-blue: var(--module-po-accent); --slds-brand-hover: var(--module-po-header); --slds-brand-blue-hover: var(--module-po-header); --slds-brand-light: var(--module-po-soft); --slds-slate-header: var(--module-po-header); --accent: var(--module-po-accent); }
-body.po-page .po-table-card { border-top: 3px solid var(--module-po-accent); }
-body.po-page .po-filter { border-color: color-mix(in srgb, var(--module-po-accent) 30%, var(--border-color)); background-image: linear-gradient(110deg, var(--module-po-soft), var(--surface) 58%); }
-body.po-page .po-filter-input, body.po-page .po-field input, body.po-page .po-field select, body.po-page .po-field textarea { border-left: 3px solid color-mix(in srgb, var(--module-po-accent) 60%, var(--border-color)); }
-body.po-page .po-table th, body.po-page .po-legacy-table th { background-image: repeating-linear-gradient(135deg, transparent 0 14px, var(--module-po-pattern) 14px 16px); }
-body.po-page .po-table tbody tr:nth-child(even), body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) { background: var(--module-po-soft); }
+/* Shared Create INDENT palette and diagonal table pattern. */
+body.po-page { --slds-brand: var(--module-accent); --slds-brand-blue: var(--module-accent); --slds-brand-hover: var(--palette-blue-hover); --slds-brand-blue-hover: var(--palette-blue-hover); --slds-brand-light: var(--module-accent-soft); --slds-slate-header: var(--module-accent-strong); --accent: var(--module-accent); }
+body.po-page .po-table-card { border-top: 4px solid var(--module-accent); }
+body.po-page .po-filter { border-top: 4px solid var(--module-accent); background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
+body.po-page .po-filter-input, body.po-page .po-field input, body.po-page .po-field select, body.po-page .po-field textarea { border-left: 3px solid var(--module-accent); }
+body.po-page .po-table th, body.po-page .po-legacy-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); }
+body.po-page .po-table tbody tr:nth-child(even), body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) { background: var(--module-accent-soft); }
 

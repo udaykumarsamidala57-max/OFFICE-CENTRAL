@@ -302,12 +302,11 @@ body.inventory-page {
   }
 }
 
-/* Stock forms and tables: green inventory bands and balance-row stripes. */
-body.inventory-page { --slds-brand: var(--module-stock-accent); --slds-brand-blue: var(--module-stock-accent); --slds-brand-hover: var(--module-stock-header); --slds-brand-blue-hover: var(--module-stock-header); --slds-brand-light: var(--module-stock-soft); --slds-slate-header: var(--module-stock-header); --accent: var(--module-stock-accent); }
-.inv-card, .inv-filter { border-top: 3px solid var(--module-stock-accent); }
-.inv-filter { background-image: linear-gradient(110deg, var(--module-stock-soft), var(--surface) 62%); }
-.inv-input { border-left: 3px solid color-mix(in srgb, var(--module-stock-accent) 58%, var(--border-color)); }
-.inv-table th { background-color: var(--module-stock-header); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-stock-pattern) 12px 14px); }
-.inv-table tbody tr:nth-child(even) td { background-color: var(--module-stock-soft); }
-.inv-table tbody tr:hover td { background-color: color-mix(in srgb, var(--module-stock-soft) 55%, var(--surface)); }
+/* Shared Create INDENT palette and diagonal table pattern. */
+body.inventory-page { --slds-brand: var(--module-accent); --slds-brand-blue: var(--module-accent); --slds-brand-hover: var(--palette-blue-hover); --slds-brand-blue-hover: var(--palette-blue-hover); --slds-brand-light: var(--module-accent-soft); --slds-slate-header: var(--module-accent-strong); --accent: var(--module-accent); }
+.inv-card, .inv-filter { border-top: 4px solid var(--module-accent); }
+.inv-filter { background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
+.inv-input { border-left: 3px solid var(--module-accent); }
+.inv-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); }
+.inv-table tbody tr:nth-child(even) td, .inv-table tbody tr:hover td { background-color: var(--module-accent-soft); }
 

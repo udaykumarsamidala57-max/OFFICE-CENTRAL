@@ -348,13 +348,13 @@ button:active {
     }
 }
 
-/* INDENT forms and tables: crisp blue stationery pattern. */
-:root { --page-accent: var(--module-indent-accent); --page-accent-soft: var(--module-indent-soft); --page-pattern: var(--module-indent-pattern); }
-.container:has(#indentForm) { border-top: 4px solid var(--page-accent); background-image: linear-gradient(135deg, var(--page-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
+/* Shared Create INDENT palette and diagonal pattern. */
+:root { --page-accent: var(--module-accent); --page-accent-soft: var(--module-accent-soft); --page-pattern: var(--module-pattern); }
+.container:has(#indentForm) { border-top: 4px solid var(--module-accent); background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
 #indentForm input:not([type="hidden"]), #indentForm select, #indentForm textarea { border-color: var(--palette-border-input); }
-#indentForm input:focus, #indentForm select:focus, #indentForm textarea:focus { border-color: var(--page-accent); box-shadow: 0 0 0 3px var(--palette-focus-soft); }
-#indentForm button, #indentForm input[type="submit"] { border-color: var(--page-accent); }
-.container table thead th { background-color: var(--palette-navy); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--page-pattern) 12px 14px); }
-.container table tbody tr:nth-child(even) td { background-color: var(--page-accent-soft); }
-.container table tbody tr:hover td { background-color: var(--palette-blue-light); }
+#indentForm input:focus, #indentForm select:focus, #indentForm textarea:focus { border-color: var(--module-accent); box-shadow: 0 0 0 3px var(--palette-focus-soft); }
+#indentForm button, #indentForm input[type="submit"] { border-color: var(--module-accent); }
+.container table thead th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); }
+.container table tbody tr:nth-child(even) td { background-color: var(--module-accent-soft); }
+.container table tbody tr:hover td { background-color: var(--module-accent-soft); }
 

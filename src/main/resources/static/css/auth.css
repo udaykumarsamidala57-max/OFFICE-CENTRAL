@@ -197,7 +197,7 @@
     .auth-card { padding: 30px 22px 26px; }
 }
 
-/* Authentication form: blue top rail and restrained field highlights. */
-.slds-auth-card, .auth-card { border-top: 4px solid var(--module-auth-accent); background-image: linear-gradient(135deg, var(--module-indent-soft) 0 8px, var(--palette-white) 8px 16px); background-size: 100% 4px; background-repeat: no-repeat; }
-.slds-input, .auth-field input { border-left: 3px solid color-mix(in srgb, var(--module-auth-accent) 45%, var(--border-color)); }
+/* Shared Create INDENT palette and diagonal form pattern. */
+.slds-auth-card, .auth-card { border-top: 4px solid var(--module-accent); background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
+.slds-input, .auth-field input { border-left: 3px solid var(--module-accent); }
 

@@ -53,9 +53,8 @@
 @media(max-width:1100px){.approval-page{width:99%}.indent-header{gap:6px 9px;padding:8px 10px}.inner-table{min-width:1050px}}
 @media(max-width:620px){.approval-content{padding:72px 6px 10px}.page-heading h1{font-size:1.1rem}.indent-card{margin-bottom:12px;border-radius:7px}.indent-header{justify-content:flex-start;gap:7px 10px;padding:9px 10px}.indent-header>div{flex:1 1 calc(50% - 10px);min-width:0;text-align:left}.indent-header .indent-no{flex-basis:100%;min-width:0}.table-scroll{overscroll-behavior-x:contain}.inner-table{min-width:1020px}.inner-table th,.inner-table td{padding:7px 5px}}
 
-/* INDENT approvals: blue-striped review grid and highlighted action fields. */
-.inner-table th { background-color: var(--palette-navy); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-indent-pattern) 12px 14px); color: var(--palette-white); }
-.inner-table tbody tr:nth-child(even) td { background-color: var(--module-indent-soft); }
-.inner-table tbody tr:hover td { background-color: var(--palette-blue-light); }
-.final-action select { border-left: 3px solid var(--module-indent-accent); }
+/* Shared Create INDENT table and form treatment. */
+.inner-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); color: var(--palette-white); }
+.inner-table tbody tr:nth-child(even) td, .inner-table tbody tr:hover td { background-color: var(--module-accent-soft); }
+.final-action select { border-left: 3px solid var(--module-accent); }
 
