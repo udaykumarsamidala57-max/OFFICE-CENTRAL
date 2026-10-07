@@ -1,0 +1,95 @@
+:root {
+    --procurement-brand: var(--palette-brand-slds);
+    --procurement-brand-hover: var(--palette-brand-slds-hover);
+    --procurement-brand-soft: var(--palette-brand-slds-light);
+    --procurement-header: var(--palette-slate-header);
+    --procurement-text: var(--palette-slds-text);
+    --procurement-muted: var(--palette-text-muted);
+    --procurement-border: var(--palette-neutral-slds-border);
+    --procurement-border-soft: var(--palette-border-subtle);
+    --procurement-row: var(--palette-brand-slds-light);
+    --procurement-focus: var(--palette-focus-slds);
+    --procurement-shadow: var(--palette-shadow-card);
+}
+body {
+    color: var(--procurement-text);
+    font-family: var(--font-body);
+}
+body :is(input:not([type="hidden"]), select, textarea) {
+    border-color: var(--procurement-border);
+    border-radius: 4px;
+    background-color: var(--palette-white);
+    color: var(--procurement-text);
+    font-family: var(--font-body);
+}
+body :is(input:not([type="hidden"]), select, textarea):focus {
+    border-color: var(--procurement-brand);
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--procurement-focus);
+}
+:where(.po-table-card, .grn-card, .grn-filter-card, .inv-card, .inv-filter, .filter-panel, .dh-filter, #diningForm, .filters, .access-filter, .page-form, .button-form, .permission-form, .slds-auth-card, .auth-card) {
+    border-color: var(--procurement-border);
+    border-radius: 4px;
+    box-shadow: var(--procurement-shadow);
+}
+:is(.po-table-card, .grn-card, .grn-filter-card, .inv-card, .inv-filter, .filter-panel, .dh-filter, #diningForm, .filters, .access-filter, .page-form, .button-form, .permission-form, .slds-auth-card, .auth-card) {
+    border-top: 4px solid var(--procurement-brand);
+    background-image: linear-gradient(135deg, var(--procurement-brand-soft) 0 10px, transparent 10px 20px);
+    background-size: 100% 5px;
+    background-repeat: no-repeat;
+}
+:is(.po-filter-input, .grn-search-row input, .grn-form-grid input, .grn-filter-card input, .inv-input, .form-input, .form-select, .dh-form-grid input, .dh-form-grid select, .dh-form-grid textarea, .slds-input, .auth-field input) {
+    border-left: 3px solid var(--procurement-brand);
+}
+:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--palette-white);
+    color: var(--procurement-text);
+    font-family: var(--font-body);
+    font-size: .8125rem;
+}
+:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) th {
+    padding: 12px;
+    border-bottom: 2px solid var(--procurement-border);
+    background-color: var(--procurement-header);
+    background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px);
+    color: var(--palette-white);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--procurement-border-soft);
+    color: var(--procurement-text);
+    vertical-align: middle;
+}
+:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) tbody tr:nth-child(even) td {
+    background-color: var(--procurement-row);
+}
+:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) tbody tr:hover td {
+    background-color: var(--procurement-brand-soft);
+}
+:is(.po-button.primary, .po-button.excel, .grn-button.primary, .inv-button.primary, .dh-button.primary, .btn-brand, .primary-action, .catalog-button.primary) {
+    border-color: var(--procurement-brand);
+    background: var(--procurement-brand);
+    color: var(--palette-white);
+}
+:is(.po-button.primary, .po-button.excel, .grn-button.primary, .inv-button.primary, .dh-button.primary, .btn-brand, .primary-action, .catalog-button.primary):hover {
+    border-color: var(--procurement-brand-hover);
+    background: var(--procurement-brand-hover);
+    color: var(--palette-white);
+}
+:is(.po-button.secondary, .grn-button.secondary, .inv-button.secondary, .dh-button.secondary, .button-secondary, .catalog-button.secondary) {
+    border-color: var(--procurement-border);
+    background: var(--palette-white);
+    color: var(--procurement-brand);
+}
+@media print {:is(.po-table, .po-legacy-table, .po-items-table, .grn-report-table, .grn-print-table, .inner-table, #dataTable, .inv-table, .calendar-table, .modal-table, .dh-table, .dh-calendar, .dh-modal-table, .grn-print-info, .print-table, table) th {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }}

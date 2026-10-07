@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="|Indent ${indentNumber}|">Indent</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/INDENT/indent-list.css}">
+    
     <style>
         .print-sheet { max-width: 850px; margin: 24px auto; padding: 30px; background: var(--surface); border: 1px solid var(--border-color); }
         .print-title { padding: 12px 0; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); text-align: center; text-transform: uppercase; }
@@ -21,6 +20,9 @@
         @media (max-width: 600px) { .print-sheet { margin: 10px auto; padding: 14px; } .print-meta { grid-template-columns: 1fr; } .print-meta div:last-child { grid-column: auto; } }
         @media print { body { padding: 0; background: var(--palette-white); } .print-sheet { margin: 0; padding: 0; border: 0; } .print-actions, .session-context { display: none !important; } }
     </style>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/INDENT/indent-list.css}">
+    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
 </head>
 <body>
 <main class="print-sheet" th:if="${!#lists.isEmpty(items)}">

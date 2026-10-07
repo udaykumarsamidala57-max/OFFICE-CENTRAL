@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Dining Hall Consumption</title>
-  <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}"></head>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}">
+    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+</head>
 <body class="app-body dining-page"><div th:replace="~{fragments/app-header :: appHeader('dining-entry')}"></div>
 <main class="app-main-content dining-content"><div class="dining-shell">
   <div class="dining-heading"><div><span class="dining-eyebrow">DINING HALL OPERATIONS</span><h1>Consumption Entry</h1></div><div class="dining-heading-actions"><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a><a class="dh-button secondary" th:href="@{/dining-hall/consumption/report}">Consumption Report</a><a class="dh-button secondary" th:href="@{/dining-hall/consumption/edit}">Edit Entries</a></div></div>

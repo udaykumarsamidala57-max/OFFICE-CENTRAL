@@ -1,8 +1,3 @@
-/* ==========================================================================
-   SALESFORCE LIGHTNING DESIGN SYSTEM (SLDS) - PURCHASE ORDER SYSTEM
-   ========================================================================== */
-
-/* Base Body Override */
 body.po-page {
   margin: 0;
   padding: 0;
@@ -14,7 +9,6 @@ body.po-page {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- CENTERED SCREEN LAYOUT --- */
 body.po-page .po-content { 
   display: flex;
   justify-content: center;
@@ -22,14 +16,12 @@ body.po-page .po-content {
   box-sizing: border-box;
   padding: 82px 24px 32px; 
 }
-
 body.po-page .po-shell { 
   width: 100%;
   max-width: 1550px; 
   margin: 0 auto;
 }
 
-/* --- OBJECT HEADER / RECORD HEADER --- */
 body.po-page .po-object-header {
   display: flex;
   align-items: center;
@@ -42,13 +34,11 @@ body.po-page .po-object-header {
   background: var(--surface);
   box-shadow: var(--shadow-header);
 }
-
 body.po-page .po-object-title {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
 body.po-page .po-object-icon {
   display: grid;
   width: 2.75rem;
@@ -61,7 +51,6 @@ body.po-page .po-object-icon {
   font-size: 1.25rem;
   font-weight: 700;
 }
-
 body.po-page .po-object-subtitle {
   display: block;
   color: var(--text-muted);
@@ -70,8 +59,7 @@ body.po-page .po-object-subtitle {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-
-body.po-page .po-heading h1, 
+body.po-page .po-heading h1,
 body.po-page .po-object-header h1 {
   margin: 0;
   color: var(--slds-slate-dark);
@@ -80,7 +68,6 @@ body.po-page .po-object-header h1 {
   letter-spacing: -0.01em;
 }
 
-/* --- MESSAGES --- */
 .po-message {
   margin-bottom: 1rem;
   padding: 10px 14px;
@@ -89,20 +76,17 @@ body.po-page .po-object-header h1 {
   font-size: 0.8125rem;
   font-weight: 600;
 }
-
 .po-message.success {
   border-color: var(--palette-approved-border);
   background: var(--palette-approved-light);
   color: var(--palette-approved);
 }
-
 .po-message.error {
   border-color: var(--palette-danger-border);
   background: var(--palette-danger-bg);
   color: var(--danger);
 }
 
-/* --- FILTER BAR (Vertically Aligned) --- */
 body.po-page .po-filter {
   display: flex;
   align-items: flex-end;
@@ -114,7 +98,6 @@ body.po-page .po-filter {
   background: var(--surface);
   box-shadow: var(--shadow-card);
 }
-
 body.po-page .po-filter label {
   display: flex;
   flex-direction: column;
@@ -123,7 +106,6 @@ body.po-page .po-filter label {
   font-size: 0.75rem;
   font-weight: 700;
 }
-
 body.po-page .po-filter-input {
   height: 36px;
   min-width: 180px;
@@ -136,24 +118,21 @@ body.po-page .po-filter-input {
   font-size: 0.8125rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
 .po-filter-buttons {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Focus states */
-body.po-page .po-filter input:focus, 
-body.po-page .po-field input:focus, 
-body.po-page .po-field select:focus, 
+body.po-page .po-filter input:focus,
+body.po-page .po-field input:focus,
+body.po-page .po-field select:focus,
 body.po-page .po-field textarea:focus {
   outline: 0;
   border-color: var(--slds-brand);
   box-shadow: 0 0 0 3px var(--palette-focus-slds);
 }
 
-/* --- CARDS & TABLES (PERFECT CENTER ALIGNMENT) --- */
 body.po-page .po-table-card {
   overflow: hidden;
   border: 1px solid var(--border-color);
@@ -161,13 +140,11 @@ body.po-page .po-table-card {
   background: var(--surface);
   box-shadow: var(--shadow-card);
 }
-
 .po-table-scroll {
   width: 100%;
   overflow-x: auto;
 }
-
-.po-table, 
+.po-table,
 .po-legacy-table {
   width: 100%;
   border-collapse: collapse;
@@ -175,8 +152,7 @@ body.po-page .po-table-card {
   font-size: 0.8125rem;
 }
 
-/* Table Headers (Dark Slate, Center Aligned) */
-body.po-page .po-table th, 
+body.po-page .po-table th,
 body.po-page .po-legacy-table th {
   padding: 12px;
   border-bottom: 2px solid var(--border-color);
@@ -190,8 +166,7 @@ body.po-page .po-legacy-table th {
   white-space: nowrap;
 }
 
-/* Table Cells (Middle & Center Aligned) */
-body.po-page .po-table td, 
+body.po-page .po-table td,
 body.po-page .po-legacy-table td {
   padding: 10px 12px;
   border-top: 1px solid var(--border-subtle);
@@ -201,43 +176,36 @@ body.po-page .po-legacy-table td {
   vertical-align: middle;
 }
 
-/* Align text-heavy columns to left for legibility */
 body.po-page .po-vendor-cell,
 body.po-page .po-item-description {
   text-align: left !important;
 }
 
-/* Right-align numeric totals */
 body.po-page .po-amount-cell {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   text-align: right !important;
 }
-
 body.po-page .po-number-cell {
   color: var(--slds-brand);
   font-weight: 700;
 }
 
-/* Alternate Rows & Hover */
-body.po-page .po-table tbody tr:nth-child(even), 
+body.po-page .po-table tbody tr:nth-child(even),
 body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) {
   background: var(--palette-dining-neutral);
 }
-
-body.po-page .po-table tbody tr:hover, 
+body.po-page .po-table tbody tr:hover,
 body.po-page .po-legacy-table tbody tr.po-master-row:hover td {
   background: var(--slds-brand-light);
 }
 
-/* --- BUTTONS & ACTIONS --- */
 .po-action-group {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
-
 body.po-page .po-button {
   display: inline-flex;
   min-height: 36px;
@@ -253,56 +221,47 @@ body.po-page .po-button {
   cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
-
-body.po-page .po-button.primary, 
+body.po-page .po-button.primary,
 body.po-page .po-button.excel {
   border-color: var(--slds-brand);
   background: var(--slds-brand);
   color: var(--palette-white);
 }
-
-body.po-page .po-button.primary:hover, 
+body.po-page .po-button.primary:hover,
 body.po-page .po-button.excel:hover {
   border-color: var(--slds-brand-hover);
   background: var(--slds-brand-hover);
   color: var(--palette-white);
 }
-
 body.po-page .po-button.secondary {
   border-color: var(--border-color);
   background: var(--palette-white);
   color: var(--slds-brand);
 }
-
 body.po-page .po-button.secondary:hover {
   border-color: var(--slds-brand);
   background: var(--slds-brand-light);
   color: var(--slds-brand-hover);
 }
-
 body.po-page .po-button.danger {
   border-color: var(--palette-danger-border);
   background: var(--palette-white);
   color: var(--danger);
 }
-
 body.po-page .po-button.danger:hover {
   background: var(--danger);
   color: var(--palette-white);
 }
-
 body.po-page .po-button.small {
   min-height: 30px;
   padding: 0 10px;
   font-size: 0.75rem;
 }
-
 body.po-page .po-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* --- BADGES --- */
 body.po-page .po-badge {
   display: inline-flex;
   align-items: center;
@@ -316,28 +275,23 @@ body.po-page .po-badge {
   font-weight: 700;
   white-space: nowrap;
 }
-
 body.po-page .po-badge.approved {
   border-color: var(--palette-approved-border);
   background: var(--palette-approved-light);
   color: var(--palette-approved);
 }
-
 body.po-page .po-badge.neutral {
   border-color: var(--palette-neutral-border);
   background: var(--palette-neutral-bg);
   color: var(--text-muted);
 }
 
-/* --- NESTED EXPANDABLE ITEMS BLOCK --- */
 .po-nested-row {
   background: var(--surface-alt);
 }
-
 .po-nested-cell {
   padding: 0 !important;
 }
-
 .po-items-block {
   box-sizing: border-box;
   margin: 10px 14px;
@@ -348,7 +302,6 @@ body.po-page .po-badge.neutral {
   background: var(--palette-white);
   box-shadow: var(--shadow-card);
 }
-
 .po-items-block h2 {
   margin: 0 0 10px;
   padding-bottom: 6px;
@@ -358,13 +311,11 @@ body.po-page .po-badge.neutral {
   font-weight: 700;
   text-align: left;
 }
-
 .po-items-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.75rem;
 }
-
 .po-items-table th {
   padding: 8px 10px;
   border: 1px solid var(--border-color);
@@ -374,21 +325,19 @@ body.po-page .po-badge.neutral {
   font-weight: 700;
   text-align: center;
 }
-
 .po-items-table td {
   padding: 8px 10px;
   border: 1px solid var(--border-subtle);
   background: var(--palette-white);
   text-align: center;
 }
-
 .po-balance-cell.balance-pending {
   color: var(--palette-warning);
   font-weight: 700;
 }
 
-/* --- EMPTY / FILTER STATES --- */
-.po-empty, .po-filter-empty {
+.po-empty,
+.po-filter-empty {
   padding: 16px !important;
   color: var(--text-muted);
   font-weight: 600;
@@ -401,22 +350,17 @@ body.po-page .po-badge.neutral {
   background: var(--palette-danger-bg);
   color: var(--danger);
 }
-
-/* --- RESPONSIVE ADJUSTMENTS --- */
-@media (max-width: 768px) {
-  body.po-page .po-content { 
+@media (max-width: 768px) {.po-content { 
     padding: 76px 12px 16px; 
   }
-  body.po-page .po-filter {
+.po-filter {
     flex-direction: column;
     align-items: stretch;
   }
-  body.po-page .po-filter-input {
+.po-filter-input {
     width: 100%;
-  }
-}
+  }}
 
-/* PInventory PrintPO.jsp document layout */
 body.po-print-mode {
   box-sizing: border-box;
   padding: 30px 0;
@@ -425,7 +369,9 @@ body.po-print-mode {
   font-family: var(--font-document);
   line-height: 1.5;
 }
-body.po-print-mode *, body.po-print-mode *::before, body.po-print-mode *::after { box-sizing: border-box; }
+body.po-print-mode *,
+body.po-print-mode *::before,
+body.po-print-mode *::after { box-sizing: border-box; }
 body.po-print-mode .app-main-content.po-print-content { width: 100%; max-width: none; margin: 0; padding: 0; }
 body.po-print-mode .po-shell { width: 100%; max-width: none; margin: 0; }
 .po-print-sheet {
@@ -468,36 +414,38 @@ body.po-print-mode .po-shell { width: 100%; max-width: none; margin: 0; }
 .po-print-signatory strong { display: block; margin-bottom: 45px; color: var(--palette-document-muted); font-size: 12px; }
 .po-print-signatory span { display: inline-block; padding-top: 4px; border-top: 1px solid var(--palette-slds-text); font-size: 12px; font-weight: 600; }
 .po-print-actions { display: flex; justify-content: center; gap: 10px; margin-top: 30px; }
-@media (max-width: 760px) {
-  body.po-print-mode { padding: 12px 0; }
-  .po-print-sheet { padding: 20px 14px; }
-  .po-print-details-grid { grid-template-columns: 1fr; gap: 10px; }
-  .po-print-table-wrap { overflow-x: auto; }
-  .po-print-table { min-width: 790px; }
-  .po-print-summary { width: min(100%, 280px); }
-  .po-print-signatures { gap: 18px; }
-  .po-print-signatory strong { max-width: 190px; margin-bottom: 35px; }
-}
+@media (max-width: 760px) {body.po-print-mode { padding: 12px 0; }
+.po-print-sheet { padding: 20px 14px; }
+.po-print-details-grid { grid-template-columns: 1fr; gap: 10px; }
+.po-print-table-wrap { overflow-x: auto; }
+.po-print-table { min-width: 790px; }
+.po-print-summary { width: min(100%, 280px); }
+.po-print-signatures { gap: 18px; }
+.po-print-signatory strong { max-width: 190px; margin-bottom: 35px; }}
 @page { size: A4 portrait; margin: 12mm; }
-@media print {
-  body.po-print-mode { margin: 0; padding: 0; background: var(--palette-white); }
-  body.po-print-mode .app-shell-header, body.po-print-mode .app-header,
-  .po-print-actions { display: none !important; }
-  body.po-print-mode .app-main-content.po-print-content, body.po-print-mode .po-shell { width: 100%; max-width: 100%; margin: 0; padding: 0; }
-  .po-print-sheet { width: 100%; max-width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
-  .po-print-header img { max-height: 75px; }
-  .po-print-table th { background: var(--palette-document-surface) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .po-print-table { font-size: 9px; }
-  .po-print-table th, .po-print-table td { padding: 5px 3px; }
-  .po-print-approved-stamp { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .po-print-table-wrap { overflow: visible; }
-}
+@media print {body.po-print-mode { margin: 0; padding: 0; background: var(--palette-white); }
+body.po-print-mode .app-shell-header,
+body.po-print-mode .app-header,
+.po-print-actions { display: none !important; }
+body.po-print-mode .app-main-content.po-print-content,
+body.po-print-mode .po-shell { width: 100%; max-width: 100%; margin: 0; padding: 0; }
+.po-print-sheet { width: 100%; max-width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+.po-print-header img { max-height: 75px; }
+.po-print-table th { background: var(--palette-document-surface) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.po-print-table { font-size: 9px; }
+.po-print-table th,
+.po-print-table td { padding: 5px 3px; }
+.po-print-approved-stamp { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.po-print-table-wrap { overflow: visible; }}
 
-/* Shared Create INDENT palette and diagonal table pattern. */
 body.po-page { --slds-brand: var(--module-accent); --slds-brand-blue: var(--module-accent); --slds-brand-hover: var(--palette-blue-hover); --slds-brand-blue-hover: var(--palette-blue-hover); --slds-brand-light: var(--module-accent-soft); --slds-slate-header: var(--module-accent-strong); --accent: var(--module-accent); }
 body.po-page .po-table-card { border-top: 4px solid var(--module-accent); }
 body.po-page .po-filter { border-top: 4px solid var(--module-accent); background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
-body.po-page .po-filter-input, body.po-page .po-field input, body.po-page .po-field select, body.po-page .po-field textarea { border-left: 3px solid var(--module-accent); }
-body.po-page .po-table th, body.po-page .po-legacy-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); }
-body.po-page .po-table tbody tr:nth-child(even), body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) { background: var(--module-accent-soft); }
-
+body.po-page .po-filter-input,
+body.po-page .po-field input,
+body.po-page .po-field select,
+body.po-page .po-field textarea { border-left: 3px solid var(--module-accent); }
+body.po-page .po-table th,
+body.po-page .po-legacy-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); }
+body.po-page .po-table tbody tr:nth-child(even),
+body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) { background: var(--module-accent-soft); }

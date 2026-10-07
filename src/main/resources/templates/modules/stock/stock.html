@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Current Stock</title>
-  <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}"></head>
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}">
+    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+</head>
 <body class="app-body inventory-page"><div th:replace="~{fragments/app-header :: appHeader('stock')}"></div>
 <main class="app-main-content inventory-content"><div class="inventory-shell">
   <div class="inventory-heading"><div><span class="inventory-eyebrow">INVENTORY POSITION</span><h1>Stock on Hand</h1></div><a class="inv-button secondary" th:href="@{/stock/report}">Stock Report</a></div>

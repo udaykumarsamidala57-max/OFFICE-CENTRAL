@@ -5,6 +5,17 @@
 
     if (!toggle || !overlay || !sidebar) return;
 
+    // Match PInventory: opening a module closes any other expanded module.
+    const moduleGroups = sidebar.querySelectorAll('.nav-module');
+    moduleGroups.forEach((group) => {
+        group.addEventListener('toggle', () => {
+            if (!group.open) return;
+            moduleGroups.forEach((other) => {
+                if (other !== group && other.open) other.open = false;
+            });
+        });
+    });
+
     const updateExpanded = () => {
         const isOpen = document.body.classList.contains('sidebar-open');
         toggle.setAttribute('aria-expanded', String(isOpen));

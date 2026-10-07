@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GRN Report</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}"><link rel="stylesheet" th:href="@{/css/app-shell.css}"><link rel="stylesheet" th:href="@{/css/GRN/grn.css(v=20261007)}">
+    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/GRN/grn.css(v=20261007)}">
+    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
 </head>
 <body class="app-body grn-page" th:classappend="${printGrn != null} ? ' grn-print-mode' : ''">
 <th:block th:if="${printGrn == null}"><div th:replace="~{fragments/app-header :: appHeader('grn-report')}"></div></th:block>

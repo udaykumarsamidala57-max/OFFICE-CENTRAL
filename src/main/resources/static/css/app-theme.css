@@ -1,105 +1,110 @@
-/* Single source of truth for every application color. Load before page styles. */
+/* Single source of truth for application colors, typography, and depth variables */
 :root {
-    /* Approval-page palette */
-    --palette-page: #f1f5f9;
-    --palette-surface: #ffffff;
-    --palette-surface-subtle: #f8fafc;
-    --palette-surface-row: #f9fbfc;
-    --palette-surface-even: #fcfdfe;
-    --palette-surface-header-group: #e9eef4;
-    --palette-surface-hover: #f1f5f9;
-    --palette-surface-readonly: #f1f5f9;
-    --palette-navy: #0f2a4d;
-    --palette-navy-deep: #06264a;
+    /* Brand & Primary Palette - Slate, Navy & Indigo Accent */
+    --palette-navy: #0f172a;
+    --palette-navy-deep: #020617;
+    --palette-slate: #1e293b;
+    --palette-slate-header: #0f172a;
     --palette-blue: #2563eb;
     --palette-blue-hover: #1d4ed8;
     --palette-blue-focus: #3b82f6;
-    --palette-blue-light: #eef4fe;
-    --palette-blue-border: #aacbfa;
-    --palette-gold-edge: #fbbf24;
-    --palette-text: #334155;
-    --palette-text-strong: #0f172a;
+    --palette-blue-light: #eff6ff;
+    --palette-blue-border: #bfdbfe;
+    
+    /* Unique Accent Edge */
+    --palette-gold-edge: #f59e0b;
+
+    /* Base Surfaces & Backgrounds */
+    --palette-page: #f8fafc;
+    --palette-surface: #ffffff;
+    --palette-surface-subtle: #f1f5f9;
+    --palette-surface-row: #f8fafc;
+    --palette-surface-even: #f8fafc;
+    --palette-surface-hover: #e2e8f0;
+    --palette-surface-readonly: #f1f5f9;
+    --palette-neutral-bg: #f8fafc;
+    --palette-company-bg: #f1f5f9;
+    --palette-avatar-bg: #e2e8f0;
+    --palette-avatar-border: #cbd5e1;
+
+    /* Typography Colors */
+    --palette-text: #0f172a;
+    --palette-text-strong: #020617;
     --palette-text-muted: #64748b;
     --palette-text-secondary: #475569;
+    --palette-text-label: #334155;
     --palette-text-on-dark: #f8fafc;
-    --palette-text-on-dark-muted: #cbd5e1;
-    --palette-border: #e2e8f0;
-    --palette-border-light: #e8edf2;
-    --palette-border-mobile: #edf0f3;
+    --palette-text-on-dark-muted: #94a3b8;
+
+    /* Borders & Dividers */
+    --palette-border: #cbd5e1;
+    --palette-border-light: #e2e8f0;
+    --palette-border-mobile: #e2e8f0;
     --palette-border-input: #cbd5e1;
-    --palette-border-card: #d7e0e8;
-    --palette-success: #2e844a;
-    --palette-success-hover: #1b5e30;
+    --palette-border-card: #e2e8f0;
+    --palette-border-subtle: #f1f5f9;
+    --palette-neutral-border: #cbd5e1;
+
+    /* Status Colors: Success & Approved */
+    --palette-success: #059669;
+    --palette-success-hover: #047857;
     --palette-success-action: #10b981;
     --palette-success-action-hover: #059669;
-    --palette-success-light: #eaf5ea;
-    --palette-success-border: #a3d9b1;
-    --palette-approved: #27643c;
-    --palette-approved-light: #eef6f0;
-    --palette-approved-border: #c7ddcc;
-    --palette-danger: #9b2830;
-    --palette-danger-dark: #8b1e1e;
-    --palette-danger-light: #fff1f1;
-    --palette-danger-border: #e5c9cb;
-    --palette-danger-light-auth: #fff1f0;
-    --palette-danger-border-auth: #efc3be;
-    --palette-warning: #92400e;
-    --palette-warning-light: #fef3c7;
-    --palette-warning-border: #f59e0b;
-    --palette-purchase: #92400e;
-    --palette-issue: #166534;
+    --palette-success-light: #ecfdf5;
+    --palette-success-border: #a7f3d0;
+    --palette-approved: #047857;
+    --palette-approved-light: #ecfdf5;
+    --palette-approved-border: #a7f3d0;
+
+    /* Status Colors: Danger & Errors */
+    --palette-danger: #dc2626;
+    --palette-danger-dark: #991b1b;
+    --palette-danger-light: #fef2f2;
+    --palette-danger-border: #fecaca;
+    --palette-danger-light-auth: #fef2f2;
+    --palette-danger-border-auth: #fecaca;
+
+    /* Status Colors: Warning & Purchasing */
+    --palette-warning: #d97706;
+    --palette-warning-light: #fffbeb;
+    --palette-warning-border: #fde68a;
+    --palette-purchase: #b45309;
+    --palette-issue: #047857;
     --palette-issue-light: #dcfce7;
-    --palette-green-auth: #176344;
-    --palette-green-auth-light: #edfaf3;
-    --palette-green-auth-border: #b6e6cb;
-    --palette-neutral-bg: #f3f6f8;
-    --palette-neutral-border: #d5dde6;
-    --palette-neutral-hover: #9aaaba;
-    --palette-company-bg: #f7f9fb;
-    --palette-avatar-bg: #edf5fb;
-    --palette-avatar-border: #d8e7f3;
-    --palette-sidebar-icon: #b9d9f2;
-    --palette-sidebar-link: #c9e5ff;
+
+    /* Auth Greens & Sidebar Accents */
+    --palette-green-auth: #047857;
+    --palette-green-auth-light: #ecfdf5;
+    --palette-green-auth-border: #a7f3d0;
+    --palette-sidebar-icon: #94a3b8;
+    --palette-sidebar-link: #cbd5e1;
+
+    /* Universal Neutrals */
     --palette-white: #ffffff;
     --palette-black: #000000;
     --palette-transparent: transparent;
-    --palette-print-bg: #eeeeee;
-    --palette-print-border: #bbbbbb;
-    --palette-print-text: #111111;
-    --palette-danger-brand: #ea001e;
-    --palette-danger-brand-hover: #c9001a;
-    --palette-purple: #7f86e1;
-    --palette-danger-border-soft: rgba(153, 27, 27, .25);
-    --palette-white-055: rgba(255, 255, 255, .055);
-    --palette-input-shadow: rgba(31, 22, 21, .06);
+    --palette-print-bg: #f8fafc;
+    --palette-print-border: #cbd5e1;
+    --palette-print-text: #020617;
 
-    /* Alpha colors and shadows are centralized here as well. */
-    --palette-focus-ring: rgba(59, 130, 246, .2);
-    --palette-focus-soft: rgba(37, 99, 235, .2);
-    --palette-blue-glow: rgba(37, 99, 235, .12);
-    --palette-overlay: rgba(0, 0, 0, .42);
-    --palette-overlay-soft: rgba(0, 0, 0, .06);
-    --palette-overlay-medium: rgba(0, 0, 0, .08);
-    --palette-overlay-strong: rgba(0, 0, 0, .1);
-    --palette-overlay-shadow: rgba(0, 0, 0, .12);
-    --palette-white-05: rgba(255, 255, 255, .05);
-    --palette-white-09: rgba(255, 255, 255, .09);
-    --palette-white-12: rgba(255, 255, 255, .12);
-    --palette-white-14: rgba(255, 255, 255, .14);
-    --palette-white-20: rgba(255, 255, 255, .20);
-    --palette-white-58: rgba(255, 255, 255, .58);
-    --palette-white-60: rgba(255, 255, 255, .6);
-    --palette-white-64: rgba(255, 255, 255, .64);
-    --palette-white-82: rgba(255, 255, 255, .82);
-    --palette-navy-shadow: rgba(15, 42, 77, .13);
-    --palette-navy-soft-shadow: rgba(15, 42, 77, .06);
+    /* Shadows & Glows */
+    --palette-focus-ring: rgba(37, 99, 235, 0.2);
+    --palette-focus-soft: rgba(37, 99, 235, 0.15);
+    --palette-blue-glow: rgba(37, 99, 235, 0.1);
+    --palette-overlay: rgba(15, 23, 42, 0.6);
+    --palette-overlay-soft: rgba(0, 0, 0, 0.04);
+    --palette-overlay-medium: rgba(0, 0, 0, 0.06);
+    --palette-overlay-strong: rgba(0, 0, 0, 0.08);
+    --palette-overlay-shadow: rgba(0, 0, 0, 0.1);
+    --palette-navy-shadow: rgba(15, 23, 42, 0.15);
+    --palette-navy-soft-shadow: rgba(15, 23, 42, 0.05);
 
-    /* Shared semantic aliases */
+    /* Semantic Aliases */
     --bg-main: var(--palette-page);
     --surface: var(--palette-surface);
     --text-main: var(--palette-text);
     --text-muted: var(--palette-text-muted);
-    --border-color: var(--palette-border);
+    --border-color: var(--palette-border-light);
     --border-focus: var(--palette-blue);
     --primary: var(--palette-navy);
     --primary-hover: var(--palette-blue-hover);
@@ -112,105 +117,33 @@
     --danger-hover: var(--palette-danger-dark);
     --warning: var(--palette-warning);
     --info: var(--palette-blue);
-    --purple: var(--palette-purple);
-    --table-header: var(--palette-surface-subtle);
-    --row-hover: var(--palette-surface-hover);
-    --shadow-sm: 0 1px 3px var(--palette-overlay-soft), 0 1px 2px var(--palette-overlay-soft);
-    --shadow-md: 0 6px 18px var(--palette-navy-soft-shadow);
-    --radius: 6px;
-    --transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --table-header: var(--palette-slate-header);
+    --row-hover: var(--palette-blue-light);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-header: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    
+    --radius: 8px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --theme-focus: var(--palette-focus-soft);
-    --font-body: "Segoe UI", Arial, sans-serif;
-    --font-heading: Georgia, "Times New Roman", serif;
+    
+    --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-document: "Inter", var(--font-body);
 
-    /* Shared SLDS palette used by PO, GRN, stock, and authentication pages. */
-    --palette-surface-alt: #f3f5f8;
-    --palette-border-subtle: #e5e5e5;
-    --palette-text-label: #3e3e3e;
-    --palette-slate: #182b49;
-    --palette-slate-header: #032d60;
-    --palette-brand-slds: #0176d3;
-    --palette-brand-slds-hover: #014486;
-    --palette-brand-slds-active: #013262;
-    --palette-brand-slds-light: #f3f8fe;
-    --palette-approved-slds-light: #e6f8f0;
-    --palette-approved-slds-border: #45c65a;
-    --palette-approved-slds: #2e844a;
-    --palette-approved-slds-hover: #1c532e;
-    --palette-warning-slds-light: #fef8e7;
-    --palette-warning-slds-border: #dd7a01;
-    --palette-warning-slds: #a95800;
-    --palette-danger-slds-light: #fef1f1;
-    --palette-danger-slds-border: #ea001e;
-    --palette-danger-slds: #ba0517;
-    --palette-neutral-slds: #f3f5f8;
-    --palette-neutral-slds-border: #c9c9c9;
-    --palette-shadow-card: 0 2px 4px 0 rgba(0, 0, 0, .10);
-    --palette-shadow-header: 0 2px 2px 0 rgba(0, 0, 0, .10);
-
-    /* Shared semantic aliases for the SLDS component pages. */
-    --slds-brand: var(--palette-brand-slds);
-    --slds-brand-blue: var(--palette-brand-slds);
-    --slds-brand-hover: var(--palette-brand-slds-hover);
-    --slds-brand-blue-hover: var(--palette-brand-slds-hover);
-    --slds-brand-active: var(--palette-brand-slds-active);
-    --slds-brand-light: var(--palette-brand-slds-light);
-    --slds-brand-header: var(--bg-main);
-    --slds-brand-accent: var(--accent);
-    --slds-slate-dark: var(--palette-slate);
-    --slds-slate-header: var(--palette-slate-header);
-    --slds-text-heading: var(--text-main);
-    --slds-text-label: var(--text-muted);
-    --slds-surface: var(--surface);
-    --slds-border-light: var(--border-color);
-    --slds-radius: var(--radius);
-    --slds-shadow-elevation: var(--shadow-md);
-    --text-label: var(--palette-text-label);
-    --surface-alt: var(--palette-surface-alt);
-    --border-subtle: var(--palette-border-subtle);
-    --border-strong: var(--palette-border-input);
-    --shadow-card: var(--palette-shadow-card);
-    --shadow-header: var(--palette-shadow-header);
-    --palette-approved-light: var(--palette-approved-slds-light);
-    --palette-approved-border: var(--palette-approved-slds-border);
-    --palette-approved: var(--palette-approved-slds);
-    --palette-approved-hover: var(--palette-approved-slds-hover);
-    --palette-warning-light: var(--palette-warning-slds-light);
-    --palette-warning-border: var(--palette-warning-slds-border);
-    --palette-warning: var(--palette-warning-slds);
-    --palette-danger-bg: var(--palette-danger-slds-light);
-    --palette-danger-light: var(--palette-danger-slds-light);
-    --palette-danger-border: var(--palette-danger-slds-border);
-    --danger: var(--palette-danger-slds);
-    --palette-neutral-bg: var(--palette-neutral-slds);
-    --palette-neutral-border: var(--palette-neutral-slds-border);
-
-    /* One shared accent and pattern for forms and tables across every module. */
+    /* Module Accents */
     --module-accent: var(--palette-blue);
     --module-accent-strong: var(--palette-navy);
     --module-accent-soft: var(--palette-blue-light);
-    --module-pattern: rgba(37, 99, 235, .16);
-    /* Dining Hall semantic colors use the same application palette. */
-    --bg-body: var(--palette-page);
-    --card-bg: var(--palette-surface);
-    --text-heading: var(--palette-text-strong);
-    --text-body: var(--palette-text);
-    --brand-primary: var(--palette-navy);
-    --brand-accent: var(--palette-blue);
-    --brand-light: var(--palette-blue-light);
-    --font-document: "Poppins", var(--font-body);
+    --module-pattern: rgba(37, 99, 235, 0.05);
 
-
-    /* Module color accents and document-print palette. */
-    --palette-slds-text: #181818;
-    --palette-document-muted: #514f4d;
-    --palette-document-surface: #fafaf9;
-    --palette-document-page: #f3f3f3;
-    --palette-disabled-text: #888888;
+    /* Dining Specifics */
     --palette-dining-danger-bg: #fef2f2;
     --palette-dining-danger: #991b1b;
     --palette-dining-danger-border: #fecaca;
-    --palette-dining-neutral: #fafafa;
+    --palette-dining-neutral: #f8fafc;
     --palette-dining-info: #0284c7;
     --palette-dining-info-light: #f0f9ff;
     --palette-dining-warning: #d97706;
@@ -219,26 +152,31 @@
     --palette-dining-success-light: #f0fdf4;
     --palette-dining-rose: #e11d48;
     --palette-dining-rose-light: #fff1f2;
-    --palette-dining-indigo: #6366f1;
+    --palette-dining-indigo: #4f46e5;
     --palette-dining-indigo-light: #eef2ff;
     --palette-dining-teal: #0d9488;
     --palette-dining-teal-light: #f0fdfa;
-    --palette-dining-purple: #8b5cf6;
+    --palette-dining-purple: #7c3aed;
     --palette-dining-purple-light: #f5f3ff;
     --palette-dining-red-light: #fee2e2;
     --palette-dining-red: #ef4444;
-    --palette-shadow-dining: rgba(0, 0, 0, .04);
-    --palette-overlay-dining: rgba(15, 23, 42, .55);
-    --palette-shadow-dining-dialog: rgba(15, 23, 42, .25);
-    --palette-focus-slds: rgba(1, 118, 211, .25);
-    --palette-overlay-dining-soft: rgba(0, 0, 0, .06);
-
 }
 
-body { font-family: var(--font-body); color: var(--text-main); line-height: 1.5; }
-h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); color: var(--primary); }
-button,input,select,textarea { font: inherit; }
-button { font-family: var(--font-body); font-weight: 700; }
-:focus-visible { outline: 3px solid var(--theme-focus); outline-offset: 2px; }
-::selection { color: var(--palette-white); background: var(--primary); }
+body { 
+    font-family: var(--font-body); 
+    color: var(--text-main); 
+    line-height: 1.5; 
+    background-color: var(--bg-main);
+    -webkit-font-smoothing: antialiased;
+}
 
+h1, h2, h3, h4, h5, h6 { 
+    font-family: var(--font-heading); 
+    color: var(--primary); 
+    letter-spacing: -0.02em;
+}
+
+button, input, select, textarea { font: inherit; }
+button { font-family: var(--font-body); font-weight: 600; }
+:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+::selection { color: var(--palette-white); background: var(--accent); }

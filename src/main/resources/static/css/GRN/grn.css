@@ -1,8 +1,3 @@
-/* ==========================================================================
-   SALESFORCE LIGHTNING DESIGN SYSTEM (SLDS) - GOODS RECEIVED NOTE (GRN)
-   ========================================================================== */
-
-/* Base Body Override */
 body.grn-page {
   margin: 0;
   padding: 0;
@@ -14,7 +9,6 @@ body.grn-page {
   -webkit-font-smoothing: antialiased;
 }
 
-/* --- CENTERED SCREEN LAYOUT --- */
 .grn-content {
   display: flex;
   justify-content: center;
@@ -22,14 +16,12 @@ body.grn-page {
   box-sizing: border-box;
   padding: 82px 24px 32px;
 }
-
 .grn-shell {
   width: 100%;
   max-width: 1550px;
   margin: 0 auto;
 }
 
-/* --- FLEX CONTAINERS & ALIGNMENT --- */
 .grn-page-heading,
 .grn-card-heading,
 .grn-record-heading,
@@ -45,7 +37,6 @@ body.grn-page {
   align-items: center;
 }
 
-/* --- OBJECT HEADER / RECORD HEADER --- */
 .grn-page-heading {
   justify-content: space-between;
   gap: 16px;
@@ -56,7 +47,6 @@ body.grn-page {
   background: var(--surface);
   box-shadow: var(--shadow-header);
 }
-
 .grn-page-heading h1 {
   margin: 0;
   color: var(--slds-slate-dark);
@@ -64,7 +54,6 @@ body.grn-page {
   font-weight: 700;
   letter-spacing: -0.01em;
 }
-
 .grn-eyebrow {
   display: block;
   color: var(--text-muted);
@@ -74,7 +63,6 @@ body.grn-page {
   text-transform: uppercase;
 }
 
-/* --- CARDS & PANELS --- */
 .grn-card,
 .grn-filter-card,
 .grn-record-card,
@@ -85,19 +73,15 @@ body.grn-page {
   background: var(--surface);
   box-shadow: var(--shadow-card);
 }
-
 .grn-card {
   padding: 1.25rem;
 }
-
 .grn-search-card {
   padding: 1rem 1.25rem;
 }
-
 .grn-search-form {
   max-width: 680px;
 }
-
 .grn-search-form label,
 .grn-form-grid label,
 .grn-filter-card label {
@@ -108,20 +92,17 @@ body.grn-page {
   font-size: 0.75rem;
   font-weight: 700;
 }
-
 .grn-search-form small {
   display: block;
   margin-top: 6px;
   color: var(--text-muted);
   font-size: 0.75rem;
 }
-
 .grn-search-row {
   gap: 8px;
   margin-top: 6px;
 }
 
-/* --- FORM CONTROLS & INPUTS --- */
 .grn-search-row input,
 .grn-form-grid input,
 .grn-filter-card input,
@@ -139,7 +120,6 @@ body.grn-page {
   font-size: 0.8125rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
 .grn-search-row input:focus,
 .grn-form-grid input:focus,
 .grn-filter-card input:focus,
@@ -148,13 +128,11 @@ body.grn-page {
   border-color: var(--slds-brand);
   box-shadow: 0 0 0 3px var(--palette-focus-slds);
 }
-
 .grn-form-grid input[readonly] {
   background: var(--surface-alt);
   color: var(--text-muted);
 }
 
-/* --- BUTTONS & ACTIONS --- */
 .grn-button {
   display: inline-flex;
   min-height: 36px;
@@ -174,54 +152,45 @@ body.grn-page {
   cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
-
 .grn-button.primary {
   border-color: var(--slds-brand);
   background: var(--slds-brand);
   color: var(--palette-white);
 }
-
 .grn-button.primary:hover {
   border-color: var(--slds-brand-hover);
   background: var(--slds-brand-hover);
   color: var(--palette-white);
 }
-
 .grn-button.secondary {
   border-color: var(--border-color);
   background: var(--palette-white);
   color: var(--slds-brand);
 }
-
 .grn-button.secondary:hover,
 .grn-button.quiet:hover {
   border-color: var(--slds-brand);
   background: var(--slds-brand-light);
   color: var(--slds-brand-hover);
 }
-
 .grn-button.success {
   border-color: var(--palette-approved);
   background: var(--palette-approved);
   color: var(--palette-white);
 }
-
 .grn-button.success:hover {
   background: var(--palette-approved-hover, var(--palette-approved-slds-hover));
 }
-
 .grn-button.quiet {
   border-color: var(--border-color);
   background: var(--palette-white);
   color: var(--slds-slate-dark);
 }
-
 .grn-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* --- ALERTS & MESSAGES --- */
 .grn-alert {
   margin-bottom: 1rem;
   padding: 10px 14px;
@@ -230,44 +199,37 @@ body.grn-page {
   font-size: 0.8125rem;
   font-weight: 600;
 }
-
 .grn-alert.success {
   border-color: var(--palette-approved-border);
   background: var(--palette-approved-light);
   color: var(--palette-approved);
 }
-
 .grn-alert.error {
   border-color: var(--palette-danger-border);
   background: var(--palette-danger-light);
   color: var(--danger);
 }
 
-/* --- HEADINGS & BADGES --- */
 .grn-card-heading {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 1rem;
 }
-
 .grn-card-heading h2 {
   margin: 0;
   color: var(--slds-slate-dark);
   font-size: 1rem;
   font-weight: 700;
 }
-
 .grn-card-heading h2 strong {
   color: var(--slds-brand);
 }
-
 .grn-card-heading p {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.75rem;
   text-align: right;
 }
-
 .grn-status-pill,
 .grn-record-status {
   display: inline-flex;
@@ -283,28 +245,23 @@ body.grn-page {
   white-space: nowrap;
 }
 
-/* --- FORM GRIDS --- */
 .grn-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
 }
-
 .grn-form-grid label em {
   color: var(--danger);
   font-style: normal;
 }
-
 .grn-wide-field {
   grid-column: 1 / -1;
 }
 
-/* --- TABLES --- */
 .grn-table-wrap {
   width: 100%;
   overflow-x: auto;
 }
-
 .grn-entry-table,
 .grn-report-table,
 .grn-print-table {
@@ -313,7 +270,6 @@ body.grn-page {
   background: var(--surface);
   font-size: 0.8125rem;
 }
-
 .grn-entry-table th,
 .grn-report-table th {
   padding: 12px;
@@ -327,7 +283,6 @@ body.grn-page {
   text-transform: uppercase;
   white-space: nowrap;
 }
-
 .grn-entry-table td,
 .grn-report-table td {
   padding: 10px 12px;
@@ -337,69 +292,57 @@ body.grn-page {
   text-align: center;
   vertical-align: middle;
 }
-
 .grn-entry-table td input {
   height: 32px;
   font-size: 0.8125rem;
 }
-
 .grn-entry-table .grn-item-name,
 .grn-item-name {
   text-align: left !important;
 }
-
 .grn-item-name strong {
   display: block;
   color: var(--text-main);
   font-weight: 700;
 }
-
 .grn-item-name small {
   display: block;
   margin-top: 2px;
   color: var(--text-muted);
   font-size: 0.6875rem;
 }
-
 .grn-number {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   text-align: right !important;
   white-space: nowrap;
 }
-
 .grn-balance {
   color: var(--palette-warning);
   font-weight: 700;
 }
-
 .grn-accepted {
   color: var(--palette-approved);
   font-weight: 700;
 }
-
 .grn-rejected {
   color: var(--danger);
   font-weight: 700;
 }
-
 .grn-empty {
   padding: 1.5rem !important;
   color: var(--text-muted);
   font-weight: 600;
   text-align: center !important;
 }
-
 .grn-form-actions {
   justify-content: flex-end;
   gap: 8px;
   margin-top: 1.25rem;
 }
-
 .grn-heading-actions {
   gap: 10px;
 }
-
 .grn-count {
   padding: 4px 10px;
   border: 1px solid var(--border-color);
@@ -410,7 +353,6 @@ body.grn-page {
   font-weight: 700;
 }
 
-/* --- FILTER & REPORT TOOLBAR --- */
 .grn-filter-card {
   display: grid;
   grid-template-columns: minmax(220px, 1.5fr) repeat(2, minmax(150px, 0.8fr)) auto;
@@ -418,11 +360,9 @@ body.grn-page {
   gap: 12px;
   padding: 1rem 1.25rem;
 }
-
 .grn-filter-actions {
   gap: 8px;
 }
-
 .grn-report-toolbar {
   justify-content: space-between;
   gap: 12px;
@@ -430,17 +370,14 @@ body.grn-page {
   color: var(--text-muted);
   font-size: 0.75rem;
 }
-
 .grn-report-toolbar > div {
   display: flex;
   gap: 8px;
 }
 
-/* --- EXPANDABLE RECORD CARDS --- */
 .grn-record-card {
   overflow: hidden;
 }
-
 .grn-record-heading {
   justify-content: space-between;
   gap: 14px;
@@ -448,23 +385,19 @@ body.grn-page {
   border-bottom: 1px solid var(--border-subtle);
   background: var(--surface-alt);
 }
-
 .grn-record-main {
   flex-wrap: wrap;
   gap: 8px 12px;
 }
-
 .grn-record-number {
   color: var(--slds-brand);
   font-size: 1rem;
   font-weight: 700;
 }
-
 .grn-record-date {
   color: var(--text-muted);
   font-size: 0.75rem;
 }
-
 .grn-record-vendor {
   display: flex;
   flex-basis: 100%;
@@ -472,30 +405,24 @@ body.grn-page {
   color: var(--text-muted);
   font-size: 0.8125rem;
 }
-
 .grn-record-vendor b {
   color: var(--slds-slate-dark);
 }
-
 .grn-record-actions {
   gap: 8px;
 }
-
 .grn-record-meta {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
-
 .grn-record-meta > div {
   min-width: 0;
   padding: 10px 14px;
   border-right: 1px solid var(--border-subtle);
 }
-
 .grn-record-meta > div:last-child {
   border-right: 0;
 }
-
 .grn-record-meta small {
   display: block;
   margin-bottom: 3px;
@@ -504,7 +431,6 @@ body.grn-page {
   font-weight: 700;
   text-transform: uppercase;
 }
-
 .grn-record-meta strong {
   display: block;
   overflow-wrap: anywhere;
@@ -512,21 +438,17 @@ body.grn-page {
   font-size: 0.8125rem;
   font-weight: 600;
 }
-
 .grn-item-panel {
   padding: 1rem 1.25rem;
   border-top: 1px solid var(--border-subtle);
   background: var(--surface);
 }
-
 .grn-item-panel[hidden] {
   display: none;
 }
-
 .grn-report-table {
   font-size: 0.8125rem;
 }
-
 .grn-empty-card {
   padding: 2.5rem 1rem;
   color: var(--text-muted);
@@ -534,9 +456,6 @@ body.grn-page {
   text-align: center;
 }
 
-/* ==========================================================================
-   PRINTABLE GRN SHEET STYLES (A4 FORMAT)
-   ========================================================================== */
 
 body.grn-print-mode {
   padding: 30px 0;
@@ -545,19 +464,16 @@ body.grn-print-mode {
   font-family: var(--font-body);
   line-height: 1.5;
 }
-
-body.grn-print-mode .grn-content {
+body.grn-page.grn-print-mode .grn-content {
   width: 100%;
   max-width: none;
   margin: 0;
   padding: 0;
 }
-
-body.grn-print-mode .grn-shell {
+body.grn-page.grn-print-mode .grn-shell {
   width: 100%;
   max-width: 210mm;
 }
-
 .grn-print-sheet {
   box-sizing: border-box;
   width: 100%;
@@ -568,7 +484,6 @@ body.grn-print-mode .grn-shell {
   box-shadow: var(--shadow-card);
   font-size: 12px;
 }
-
 .grn-print-title {
   margin: 12px 0 16px;
   padding: 6px 0;
@@ -581,29 +496,24 @@ body.grn-print-mode .grn-shell {
   text-align: center;
   text-transform: uppercase;
 }
-
 .grn-print-info {
   width: 100%;
   margin-bottom: 16px;
   border-collapse: collapse;
   font-size: 11px;
 }
-
 .grn-print-info td {
   width: 50%;
   padding: 8px 10px;
   border: 1px solid var(--border-color);
 }
-
 .grn-print-info b {
   margin-right: 6px;
   color: var(--slds-slate-dark);
 }
-
 .grn-print-table {
   font-size: 11px;
 }
-
 .grn-print-table th {
   padding: 8px 6px;
   border: 1px solid var(--border-color);
@@ -613,40 +523,33 @@ body.grn-print-mode .grn-shell {
   text-align: center;
   text-transform: uppercase;
 }
-
 .grn-print-table td {
   padding: 8px 6px;
   border: 1px solid var(--border-color);
   vertical-align: middle;
 }
-
 .grn-print-table .grn-number {
   text-align: right !important;
 }
-
 .grn-print-signatures {
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 48px;
   color: var(--palette-slds-text);
 }
-
 .grn-print-signatures > div {
   min-width: 150px;
   text-align: center;
 }
-
 .grn-print-signatures > div:first-child {
   padding-top: 32px;
   border-top: 1px solid var(--palette-slds-text);
 }
-
 .grn-print-signatures > div:last-child b {
   display: block;
   padding-top: 32px;
   border-top: 1px solid var(--palette-slds-text);
 }
-
 .grn-print-signatures span {
   display: inline-block;
   margin-top: 10px;
@@ -656,7 +559,6 @@ body.grn-print-mode .grn-shell {
   color: var(--palette-approved);
   font-weight: 700;
 }
-
 .grn-print-actions {
   display: flex;
   justify-content: center;
@@ -664,130 +566,124 @@ body.grn-print-mode .grn-shell {
   margin-top: 25px;
 }
 
-/* --- MEDIA QUERIES --- */
 @page {
   size: A4 portrait;
   margin: 12mm;
 }
-
-@media print {
-  body.grn-print-mode {
+@media print {body.grn-page.grn-print-mode {
     margin: 0;
     padding: 0;
     background: var(--palette-white);
   }
-  body.grn-print-mode .app-topbar,
-  body.grn-print-mode .app-sidebar,
-  body.grn-print-mode .app-overlay,
-  .grn-print-actions {
+body.grn-page.grn-print-mode .app-topbar,
+body.grn-page.grn-print-mode .app-sidebar,
+body.grn-page.grn-print-mode .app-overlay,
+.grn-print-actions {
     display: none !important;
   }
-  body.grn-print-mode .grn-content,
-  body.grn-print-mode .grn-shell {
+body.grn-page.grn-print-mode .grn-content,
+body.grn-page.grn-print-mode .grn-shell {
     width: 100%;
     max-width: 100%;
     margin: 0;
     padding: 0;
   }
-  .grn-print-sheet {
+.grn-print-sheet {
     width: 100%;
     padding: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
   }
-  .grn-print-table th {
+.grn-print-table th {
     background: var(--surface-alt) !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  .grn-print-table tr {
+.grn-print-table tr {
     break-inside: avoid;
-  }
-}
-
-@media (max-width: 900px) {
-  .grn-content {
+  }}
+@media (max-width: 900px) {.grn-content {
     padding: 76px 12px 18px;
   }
-  .grn-form-grid {
+.grn-form-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .grn-filter-card {
+.grn-filter-card {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .grn-filter-actions {
+.grn-filter-actions {
     grid-column: 1 / -1;
   }
-  .grn-record-meta {
+.grn-record-meta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .grn-record-meta > div:nth-child(2) {
+.grn-record-meta > div:nth-child(2) {
     border-right: 0;
   }
-  .grn-record-meta > div:nth-child(-n+2) {
+.grn-record-meta > div:nth-child(-n+2) {
     border-bottom: 1px solid var(--border-subtle);
-  }
-}
-
-@media (max-width: 560px) {
-  .grn-page-heading {
+  }}
+@media (max-width: 560px) {.grn-page-heading {
     flex-direction: column;
     align-items: flex-start;
   }
-  .grn-page-heading h1 {
+.grn-page-heading h1 {
     font-size: 1.2rem;
   }
-  .grn-form-grid,
-  .grn-filter-card {
+.grn-form-grid,
+.grn-filter-card {
     grid-template-columns: 1fr;
   }
-  .grn-wide-field,
-  .grn-filter-actions {
+.grn-wide-field,
+.grn-filter-actions {
     grid-column: auto;
   }
-  .grn-card {
+.grn-card {
     padding: 1rem;
   }
-  .grn-card-heading,
-  .grn-record-heading {
+.grn-card-heading,
+.grn-record-heading {
     flex-direction: column;
     align-items: flex-start;
   }
-  .grn-card-heading p {
+.grn-card-heading p {
     text-align: left;
   }
-  .grn-record-actions {
+.grn-record-actions {
     width: 100%;
     justify-content: flex-end;
   }
-  .grn-record-meta {
+.grn-record-meta {
     grid-template-columns: 1fr;
   }
-  .grn-record-meta > div {
+.grn-record-meta > div {
     border-right: 0;
     border-bottom: 1px solid var(--border-subtle);
   }
-  .grn-record-meta > div:last-child {
+.grn-record-meta > div:last-child {
     border-bottom: 0;
   }
-  .grn-report-toolbar {
+.grn-report-toolbar {
     flex-direction: column;
     align-items: flex-start;
   }
-  .grn-print-sheet {
+.grn-print-sheet {
     padding: 16px 10px;
   }
-  .grn-print-info td {
+.grn-print-info td {
     width: auto;
-  }
-}
+  }}
 
-/* Shared Create INDENT palette and diagonal table pattern. */
 body.grn-page { --slds-brand: var(--module-accent); --slds-brand-blue: var(--module-accent); --slds-brand-hover: var(--palette-blue-hover); --slds-brand-blue-hover: var(--palette-blue-hover); --slds-brand-light: var(--module-accent-soft); --slds-slate-header: var(--module-accent-strong); --accent: var(--module-accent); }
-.grn-card, .grn-filter-card { border-top: 4px solid var(--module-accent); }
+.grn-card,
+.grn-filter-card { border-top: 4px solid var(--module-accent); }
 .grn-filter-card { background-image: linear-gradient(135deg, var(--module-accent-soft) 0 10px, transparent 10px 20px); background-size: 100% 5px; background-repeat: no-repeat; }
-.grn-search-row input, .grn-form-grid input, .grn-filter-card input { border-left: 3px solid var(--module-accent); }
-.grn-report-table th, .grn-print-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); color: var(--palette-white); }
-.grn-report-table tbody tr:nth-child(even) td, .grn-report-table tbody tr:hover td, .grn-print-table tbody tr:nth-child(even) td { background-color: var(--module-accent-soft); }
-
+.grn-search-row input,
+.grn-form-grid input,
+.grn-filter-card input { border-left: 3px solid var(--module-accent); }
+.grn-report-table th,
+.grn-print-table th { background-color: var(--module-accent-strong); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-pattern) 12px 14px); color: var(--palette-white); }
+.grn-report-table tbody tr:nth-child(even) td,
+.grn-report-table tbody tr:hover td,
+.grn-print-table tbody tr:nth-child(even) td { background-color: var(--module-accent-soft); }

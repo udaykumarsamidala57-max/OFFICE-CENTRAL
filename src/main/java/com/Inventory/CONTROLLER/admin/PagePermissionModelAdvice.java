@@ -1,7 +1,10 @@
 package com.Inventory.CONTROLLER.admin;
 
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,9 @@ public class PagePermissionModelAdvice {
         if (!Boolean.TRUE.equals(session.getAttribute(SessionKeys.AUTHENTICATED))) {
             model.addAttribute("accessiblePages", Collections.emptyList());
             model.addAttribute("navigationPages", Collections.emptyList());
+            model.addAttribute("navigationModules", Collections.emptyMap());
+            model.addAttribute("navigationModuleIcons", navigationModuleIcons());
+            model.addAttribute("currentNavigationModule", "");
             model.addAttribute("allowedButtonCodes", Set.of());
             model.addAttribute("isSuperAdmin", false);
             model.addAttribute("currentRequestPath", request.getRequestURI());
@@ -49,9 +55,47 @@ public class PagePermissionModelAdvice {
         model.addAttribute("accessiblePages", pages);
         // The menu mirrors the granted page list. Super Admin receives every registered page.
         model.addAttribute("navigationPages", pages);
+        model.addAttribute("navigationModules", groupNavigationPages(pages));
+        model.addAttribute("navigationModuleIcons", navigationModuleIcons());
+        model.addAttribute("currentNavigationModule", moduleForPath(path));
         model.addAttribute("allowedButtonCodes", buttons);
         model.addAttribute("isSuperAdmin", Boolean.TRUE.equals(session.getAttribute(SessionKeys.SUPER_ADMIN))
                 || com.Inventory.SESSION.RoleAccess.isSuperAdmin(role));
         model.addAttribute("currentRequestPath", path);
+    }
+
+    private Map<String, List<PageCatalogEntry>> groupNavigationPages(List<PageCatalogEntry> pages) {
+        Map<String, List<PageCatalogEntry>> grouped = new LinkedHashMap<>();
+        for (String name : List.of("Indent Records", "Stock Dispersal", "Purchase Execution", "Dining Hall Operations", "Analytics Hub", "System Masters", "Other")) {
+            grouped.put(name, new ArrayList<>());
+        }
+        for (PageCatalogEntry page : pages) {
+            grouped.get(moduleForPath(page.getUrl())).add(page);
+        }
+        grouped.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        return grouped;
+    }
+
+    private String moduleForPath(String path) {
+        if (path == null) return "Other";
+        if (path.startsWith("/Indent") || path.startsWith("/AIndent")) return "Indent Records";
+        if (path.startsWith("/issues")) return "Stock Dispersal";
+        if (path.startsWith("/purchase-orders") || path.startsWith("/grn")) return "Purchase Execution";
+        if (path.startsWith("/dining-hall")) return "Dining Hall Operations";
+        if (path.startsWith("/stock")) return "Analytics Hub";
+        if (path.startsWith("/admin")) return "System Masters";
+        return "Other";
+    }
+
+    private Map<String, String> navigationModuleIcons() {
+        Map<String, String> icons = new LinkedHashMap<>();
+        icons.put("Indent Records", "▤");
+        icons.put("Stock Dispersal", "▦");
+        icons.put("Purchase Execution", "▣");
+        icons.put("Dining Hall Operations", "♨");
+        icons.put("Analytics Hub", "▥");
+        icons.put("System Masters", "⚙");
+        icons.put("Other", "•");
+        return icons;
     }
 }
