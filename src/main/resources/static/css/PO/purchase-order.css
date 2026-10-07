@@ -150,7 +150,7 @@ body.po-page .po-field select:focus,
 body.po-page .po-field textarea:focus {
   outline: 0;
   border-color: var(--slds-brand);
-  box-shadow: 0 0 0 3px var(var(--palette-focus-slds));
+  box-shadow: 0 0 0 3px var(--palette-focus-slds);
 }
 
 /* --- CARDS & TABLES (PERFECT CENTER ALIGNMENT) --- */
@@ -431,7 +431,7 @@ body.po-print-mode .po-shell { width: 100%; max-width: none; margin: 0; }
 .po-print-sheet {
   width: 100%; max-width: 210mm; margin: 0 auto; padding: 30px 35px;
   border: 1px solid var(--palette-neutral-slds-border); border-radius: 6px; background: var(--palette-white);
-  box-shadow: 0 2px 8px var(var(--palette-overlay-dining-soft)); color: var(--palette-slds-text);
+  box-shadow: 0 2px 8px var(--palette-overlay-dining-soft); color: var(--palette-slds-text);
   font-family: var(--font-document); font-size: 12px; line-height: 1.5;
 }
 .po-print-header { margin-bottom: 10px; text-align: center; }
@@ -492,3 +492,12 @@ body.po-print-mode .po-shell { width: 100%; max-width: none; margin: 0; }
   .po-print-approved-stamp { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .po-print-table-wrap { overflow: visible; }
 }
+
+/* PO forms and tables: amber ledger accent with a diagonal header motif. */
+body.po-page { --slds-brand: var(--module-po-accent); --slds-brand-blue: var(--module-po-accent); --slds-brand-hover: var(--module-po-header); --slds-brand-blue-hover: var(--module-po-header); --slds-brand-light: var(--module-po-soft); --slds-slate-header: var(--module-po-header); --accent: var(--module-po-accent); }
+body.po-page .po-table-card { border-top: 3px solid var(--module-po-accent); }
+body.po-page .po-filter { border-color: color-mix(in srgb, var(--module-po-accent) 30%, var(--border-color)); background-image: linear-gradient(110deg, var(--module-po-soft), var(--surface) 58%); }
+body.po-page .po-filter-input, body.po-page .po-field input, body.po-page .po-field select, body.po-page .po-field textarea { border-left: 3px solid color-mix(in srgb, var(--module-po-accent) 60%, var(--border-color)); }
+body.po-page .po-table th, body.po-page .po-legacy-table th { background-image: repeating-linear-gradient(135deg, transparent 0 14px, var(--module-po-pattern) 14px 16px); }
+body.po-page .po-table tbody tr:nth-child(even), body.po-page .po-legacy-table tbody tr.po-master-row:nth-child(4n+1) { background: var(--module-po-soft); }
+

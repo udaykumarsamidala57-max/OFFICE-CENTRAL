@@ -185,6 +185,28 @@
     --palette-neutral-bg: var(--palette-neutral-slds);
     --palette-neutral-border: var(--palette-neutral-slds-border);
 
+    /* Page accents and repeating pattern tints. */
+    --module-indent-accent: var(--palette-blue);
+    --module-indent-soft: var(--palette-blue-light);
+    --module-indent-pattern: rgba(37, 99, 235, .16);
+    --module-po-accent: var(--palette-warning);
+    --module-po-header: #78350f;
+    --module-po-soft: var(--palette-warning-light);
+    --module-po-pattern: rgba(217, 119, 6, .16);
+    --module-grn-accent: var(--palette-dining-teal);
+    --module-grn-header: #0f766e;
+    --module-grn-soft: var(--palette-dining-teal-light);
+    --module-grn-pattern: rgba(13, 148, 136, .16);
+    --module-stock-accent: var(--palette-approved-slds);
+    --module-stock-header: var(--palette-issue);
+    --module-stock-soft: var(--palette-success-light);
+    --module-stock-pattern: rgba(22, 163, 74, .16);
+    --module-dining-accent: var(--palette-dining-indigo);
+    --module-dining-header: #4338ca;
+    --module-dining-soft: var(--palette-dining-indigo-light);
+    --module-dining-pattern: rgba(99, 102, 241, .16);
+    --module-auth-accent: var(--palette-brand-slds);
+    --module-admin-accent: var(--palette-navy);
     /* Dining Hall semantic colors use the same application palette. */
     --bg-body: var(--palette-page);
     --card-bg: var(--palette-surface);

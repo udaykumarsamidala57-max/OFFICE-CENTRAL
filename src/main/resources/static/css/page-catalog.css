@@ -42,3 +42,9 @@
 .catalog-message.error { border-color:var(--palette-danger-border); background:var(--palette-danger-light); color:var(--danger); }
 @media(max-width:760px) { .page-catalog-content { padding-top:76px; } .catalog-heading { align-items:flex-start; } .page-form { grid-template-columns:1fr 1fr; } .page-form .catalog-button { justify-self:start; } }
 @media(max-width:520px) { .catalog-heading { flex-direction:column; gap:8px; } .catalog-heading h1 { font-size:1.3rem; } .catalog-count { align-self:flex-start; } .create-panel { padding:12px; } .page-form { grid-template-columns:1fr; } .page-card { padding-right:10px; padding-left:10px; } .button-row { align-items:stretch; flex-direction:column; } .button-form { grid-template-columns:1fr; } .button-row > form:last-child { align-self:flex-end; } }
+
+/* Catalog maintenance forms: navy tabs and clear blue focus states. */
+.page-form, .button-form, .permission-form, .access-filter { border-top: 3px solid var(--module-admin-accent); }
+.page-form input:focus, .button-form input:focus, .permission-form input:focus, .access-filter select:focus { border-color: var(--module-admin-accent); box-shadow: 0 0 0 3px var(--palette-focus-soft); }
+.page-form, .button-form { background-image: linear-gradient(110deg, var(--palette-blue-light), var(--palette-white) 62%); }
+

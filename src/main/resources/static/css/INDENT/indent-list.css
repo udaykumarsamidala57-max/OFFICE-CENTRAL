@@ -103,4 +103,10 @@
 @media(max-width:360px){.filters{grid-template-columns:1fr}.keyword-field,.filter-actions{grid-column:1}.filter-actions{grid-template-columns:1fr}#dataTable .data-row td{grid-template-columns:minmax(78px,32%) minmax(0,1fr)}}
 @media print{.report-content{padding:0;background:var(--palette-white)}.report-card{padding:0;border:0;box-shadow:none}.report-heading,.filters{display:none!important}.table-scroll{overflow:visible;border:0}#dataTable,#dataTable tbody{display:table;width:100%;min-width:0}#dataTable thead{display:table-header-group;position:static}#dataTable .indent-group-header{display:table-row;margin:0;border:0}#dataTable .indent-group-header td{display:table-cell;padding:0!important}#dataTable .report-indent-header{padding:4px;background:var(--palette-print-bg)!important;color:var(--palette-print-text)!important;border:0}#dataTable .report-indent-header *{color:var(--palette-print-text)!important}#dataTable .data-row{display:table-row;margin:0;padding:0;border:0;box-shadow:none}#dataTable .data-row td{display:table-cell;width:auto;min-height:0;padding:4px;border-bottom:1px solid var(--palette-print-border)!important;font-size:7pt}#dataTable .data-row td::before{content:none}#dataTable th{background:var(--palette-print-bg)!important;color:var(--palette-print-text)!important}}
 
+/* INDENT list: grouped rows with blue stripe accents. */
+#dataTable thead th { background-color: var(--palette-navy); background-image: repeating-linear-gradient(135deg, transparent 0 12px, var(--module-indent-pattern) 12px 14px); color: var(--palette-white); }
+#dataTable .data-row:nth-child(even) td { background-color: var(--module-indent-soft); }
+#dataTable .data-row:hover td { background-color: var(--palette-blue-light); }
+.filters { border-left: 4px solid var(--module-indent-accent); background-image: linear-gradient(90deg, var(--module-indent-soft), var(--palette-white) 36%); }
+.filter-field input:focus, .filter-field select:focus { border-color: var(--module-indent-accent); box-shadow: 0 0 0 3px var(--palette-focus-soft); }
 
