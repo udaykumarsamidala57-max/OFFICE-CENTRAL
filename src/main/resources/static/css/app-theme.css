@@ -86,6 +86,7 @@
     --palette-white-09: rgba(255, 255, 255, .09);
     --palette-white-12: rgba(255, 255, 255, .12);
     --palette-white-14: rgba(255, 255, 255, .14);
+    --palette-white-20: rgba(255, 255, 255, .20);
     --palette-white-58: rgba(255, 255, 255, .58);
     --palette-white-60: rgba(255, 255, 255, .6);
     --palette-white-64: rgba(255, 255, 255, .64);
@@ -121,6 +122,112 @@
     --theme-focus: var(--palette-focus-soft);
     --font-body: "Segoe UI", Arial, sans-serif;
     --font-heading: Georgia, "Times New Roman", serif;
+
+    /* Shared SLDS palette used by PO, GRN, stock, and authentication pages. */
+    --palette-surface-alt: #f3f5f8;
+    --palette-border-subtle: #e5e5e5;
+    --palette-text-label: #3e3e3e;
+    --palette-slate: #182b49;
+    --palette-slate-header: #032d60;
+    --palette-brand-slds: #0176d3;
+    --palette-brand-slds-hover: #014486;
+    --palette-brand-slds-active: #013262;
+    --palette-brand-slds-light: #f3f8fe;
+    --palette-approved-slds-light: #e6f8f0;
+    --palette-approved-slds-border: #45c65a;
+    --palette-approved-slds: #2e844a;
+    --palette-approved-slds-hover: #1c532e;
+    --palette-warning-slds-light: #fef8e7;
+    --palette-warning-slds-border: #dd7a01;
+    --palette-warning-slds: #a95800;
+    --palette-danger-slds-light: #fef1f1;
+    --palette-danger-slds-border: #ea001e;
+    --palette-danger-slds: #ba0517;
+    --palette-neutral-slds: #f3f5f8;
+    --palette-neutral-slds-border: #c9c9c9;
+    --palette-shadow-card: 0 2px 4px 0 rgba(0, 0, 0, .10);
+    --palette-shadow-header: 0 2px 2px 0 rgba(0, 0, 0, .10);
+
+    /* Shared semantic aliases for the SLDS component pages. */
+    --slds-brand: var(--palette-brand-slds);
+    --slds-brand-blue: var(--palette-brand-slds);
+    --slds-brand-hover: var(--palette-brand-slds-hover);
+    --slds-brand-blue-hover: var(--palette-brand-slds-hover);
+    --slds-brand-active: var(--palette-brand-slds-active);
+    --slds-brand-light: var(--palette-brand-slds-light);
+    --slds-brand-header: var(--bg-main);
+    --slds-brand-accent: var(--accent);
+    --slds-slate-dark: var(--palette-slate);
+    --slds-slate-header: var(--palette-slate-header);
+    --slds-text-heading: var(--text-main);
+    --slds-text-label: var(--text-muted);
+    --slds-surface: var(--surface);
+    --slds-border-light: var(--border-color);
+    --slds-radius: var(--radius);
+    --slds-shadow-elevation: var(--shadow-md);
+    --text-label: var(--palette-text-label);
+    --surface-alt: var(--palette-surface-alt);
+    --border-subtle: var(--palette-border-subtle);
+    --border-strong: var(--palette-border-input);
+    --shadow-card: var(--palette-shadow-card);
+    --shadow-header: var(--palette-shadow-header);
+    --palette-approved-light: var(--palette-approved-slds-light);
+    --palette-approved-border: var(--palette-approved-slds-border);
+    --palette-approved: var(--palette-approved-slds);
+    --palette-approved-hover: var(--palette-approved-slds-hover);
+    --palette-warning-light: var(--palette-warning-slds-light);
+    --palette-warning-border: var(--palette-warning-slds-border);
+    --palette-warning: var(--palette-warning-slds);
+    --palette-danger-bg: var(--palette-danger-slds-light);
+    --palette-danger-light: var(--palette-danger-slds-light);
+    --palette-danger-border: var(--palette-danger-slds-border);
+    --danger: var(--palette-danger-slds);
+    --palette-neutral-bg: var(--palette-neutral-slds);
+    --palette-neutral-border: var(--palette-neutral-slds-border);
+
+    /* Dining Hall semantic colors use the same application palette. */
+    --bg-body: var(--palette-page);
+    --card-bg: var(--palette-surface);
+    --text-heading: var(--palette-text-strong);
+    --text-body: var(--palette-text);
+    --brand-primary: var(--palette-navy);
+    --brand-accent: var(--palette-blue);
+    --brand-light: var(--palette-blue-light);
+    --font-document: "Poppins", var(--font-body);
+
+
+    /* Module color accents and document-print palette. */
+    --palette-slds-text: #181818;
+    --palette-document-muted: #514f4d;
+    --palette-document-surface: #fafaf9;
+    --palette-document-page: #f3f3f3;
+    --palette-disabled-text: #888888;
+    --palette-dining-danger-bg: #fef2f2;
+    --palette-dining-danger: #991b1b;
+    --palette-dining-danger-border: #fecaca;
+    --palette-dining-neutral: #fafafa;
+    --palette-dining-info: #0284c7;
+    --palette-dining-info-light: #f0f9ff;
+    --palette-dining-warning: #d97706;
+    --palette-dining-warning-light: #fffbeb;
+    --palette-dining-success: #16a34a;
+    --palette-dining-success-light: #f0fdf4;
+    --palette-dining-rose: #e11d48;
+    --palette-dining-rose-light: #fff1f2;
+    --palette-dining-indigo: #6366f1;
+    --palette-dining-indigo-light: #eef2ff;
+    --palette-dining-teal: #0d9488;
+    --palette-dining-teal-light: #f0fdfa;
+    --palette-dining-purple: #8b5cf6;
+    --palette-dining-purple-light: #f5f3ff;
+    --palette-dining-red-light: #fee2e2;
+    --palette-dining-red: #ef4444;
+    --palette-shadow-dining: rgba(0, 0, 0, .04);
+    --palette-overlay-dining: rgba(15, 23, 42, .55);
+    --palette-shadow-dining-dialog: rgba(15, 23, 42, .25);
+    --palette-focus-slds: rgba(1, 118, 211, .25);
+    --palette-overlay-dining-soft: rgba(0, 0, 0, .06);
+
 }
 
 body { font-family: var(--font-body); color: var(--text-main); line-height: 1.5; }
