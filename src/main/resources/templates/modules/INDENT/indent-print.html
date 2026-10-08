@@ -7,6 +7,7 @@
     
     
         <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
+        <link rel="stylesheet" th:href="@{/css/indent-print.css(v=20261008-print)}">
 </head>
 <body class="indent-print-page">
 <main class="print-sheet" th:if="${!#lists.isEmpty(items)}">

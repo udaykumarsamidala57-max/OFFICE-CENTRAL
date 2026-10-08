@@ -1,0 +1,53 @@
+body.indent-print-page {
+  margin: 0;
+  min-height: 100vh;
+  background: #f3f3f3;
+  color: #181818;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.indent-print-page .print-sheet {
+  width: min(100% - 2rem, 64rem);
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #dddbda;
+  border-radius: .35rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(24, 24, 24, .08);
+}
+.indent-print-page .session-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid #dddbda;
+  color: #514f4d;
+  font-size: .8rem;
+}
+.indent-print-page .switch-company { margin-left: auto; color: #0176d3; font-weight: 600; }
+.indent-print-page .print-title { margin: 1.5rem 0; text-align: center; }
+.indent-print-page .print-title h1 { margin: 0; color: #181818; font-size: 1.5rem; }
+.indent-print-page .print-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 1.5rem; margin-bottom: 1.5rem; }
+.indent-print-page .print-meta > div { display: flex; gap: .45rem; padding-bottom: .45rem; border-bottom: 1px solid #e5e5e5; }
+.indent-print-page .print-meta strong { min-width: 7.5rem; color: #514f4d; }
+.indent-print-page .table-scroll { max-width: 100%; overflow-x: auto; }
+.indent-print-page .print-table { width: 100%; border-collapse: collapse; }
+.indent-print-page .print-table th, .indent-print-page .print-table td { padding: .65rem .75rem; border: 1px solid #c9c7c5; text-align: left; }
+.indent-print-page .print-table th { background: #f3f3f3; font-weight: 700; }
+.indent-print-page .signature { display: flex; justify-content: flex-end; margin-top: 3.5rem; }
+.indent-print-page .signature span { min-width: 12rem; padding-top: .5rem; border-top: 1px solid #706e6b; text-align: center; }
+.indent-print-page .print-actions { display: flex; justify-content: center; gap: .65rem; margin-top: 2rem; }
+.indent-print-page .button { display: inline-flex; min-height: 2.5rem; align-items: center; justify-content: center; padding: .55rem 1rem; border: 1px solid #c9c7c5; border-radius: .25rem; text-decoration: none; font: inherit; font-weight: 600; cursor: pointer; }
+.indent-print-page .button-primary { border-color: #0176d3; background: #0176d3; color: #fff; }
+.indent-print-page .button-secondary { background: #fff; color: #181818; }
+@media (max-width: 40rem) {
+  .indent-print-page .print-sheet { width: 100%; margin: 0; padding: 1rem; border: 0; border-radius: 0; }
+  .indent-print-page .print-meta { grid-template-columns: 1fr; }
+}
+@media print {
+  body.indent-print-page { background: #fff; }
+  .indent-print-page .print-sheet { width: 100%; margin: 0; padding: 0; border: 0; box-shadow: none; }
+  .indent-print-page .session-context, .indent-print-page .print-actions { display: none !important; }
+  .indent-print-page .print-table { font-size: 9pt; }
+  .indent-print-page .print-table th { print-color-adjust: exact; }
+}

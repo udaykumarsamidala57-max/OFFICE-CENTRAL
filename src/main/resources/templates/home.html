@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - Office Central ERP</title>
+    <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/home.css(v=20261008-home)}">
+</head>
+<body class="app-body home-page">
+<div th:replace="~{fragments/app-header :: appHeader('home')}"></div>
+
+<main class="app-main-content">
+    <div class="home-shell">
+        <section class="home-intro">
+            <div>
+                <p class="home-eyebrow">OFFICE CENTRAL ERP</p>
+                <h1>Indent workflow</h1>
+                <p class="home-subtitle">A stage-wise view of indent requests for <strong th:text="${selectedCompany}">Company</strong>.</p>
+            </div>
+            <a class="home-report-link" th:if="${canViewIndentReport}" th:href="@{/IndentlistServlet}">Open Indent Report <span aria-hidden="true">→</span></a>
+        </section>
+
+        <div class="home-alert" role="status" th:if="${dashboardMessage}" th:text="${dashboardMessage}"></div>
+
+        <section class="home-summary" aria-label="Indent summary">
+            <article class="summary-card summary-total">
+                <span class="summary-label">Recent indents</span>
+                <strong th:text="${totalIndentCount}">0</strong>
+                <span class="summary-note">Across visible stages</span>
+            </article>
+            <article class="summary-card summary-pending">
+                <span class="summary-label">Waiting for approval</span>
+                <strong th:text="${indentStages != null ? indentStages[0].indentCount + indentStages[1].indentCount : 0}">0</strong>
+                <span class="summary-note">Level 1 and final review</span>
+            </article>
+            <article class="summary-card summary-processing">
+                <span class="summary-label">Approved / processing</span>
+                <strong th:text="${indentStages != null ? indentStages[2].indentCount : 0}">0</strong>
+                <span class="summary-note">Purchase or issue workflow</span>
+            </article>
+            <article class="summary-card summary-closed">
+                <span class="summary-label">Rejected / cancelled</span>
+                <strong th:text="${indentStages != null ? indentStages[4].indentCount : 0}">0</strong>
+                <span class="summary-note">Rejected or cancelled</span>
+            </article>
+        </section>
+
+        <section class="stage-section" aria-labelledby="stageHeading">
+            <div class="section-heading">
+                <div>
+                    <p class="home-eyebrow">WORKFLOW OVERVIEW</p>
+                    <h2 id="stageHeading">Indents by stage</h2>
+                </div>
+                <span class="scope-note" th:if="${canViewIndentReport}">Showing the latest records available to your account</span>
+            </div>
+
+            <div class="stage-grid" th:if="${canViewIndentReport and indentStages != null}">
+                <article class="stage-card" th:each="stage, stageStat : ${indentStages}" th:classappend="|stage-${stageStat.index + 1}|">
+                    <header class="stage-card-header">
+                        <div>
+                            <h3 th:text="${stage.title}">Approval stage</h3>
+                            <p th:text="${stage.description}">Stage details</p>
+                        </div>
+                        <span class="stage-count" th:text="${stage.indentCount}">0</span>
+                    </header>
+                    <div class="stage-empty" th:if="${stage.empty}">No indents at this stage.</div>
+                    <div class="stage-records" th:if="${!stage.empty}">
+                        <article class="stage-record" th:each="item : ${stage.visibleItems}">
+                            <div class="record-primary">
+                                <strong th:text="|Indent ${item.indentNo}|">Indent 1001</strong>
+                                <span class="record-type" th:text="${item.type}">Purchase</span>
+                            </div>
+                            <div class="record-details">
+                                <span class="record-item" th:text="${item.itemName}">Item name</span>
+                                <span th:text="${item.department}">Department</span>
+                                <span th:text="${item.date != null ? #dates.format(item.date, 'dd MMM yyyy') : '—'}">08 Oct 2026</span>
+                            </div>
+                        </article>
+                    </div>
+                    <footer class="stage-card-footer" th:if="${stage.indentCount > 0}">
+                        <span th:text="|${stage.indentCount} indent(s) · ${stage.itemCount} line(s)|">0 indents</span>
+                        <a th:href="@{/IndentlistServlet}">View all</a>
+                    </footer>
+                </article>
+            </div>
+
+            <div class="home-empty" th:if="${!canViewIndentReport and dashboardMessage == null}">
+                <h3>Indent details aren’t available</h3>
+                <p>Your account does not have access to the Indent Report. Contact your administrator if you need it.</p>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

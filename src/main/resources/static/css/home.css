@@ -1,0 +1,43 @@
+.home-shell { width: 100%; max-width: 88rem; margin: 0 auto; }
+.home-intro { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; padding:1rem 0 1.5rem; }
+.home-eyebrow { margin:0 0 .4rem; color:#65758b; font-size:.72rem; font-weight:700; letter-spacing:.12em; }
+.home-intro h1 { margin:0; color:#17324d; font-size:clamp(1.6rem,3vw,2.25rem); line-height:1.15; }
+.home-subtitle { margin:.55rem 0 0; color:#596b7d; }
+.home-report-link { display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1rem; border-radius:.55rem; background:#17324d; color:#fff; font-weight:650; text-decoration:none; white-space:nowrap; }
+.home-report-link:hover { background:#21496b; }
+.home-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.9rem; margin:0 0 2rem; }
+.summary-card { display:flex; min-height:8rem; flex-direction:column; justify-content:center; gap:.3rem; padding:1.1rem 1.2rem; border:1px solid #dbe3eb; border-radius:.75rem; background:#fff; box-shadow:0 3px 14px rgba(20,46,70,.045); }
+.summary-label { color:#526579; font-size:.8rem; font-weight:650; }
+.summary-card strong { color:#17324d; font-size:2rem; line-height:1; }
+.summary-note { color:#7a8998; font-size:.75rem; }
+.summary-pending { border-top:3px solid #d59628; }
+.summary-processing { border-top:3px solid #168172; }
+.summary-closed { border-top:3px solid #8a98a8; }
+.section-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+.section-heading h2 { margin:0; color:#17324d; font-size:1.35rem; }
+.scope-note { color:#758596; font-size:.8rem; }
+.stage-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; align-items:start; }
+.stage-card { overflow:hidden; border:1px solid #dbe3eb; border-radius:.75rem; background:#fff; box-shadow:0 3px 14px rgba(20,46,70,.045); }
+.stage-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:.8rem; padding:1rem 1.1rem; border-bottom:1px solid #edf1f5; }
+.stage-card-header h3 { margin:0; color:#203950; font-size:1rem; }
+.stage-card-header p { margin:.3rem 0 0; color:#718194; font-size:.78rem; line-height:1.4; }
+.stage-count { display:grid; width:2.1rem; height:2.1rem; flex:0 0 auto; place-items:center; border-radius:50%; background:#eef3f8; color:#203950; font-size:.86rem; font-weight:700; }
+.stage-1 .stage-count { background:#fff3d9; color:#8c5b0b; }
+.stage-2 .stage-count { background:#eaf2fb; color:#245a8a; }
+.stage-3 .stage-count { background:#e5f4f1; color:#12665b; }
+.stage-empty { padding:1.2rem; color:#78899a; font-size:.85rem; }
+.stage-records { padding:0 .9rem; }
+.stage-record { padding:.85rem .2rem; border-bottom:1px solid #edf1f5; }
+.stage-record:last-child { border-bottom:0; }
+.record-primary { display:flex; align-items:center; justify-content:space-between; gap:.5rem; color:#203950; font-size:.85rem; }
+.record-type { color:#6b7e91; font-size:.72rem; }
+.record-details { display:flex; flex-wrap:wrap; gap:.25rem .75rem; margin-top:.35rem; color:#7a8998; font-size:.73rem; }
+.record-item { color:#4b6074; font-weight:600; }
+.stage-card-footer { display:flex; justify-content:space-between; gap:.5rem; padding:.7rem 1.1rem; border-top:1px solid #edf1f5; background:#f8fafc; color:#77889a; font-size:.72rem; }
+.stage-card-footer a { color:#1769a5; font-weight:700; text-decoration:none; }
+.home-empty,.home-alert { padding:1.1rem 1.25rem; border:1px solid #dbe3eb; border-radius:.7rem; background:#fff; color:#5d6f81; }
+.home-empty h3 { margin:0 0 .35rem; color:#203950; }
+.home-empty p { margin:0; }
+.home-alert { margin:0 0 1.2rem; border-color:#f0d89a; background:#fff9e9; color:#79591b; }
+@media(max-width:58rem) { .home-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } .stage-grid { grid-template-columns:1fr; } }
+@media(max-width:38rem) { .home-intro,.section-heading { align-items:flex-start; flex-direction:column; } .home-report-link { align-self:stretch; justify-content:center; } .home-summary { gap:.6rem; } .summary-card { min-height:7rem; padding:.85rem; } .summary-card strong { font-size:1.7rem; } }

@@ -1,28 +1,293 @@
-body.po-page { --module-brand: var(--po-brand); --module-brand-dark: var(--po-brand-dark); --module-accent: var(--po-accent); --module-brand-soft: var(--po-brand-soft); --module-pattern: var(--po-pattern); }
-.po-card { overflow: hidden; border: 1px solid var(--slds-c-border-subtle); border-inline-start: .25rem solid var(--module-accent); border-radius: var(--slds-radius-small); background: var(--slds-c-bg-surface); box-shadow: var(--slds-shadow-card); }
-.po-card__header, .po-meta-banner { padding: var(--slds-space-3) var(--slds-space-4); border-block-end: 1px solid var(--slds-c-border-subtle); background-color: var(--module-brand-dark); background-image: var(--module-pattern); color: var(--slds-c-text-inverse); }
-.po-btn { display: inline-flex; min-height: var(--slds-control-height); align-items: center; justify-content: center; gap: var(--slds-space-2); padding-inline: var(--slds-space-4); border: 1px solid var(--module-brand); border-inline-start: var(--po-accent-rule-width) solid var(--module-accent); border-radius: var(--slds-radius-small); background: var(--module-brand); color: var(--slds-c-text-inverse); font-weight: var(--slds-font-weight-bold); text-decoration: none; cursor: pointer; transition: var(--slds-transition); }
-.po-btn:hover { border-color: var(--module-brand-dark); background: var(--module-brand-dark); box-shadow: var(--slds-shadow-dropdown); }
-.po-btn_secondary { border-color: var(--slds-c-border); border-inline-start-color: var(--module-accent); background: var(--slds-c-bg-surface); color: var(--module-brand); }
-.po-btn_secondary:hover { border-color: var(--module-brand); background: var(--module-brand-soft); }
-.po-btn_danger { border-color: var(--slds-c-danger); border-inline-start-color: var(--slds-c-danger); background: var(--slds-c-danger); color: var(--slds-c-text-inverse); }
-.po-table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--slds-c-border-subtle); border-radius: var(--slds-radius-small); }
-.po-table { width: 100%; min-width: var(--po-table-min-width); border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
-.po-table th { padding: var(--slds-space-3); border-block-end: 2px solid var(--module-accent); background-color: var(--module-brand-dark); background-image: var(--module-pattern); color: var(--slds-c-text-inverse); font-size: var(--slds-font-size-x-small); font-weight: var(--slds-font-weight-bold); text-align: start; text-transform: uppercase; }
-.po-table td { padding: var(--slds-space-3); border-block-end: 1px solid var(--slds-c-border-subtle); background: var(--slds-c-bg-surface); }
-.po-table tbody tr:nth-child(even) td { background: var(--module-brand-soft); }
-.po-table tbody tr:hover td { background: var(--po-accent-soft); }
-.po-table tbody tr.is-active td, .po-table tbody tr[aria-selected="true"] td { background: var(--po-accent-soft); box-shadow: inset .2rem 0 0 var(--module-accent); }
-@media (max-width: 48rem) { .po-table-wrap { -webkit-overflow-scrolling: touch; } }
-/* Compatibility selectors for current Purchase Order templates */
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .app-main-content { padding-top: 5rem; }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-object-header, .page-subheader) { border-top-color: var(--po-accent); background-image: var(--po-pattern); background-size: auto; }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-object-icon { border-radius: var(--slds-radius-small); background: var(--po-brand); color: var(--slds-c-text-inverse); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-table-card { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-filter { border-top-color: var(--po-accent); background: var(--po-accent-soft); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table, .po-items-table) th { border-bottom: 2px solid var(--po-accent); background: linear-gradient(110deg, var(--po-brand-dark), var(--po-brand)); color: var(--slds-c-text-inverse); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table, .po-items-table) td { border-bottom: 1px solid var(--slds-c-border-subtle); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table) tbody tr:hover td { background: var(--po-accent-soft); box-shadow: inset .2rem 0 0 var(--po-accent); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-button.primary { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); background: var(--po-brand); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-button.secondary { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); color: var(--po-brand); }
-body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-filter-input { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); }
+/* ==========================================================================
+   ENTERPRISE SLDS - SCOPED HIGH-PRECISION SALESFORCE LIGHTNING THEME
+   ========================================================================== */
+
+/* 1. SLDS DESIGN TOKENS & CANVAS */
+body.po-page {
+  /* Official SLDS Color Palette Tokens */
+  --slds-c-brand: #0176d3;               /* Authentic SLDS Brand Blue */
+  --slds-c-brand-hover: #014486;         /* SLDS Active/Hover Blue */
+  --slds-c-brand-light: #eef4fe;        /* SLDS Soft Brand Tint */
+  --slds-c-border: #c9c9c9;              /* Core SLDS Border */
+  --slds-c-border-subtle: #e5e5e5;       /* Card/Row Divider Border */
+  --slds-c-text-default: #181818;        /* High-contrast Charcoal Text */
+  --slds-c-text-weak: #444444;           /* SLDS Sub-heading Gray */
+  --slds-c-text-label: #514f4d;          /* SLDS Micro Label Neutral */
+  --slds-c-bg-canvas: #f3f3f3;          /* Authentic SLDS Page Background */
+  --slds-c-bg-surface: #ffffff;         /* Card Surface White */
+  --slds-c-bg-header: #f8f9fb;          /* Table/Card Header Tint */
+  
+  /* Layout Spacing Tokens */
+  --common-nav-height: 3.5rem;           /* Adjust this to match your common top nav height */
+
+  /* SLDS Shadows & Focus Rings */
+  --slds-shadow-card: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+  --slds-shadow-header: 0 2px 3px 0 rgba(0, 0, 0, 0.10);
+  --slds-shadow-btn-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  --slds-shadow-btn-sec-inset: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --slds-focus-ring: 0 0 0 3px rgba(1, 118, 211, 0.35);
+
+  background-color: var(--slds-c-bg-canvas);
+}
+
+/* Ensure common navbar stays on top of everything */
+body.po-page :is(header, nav, .common-header, .app-header, .global-header) {
+  position: relative;
+  z-index: 100 !important;
+}
+
+/* Container canvas padding so page content never goes underneath fixed headers */
+body.po-page .app-main-content {
+  position: relative;
+  z-index: 1;
+  background-color: var(--slds-c-bg-canvas);
+  color: var(--slds-c-text-default);
+  font-family: Salesforce Sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding-top: 0.875rem !important; /* Proper top clearance below header */
+}
+
+/* 2. ELEVATED CARDS & CONTAINERS */
+body.po-page :is(.po-card, .po-table-card) {
+  overflow: hidden;
+  border: 1px solid var(--slds-c-border-subtle);
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-bg-surface);
+  box-shadow: var(--slds-shadow-card);
+  margin-bottom: 0.875rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+body.po-page :is(.po-card__header, .po-meta-banner) {
+  padding: 0.875rem 1.125rem;
+  border-bottom: 1px solid var(--slds-c-border-subtle);
+  background-color: var(--slds-c-bg-header);
+  color: var(--slds-c-text-weak);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* 3. SALESFORCE OBJECT HEADER (STICKY-SAFE LAYER) */
+body.po-page :is(.po-object-header, .page-subheader) {
+  position: relative;
+  z-index: 10; /* Lower than top nav z-index (100) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--slds-c-border);
+  border-top: 4px solid var(--slds-c-brand);
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-bg-surface);
+  color: var(--slds-c-text-default);
+  padding: 0.875rem 1.125rem;
+  margin-top: 0;
+  margin-bottom: 0.875rem;
+  box-shadow: var(--slds-shadow-header);
+}
+
+/* Sticky variant (if header should stick under global nav on scroll) */
+body.po-page :is(.po-object-header.is-sticky, .page-subheader.is-sticky) {
+  position: sticky;
+  top: var(--common-nav-height, 0px);
+  z-index: 20;
+}
+
+body.po-page .po-object-title {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+body.po-page .po-object-title h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--slds-c-text-default);
+  letter-spacing: -0.01em;
+}
+
+body.po-page .po-object-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-brand);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  box-shadow: var(--slds-shadow-btn-inset);
+}
+
+/* 4. SLDS BUTTON SYSTEM (SCOPED) */
+body.po-page :is(.po-btn, .po-button.primary) {
+  display: inline-flex;
+  height: 2.125rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.125rem;
+  border: 1px solid #015ba5;
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-brand);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--slds-shadow-btn-inset), 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease-in-out;
+}
+
+body.po-page :is(.po-btn, .po-button.primary):hover {
+  border-color: #003264;
+  background-color: var(--slds-c-brand-hover);
+  color: #ffffff;
+  box-shadow: var(--slds-shadow-btn-inset), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+body.po-page :is(.po-btn, .po-button):focus-visible {
+  outline: none;
+  box-shadow: var(--slds-focus-ring);
+}
+
+body.po-page :is(.po-btn_secondary, .po-button.secondary, .po-button.neutral) {
+  border: 1px solid var(--slds-c-border);
+  background-color: var(--slds-c-bg-surface);
+  color: var(--slds-c-brand);
+  font-weight: 600;
+  box-shadow: var(--slds-shadow-btn-sec-inset), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+body.po-page :is(.po-btn_secondary, .po-button.secondary, .po-button.neutral):hover {
+  border-color: #b0b0b0;
+  background-color: var(--slds-c-brand-light);
+  color: var(--slds-c-brand-hover);
+}
+
+body.po-page .po-btn_danger {
+  border: 1px solid #c20018;
+  background-color: #ea001e;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--slds-shadow-btn-inset), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+body.po-page .po-btn_danger:hover {
+  border-color: #980013;
+  background-color: #ba0517;
+}
+
+body.po-page .po-button.micro {
+  padding: 0 0.625rem;
+  font-size: 0.6875rem;
+  height: 1.5rem;
+  border-radius: 0.1875rem;
+}
+
+/* 5. POLISHED FILTER & FORM CONTROLS */
+body.po-page .po-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--slds-c-border-subtle);
+  background-color: #f8f9fb;
+  padding: 0.875rem 1.125rem;
+}
+
+body.po-page :is(.po-filter-input, .micro-select) {
+  height: 2.125rem;
+  padding: 0 0.875rem;
+  border: 1px solid var(--slds-c-border);
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-bg-surface);
+  color: var(--slds-c-text-default);
+  font-size: 0.75rem;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.po-page .po-filter-input::placeholder {
+  color: var(--slds-c-text-label);
+}
+
+body.po-page :is(.po-filter-input, .micro-select):focus {
+  border-color: var(--slds-c-brand);
+  box-shadow: var(--slds-focus-ring), inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  outline: none;
+}
+
+/* 6. DATA TABLES */
+body.po-page .po-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--slds-c-border-subtle);
+  border-radius: 0.25rem;
+  background-color: var(--slds-c-bg-surface);
+  box-shadow: var(--slds-shadow-card);
+}
+
+body.po-page :is(.po-table, .po-legacy-table, .po-items-table, .indent-approval-table) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  background-color: var(--slds-c-bg-surface);
+}
+
+/* Header Cells */
+body.po-page :is(.po-table, .po-legacy-table, .po-items-table, .indent-approval-table) th {
+  padding: 0.625rem 0.875rem !important;
+  border-bottom: 2px solid var(--slds-c-border);
+  background-color: var(--slds-c-bg-header) !important;
+  color: var(--slds-c-text-label);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: start;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* Row Data Cells */
+body.po-page :is(.po-table, .po-legacy-table, .po-items-table, .indent-approval-table) td {
+  padding: 0.625rem 0.875rem !important;
+  border-bottom: 1px solid var(--slds-c-border-subtle) !important;
+  background-color: var(--slds-c-bg-surface);
+  color: var(--slds-c-text-default);
+  vertical-align: middle;
+  transition: background-color 0.1s ease;
+}
+
+/* Hover & Striping */
+body.po-page :is(.po-table, .po-legacy-table, .indent-approval-table) tbody tr:hover td {
+  background-color: var(--slds-c-brand-light) !important;
+}
+
+body.po-page :is(.po-table, .po-legacy-table, .indent-approval-table) tbody tr:nth-child(even) td {
+  background-color: #fafafa !important;
+}
+
+/* 7. REPORTS & SUBHEADER COMPATIBILITY */
+body.po-page.reports-page :is(.page-subheader, .po-object-header) {
+  border-color: var(--slds-c-border);
+  border-top-color: var(--slds-c-brand);
+  background-color: var(--slds-c-bg-surface);
+}
+
+/* 8. MOBILE RESPONSIVE ACCELERATION */
+@media (max-width: 48rem) { 
+  body.po-page .po-table-wrap { 
+    -webkit-overflow-scrolling: touch; 
+  } 
+}

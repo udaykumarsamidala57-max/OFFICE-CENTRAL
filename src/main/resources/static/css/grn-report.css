@@ -1,0 +1,633 @@
+/* ==========================================================================
+   Salesforce Lightning Design System (SLDS) - GRN Register & Print Styles
+   ========================================================================== */
+
+:root {
+  --slds-brand: #0176d3;
+  --slds-brand-hover: #014486;
+  --slds-brand-active: #014486;
+  --slds-brand-soft: #f0f8ff;
+  --slds-text-default: #180828;
+  --slds-text-title: #080707;
+  --slds-text-muted: #514f4d;
+  --slds-text-weak: #747474;
+  --slds-border: #e5e5e5;
+  --slds-border-dark: #c9c7c5;
+  --slds-bg-app: #b0c4de;
+  --slds-bg-card: #ffffff;
+  --slds-bg-neutral-subtle: #f3f3f3;
+  --slds-bg-hover: #f3f3f3;
+  --slds-shadow-card: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  --slds-radius-small: 0.25rem;
+  --slds-radius-pill: 15rem;
+  --slds-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Base Body Style */
+body.grn-page {
+  background-color: #f3f3f3;
+  color: var(--slds-text-default);
+  font-family: var(--slds-font-family);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout Shell */
+.grn-shell {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+/* Page Header Component */
+body.grn-page .grn-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  background-color: var(--slds-bg-card);
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-small);
+  box-shadow: var(--slds-shadow-card);
+}
+
+body.grn-page .grn-eyebrow {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--slds-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+body.grn-page .grn-page-heading h1 {
+  margin: 0;
+  color: var(--slds-text-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+body.grn-page .grn-page-heading p {
+  margin: 0.25rem 0 0;
+  color: var(--slds-text-muted);
+  font-size: 0.8125rem;
+}
+
+body.grn-page .grn-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Total Chip (SLDS Pill Token) */
+body.grn-page .grn-total-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-pill);
+  background-color: var(--slds-bg-card);
+  color: var(--slds-text-muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+body.grn-page .grn-total-chip strong {
+  color: var(--slds-text-title);
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+/* Status Chips */
+.grn-status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--slds-radius-pill);
+  background-color: #e0e5ee;
+  color: #2e3d52;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Filter Form Panel */
+body.grn-page .grn-filter-form {
+  display: grid;
+  grid-template-columns: minmax(16rem, 2fr) repeat(2, minmax(10rem, 1fr)) auto;
+  align-items: end;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--slds-bg-card);
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-small);
+  box-shadow: var(--slds-shadow-card);
+}
+
+body.grn-page .grn-filter-form .grn-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--slds-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+body.grn-page .grn-control {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--slds-border-dark);
+  border-radius: var(--slds-radius-small);
+  background-color: #ffffff;
+  color: var(--slds-text-default);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  outline: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+body.grn-page .grn-control:focus {
+  border-color: var(--slds-brand);
+  box-shadow: 0 0 0 1px var(--slds-brand);
+}
+
+body.grn-page .grn-filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Button UI Components */
+.grn-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--slds-radius-small);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.grn-button-primary {
+  background-color: var(--slds-brand);
+  border-color: var(--slds-brand);
+  color: #ffffff;
+}
+
+.grn-button-primary:hover {
+  background-color: var(--slds-brand-hover);
+  border-color: var(--slds-brand-hover);
+}
+
+.grn-button-secondary {
+  background-color: #ffffff;
+  border-color: var(--slds-border-dark);
+  color: var(--slds-brand);
+}
+
+.grn-button-secondary:hover {
+  background-color: var(--slds-bg-neutral-subtle);
+}
+
+/* Toolbar Section */
+body.grn-page .grn-register-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.5rem 0 0.75rem;
+}
+
+body.grn-page .grn-register-toolbar h2 {
+  margin: 0;
+  color: var(--slds-text-title);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+body.grn-page .grn-register-toolbar p {
+  margin: 0.25rem 0 0;
+  color: var(--slds-text-weak);
+  font-size: 0.75rem;
+}
+
+body.grn-page .grn-toolbar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Lightning Record Card Styling */
+body.grn-page .grn-record-card {
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background-color: var(--slds-bg-card);
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-small);
+  box-shadow: var(--slds-shadow-card);
+}
+
+body.grn-page .grn-record-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--slds-border);
+  background-color: var(--slds-bg-card);
+}
+
+body.grn-page .grn-record-id {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.grn-page .grn-record-id > strong {
+  color: var(--slds-brand);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+body.grn-page .grn-record-subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.25rem;
+  color: var(--slds-text-muted);
+  font-size: 0.75rem;
+}
+
+body.grn-page .grn-record-subtitle b {
+  color: var(--slds-text-default);
+  font-weight: 600;
+}
+
+body.grn-page .grn-record-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+/* Badge / Item Count */
+body.grn-page .grn-item-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: var(--slds-radius-pill);
+  background-color: var(--slds-bg-neutral-subtle);
+  color: var(--slds-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+}
+
+/* Toggle Active State */
+body.grn-page .grn-toggle.active {
+  border-color: var(--slds-brand);
+  background-color: var(--slds-brand-soft);
+  color: var(--slds-brand);
+}
+
+/* Metadata Grid */
+body.grn-page .grn-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background-color: var(--slds-bg-card);
+}
+
+body.grn-page .grn-meta-field {
+  min-width: 0;
+}
+
+body.grn-page .grn-meta-field span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--slds-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+body.grn-page .grn-meta-field strong {
+  display: block;
+  overflow: hidden;
+  color: var(--slds-text-default);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Detail Panel & Data Tables */
+body.grn-page .grn-item-panel {
+  padding: 0.875rem 1rem;
+  border-top: 1px solid var(--slds-border);
+  background-color: var(--slds-bg-neutral-subtle);
+}
+
+body.grn-page .grn-item-panel[hidden] {
+  display: none !important;
+}
+
+.grn-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+body.grn-page .grn-report-table,
+body.grn-page .grn-print-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+body.grn-page .grn-report-table th,
+body.grn-page .grn-print-table th {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--slds-bg-neutral-subtle);
+  border-bottom: 2px solid var(--slds-border);
+  color: var(--slds-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+body.grn-page .grn-report-table td,
+body.grn-page .grn-print-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--slds-border);
+}
+
+.grn-number {
+  text-align: right;
+}
+
+body.grn-page .grn-report-table tbody tr:nth-child(even) td {
+  background-color: #fafafa;
+}
+
+body.grn-page .grn-report-table tbody tr:hover td {
+  background-color: var(--slds-brand-soft);
+}
+
+td.grn-empty {
+  text-align: center;
+  color: var(--slds-text-weak);
+  padding: 1.5rem 1rem;
+}
+
+/* Alerts */
+.grn-alert {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--slds-radius-small);
+  font-weight: 600;
+}
+
+.grn-alert-success {
+  background-color: #e6f4ea;
+  border: 1px solid #b7e1cd;
+  color: #137333;
+}
+
+.grn-alert-error {
+  background-color: #fce8e6;
+  border: 1px solid #fad2cf;
+  color: #c5221f;
+}
+
+/* Empty State Block */
+body.grn-page .grn-empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  background-color: var(--slds-bg-card);
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-small);
+}
+
+body.grn-page .grn-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--slds-radius-small);
+  background-color: var(--slds-brand-soft);
+  color: var(--slds-brand);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+body.grn-page .grn-empty-state h2 {
+  margin: 1rem 0 0.25rem;
+  color: var(--slds-text-title);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+body.grn-page .grn-empty-state p {
+  margin: 0;
+  color: var(--slds-text-muted);
+}
+
+/* Print Sheet Styling */
+body.grn-page .grn-print-sheet {
+  padding: 2rem;
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid var(--slds-border);
+  border-radius: var(--slds-radius-small);
+}
+
+body.grn-page .grn-print-title {
+  margin: 1rem 0 1.5rem;
+  color: var(--slds-text-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+body.grn-page .grn-print-meta {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+body.grn-page .grn-print-meta th,
+body.grn-page .grn-print-meta td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--slds-border-dark);
+  text-align: left;
+}
+
+body.grn-page .grn-print-meta th {
+  width: 16%;
+  background-color: var(--slds-bg-neutral-subtle);
+  color: var(--slds-text-muted);
+  font-weight: 700;
+}
+
+body.grn-page .grn-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  padding: 0 1rem;
+}
+
+body.grn-page .grn-print-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+body.grn-page.grn-print-mode .grn-print-content {
+  padding: 0 !important;
+  background-color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Print Overrides
+   ========================================================================== */
+@media print {
+  body.grn-page,
+  body.grn-page .grn-print-content {
+    background-color: #ffffff !important;
+  }
+
+  body.grn-page .grn-shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  body.grn-page .grn-print-sheet {
+    padding: 0;
+    border: none;
+  }
+
+  body.grn-page .grn-print-actions {
+    display: none !important;
+  }
+
+  body.grn-page .grn-table-wrap {
+    overflow: visible;
+    border: 0;
+  }
+
+  body.grn-page .grn-print-table {
+    min-width: 0;
+    font-size: 8.5pt;
+  }
+
+  body.grn-page .grn-print-table th {
+    background-color: var(--slds-bg-neutral-subtle) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ==========================================================================
+   Responsive Grid & Breakpoints
+   ========================================================================== */
+@media (max-width: 64rem) {
+  body.grn-page .grn-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.grn-page .grn-filter-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.grn-page .grn-filter-search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 46rem) {
+  body.grn-page .grn-shell {
+    padding: 0.75rem;
+  }
+
+  body.grn-page .grn-page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  body.grn-page .grn-heading-actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  body.grn-page .grn-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  body.grn-page .grn-filter-search {
+    grid-column: auto;
+  }
+
+  body.grn-page .grn-filter-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.grn-page .grn-filter-actions .grn-button {
+    width: 100%;
+  }
+
+  body.grn-page .grn-register-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  body.grn-page .grn-record-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  body.grn-page .grn-record-actions {
+    width: 100%;
+  }
+
+  body.grn-page .grn-record-actions .grn-button {
+    flex: 1;
+  }
+
+  body.grn-page .grn-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  body.grn-page .grn-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.grn-page .grn-record-subtitle {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

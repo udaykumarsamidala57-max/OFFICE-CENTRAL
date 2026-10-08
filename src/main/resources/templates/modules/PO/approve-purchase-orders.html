@@ -29,12 +29,38 @@
                     <td data-label="Vendor Name" class="po-vendor-cell" th:text="${po.vendorName}">Vendor</td>
                     <td data-label="Total Amount" class="po-amount-cell" th:text="${#numbers.formatDecimal(po.totalAmount,1,2)}">0.00</td>
                     <td data-label="Approval Status"><span class="po-badge" th:classappend="${po.approval == 'Approved'} ? ' approved' : ' pending'" th:text="${po.approval ?: 'Pending'}">Pending</span></td>
-                    <td data-label="Action"><div class="po-action-group">
-                        <form th:if="${isSuperAdmin or allowedButtonCodes.contains('DELETE_PO')}" th:action="@{/purchase-orders/approvals}" method="post" onsubmit="return confirm('Are you sure you want to delete this record?')"><input type="hidden" name="action" value="delete"><input type="hidden" name="poNumber" th:value="${po.number}"><button type="submit" class="po-button danger small" th:disabled="${po.approval == 'Approved'}">Delete</button></form>
-                        <form th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_PO')) and canApproveByRole}" th:action="@{/purchase-orders/approvals}" method="post" onsubmit="return confirm('Are you sure you want to approve this record?')"><input type="hidden" name="action" value="approve"><input type="hidden" name="poNumber" th:value="${po.number}"><button type="submit" class="po-button primary small" th:disabled="${po.approval == 'Approved'}">Approve</button></form>
-                    </div></td>
+                    <td data-label="Action">
+                      <div class="po-action-group">
+                        <!-- Delete Form (Only shown if NOT approved) -->
+                        <form 
+                          th:if="${(isSuperAdmin or allowedButtonCodes.contains('DELETE_PO')) and po.approval != 'Approved'}" 
+                          th:action="@{/purchase-orders/approvals}" 
+                          method="post" 
+                          onsubmit="return confirm('Are you sure you want to delete this record?')"
+                        >
+                          <input type="hidden" name="action" value="delete">
+                          <input type="hidden" name="poNumber" th:value="${po.number}">
+                          <button type="submit" class="po-button danger small">Delete</button>
+                        </form>
+
+                        <!-- Approve Form (Only shown if NOT approved) -->
+                        <form 
+                          th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_PO')) and canApproveByRole and po.approval != 'Approved'}" 
+                          th:action="@{/purchase-orders/approvals}" 
+                          method="post" 
+                          onsubmit="return confirm('Are you sure you want to approve this record?')"
+                        >
+                          <input type="hidden" name="action" value="approve">
+                          <input type="hidden" name="poNumber" th:value="${po.number}">
+                          <button type="submit" class="po-button primary small">Approve</button>
+                        </form>
+                      </div>
+                    </td>
                     <td data-label="Print"><a class="po-button secondary small" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_PO')}" th:href="@{/purchase-orders/report(printNumber=${po.number})}" target="_blank">View / Print</a></td>
-                    <td data-label="GRN"><a class="po-button primary small" th:if="${(isSuperAdmin or allowedButtonCodes.contains('CREATE_GRN')) and po.approval == 'Approved' and (po.status == 'Open' or po.status == 'Partially Received')}" th:href="@{/grn/entry(poNumber=${po.number})}">GRN Entry</a></td>
+                    <td data-label="GRN">
+                      <!-- GRN Entry Link (Only shown if APPROVED and Open/Partially Received) -->
+                      <a class="po-button primary small" th:if="${(isSuperAdmin or allowedButtonCodes.contains('CREATE_GRN')) and po.approval == 'Approved' and (po.status == 'Open' or po.status == 'Partially Received')}" th:href="@{/grn/entry(poNumber=${po.number})}">GRN Entry</a>
+                    </td>
                     <td data-label="Items"><button type="button" class="po-button secondary small po-expand-button" th:id="|btn-${po.id}|" th:if="${isSuperAdmin or allowedButtonCodes.contains('SHOW_PO_ITEMS')}" th:attr="data-row-id=${po.id}">Show Items</button></td>
                 </tr>
                 <tr class="po-nested-row" th:id="|row-nested-${po.id}|" hidden><td colspan="9" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
@@ -52,6 +78,3 @@
 </div></main>
 <script th:src="@{/js/PO/purchase-order-report.js}" defer></script>
 </body></html>
-
-
-

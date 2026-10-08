@@ -3,167 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GRN Entry - Salesforce Inventory Management</title>
-        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
+    <title>GRN Register</title>
+    <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/grn-report.css(v=20261008-split)}">
 </head>
-<body class="app-body po-page grn-page">
-<div th:replace="~{fragments/app-header :: appHeader('grn-entry')}"></div>
+<body class="app-body grn-page" th:classappend="${printGrn != null} ? ' grn-print-mode' : ''">
+<th:block th:if="${printGrn == null}">
+    <div th:replace="~{fragments/app-header :: appHeader('grn-report')}"></div>
+</th:block>
 
-<main class="app-main-content po-content">
-    <div class="po-shell">
-
-        <!-- Salesforce SLDS Record Header -->
-        <header class="po-object-header page-subheader">
-            <div class="po-object-title">
-                <div class="po-object-icon" aria-hidden="true">GRN</div>
-                <div>
-                    <span class="po-object-subtitle">Inventory Receipts</span>
-                    <h1>Goods Received Note</h1>
+<main class="app-main-content" th:classappend="${printGrn != null} ? ' grn-print-content' : ''">
+    <div class="grn-shell">
+        <th:block th:if="${printGrn == null}">
+            <header class="grn-page-heading grn-report-heading">
+                <div class="grn-heading-copy">
+                    <span class="grn-eyebrow">INVENTORY · RECEIVING</span>
+                    <h1>Goods Received Note register</h1>
+                    <p>Search receipts, review accepted quantities, and print receiving records.</p>
                 </div>
-            </div>
-            <a class="po-button secondary" th:href="@{/grn/report}">GRN Report</a>
-        </header>
-
-        <!-- System Banner Alerts -->
-        <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div>
-        <div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
-
-        <!-- PO SEARCH PANEL -->
-        <section class="po-table-card u-margin-bottom-1-5rem-f0b24e">
-            <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
-                <div>
-                    <span class="po-object-subtitle">Search Record</span>
-                    <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">Locate Purchase Order</h2>
+                <div class="grn-heading-actions">
+                    <span class="grn-total-chip"><strong th:text="${#lists.size(records)}">0</strong> records</span>
+                    <button id="exportGrnCsv" type="button" class="grn-button grn-button-primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_GRN')}">Export CSV</button>
                 </div>
-            </div>
-            <form method="get" th:action="@{/grn/entry}" class="u-padding-1-25rem-ba8bfc">
-                <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                    Purchase Order Number
-                    <div class="u-display-flex-gap-8px-margin-top-6px-2cb199">
-                        <input class="po-filter-input u-flex-1-ee3d55" id="poNumber" name="poNumber" th:value="${poNumber}" placeholder="Enter approved PO number (e.g. PO0001)" required>
-                        <button type="submit" class="po-button primary">Load PO</button>
-                    </div>
+            </header>
+
+            <div class="grn-alert grn-alert-success" th:if="${success}" th:text="${success}" role="status"></div>
+            <div class="grn-alert grn-alert-error" th:if="${error}" th:text="${error}" role="alert"></div>
+
+            <form method="get" th:action="@{/grn/report}" class="grn-panel grn-filter-form">
+                <label class="grn-field grn-filter-search">
+                    <span>Search receipts</span>
+                    <input type="text" name="search" class="grn-control" th:value="${search}" placeholder="GRN, PO, vendor, or invoice">
                 </label>
-                <p class="u-margin-8px-0-0-font-size-0-75rem-color-text-m-f7959d">Only approved purchase orders with a remaining balance can be received.</p>
+                <label class="grn-field">
+                    <span>From date</span>
+                    <input type="date" name="fromDate" class="grn-control" th:value="${fromDate}">
+                </label>
+                <label class="grn-field">
+                    <span>To date</span>
+                    <input type="date" name="toDate" class="grn-control" th:value="${toDate}">
+                </label>
+                <div class="grn-filter-actions">
+                    <button type="submit" class="grn-button grn-button-primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_GRN')}">Apply filters</button>
+                    <a class="grn-button grn-button-secondary" th:href="@{/grn/report}">Clear</a>
+                </div>
             </form>
+
+            <div class="grn-register-toolbar">
+                <div>
+                    <h2>Recent receipts</h2>
+                    <p>Expand a receipt to see the verified line quantities.</p>
+                </div>
+                <div class="grn-toolbar-actions">
+                    <button type="button" class="grn-button grn-button-secondary" id="expandAllGrn">Expand all</button>
+                    <button type="button" class="grn-button grn-button-secondary" id="collapseAllGrn">Collapse all</button>
+                </div>
+            </div>
+
+            <div class="grn-empty-state" th:if="${#lists.isEmpty(records)}">
+                <span class="grn-empty-icon" aria-hidden="true">GRN</span>
+                <h2>No receipts found</h2>
+                <p>Try changing the search term or date range.</p>
+            </div>
+
+            <article class="grn-record-card" th:each="record : ${records}"
+                     th:attr="data-grn=${record.grnNo},data-date=${record.formattedGrnDate},data-po=${record.poNumber},data-vendor=${record.vendorName},data-invoice=${record.invoiceNo},data-invoice-date=${record.formattedInvoiceDate},data-received-by=${record.receivedBy},data-remarks=${record.remarks}">
+                <header class="grn-record-header">
+                    <div class="grn-record-title">
+                        <div class="grn-record-id">
+                            <strong th:text="${record.grnNo}">GRN0001</strong>
+                            <span class="grn-status-chip" th:text="${record.status}">Completed</span>
+                        </div>
+                        <div class="grn-record-subtitle">
+                            <span th:text="${record.formattedGrnDate}">08 Oct 2026</span>
+                            <span>Purchase order <b th:text="${record.poNumber}">PO0001</b></span>
+                            <span th:text="${record.vendorName}">Vendor</span>
+                        </div>
+                    </div>
+                    <div class="grn-record-actions">
+                        <button type="button" class="grn-button grn-button-secondary grn-toggle" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_GRN_ITEMS')}" th:attr="data-target=|grn-items-${record.id}|">
+                            Items <span class="grn-item-count" th:text="${#lists.size(record.items)}">0</span>
+                        </button>
+                        <a class="grn-button grn-button-primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_GRN')}" th:href="@{/grn/report(printNumber=${record.grnNo})}" target="_blank">Print</a>
+                    </div>
+                </header>
+
+                <div class="grn-meta-grid">
+                    <div class="grn-meta-field"><span>Invoice reference</span><strong th:text="|${record.invoiceNo} (${record.formattedInvoiceDate})|">Invoice</strong></div>
+                    <div class="grn-meta-field"><span>Vendor GSTIN</span><strong th:text="${record.vendorGstin ?: '-'}">-</strong></div>
+                    <div class="grn-meta-field"><span>Received by</span><strong th:text="${record.receivedBy}">User</strong></div>
+                    <div class="grn-meta-field"><span>Remarks</span><strong th:text="${record.remarks ?: '-'}">-</strong></div>
+                </div>
+
+                <div class="grn-item-panel" th:id="|grn-items-${record.id}|" hidden>
+                    <div class="grn-table-wrap">
+                        <table class="grn-report-table">
+                            <thead><tr>
+                                <th>Item description</th><th class="grn-number">Qty ordered</th><th class="grn-number">Qty received</th>
+                                <th class="grn-number">Qty accepted</th><th class="grn-number">Qty rejected</th><th>Remarks</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr th:each="item : ${record.items}">
+                                    <td th:text="${item.description}">Item</td>
+                                    <td class="grn-number" th:text="${#numbers.formatDecimal(item.orderedQty,1,2)}">0.00</td>
+                                    <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyReceived,1,2)}">0.00</td>
+                                    <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyAccepted,1,2)}">0.00</td>
+                                    <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyRejected,1,2)}">0.00</td>
+                                    <td th:text="${item.remarks ?: '-'}">-</td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(record.items)}"><td colspan="6" class="grn-empty">No line items saved.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+        </th:block>
+
+        <section class="grn-print-sheet" th:if="${printGrn != null}" id="printGrn">
+            <div th:replace="~{fragments/purchase-order-header :: purchaseOrderHeader}"></div>
+            <h1 class="grn-print-title">Goods Receipt Note</h1>
+            <table class="grn-print-meta">
+                <tbody>
+                    <tr><th>Purchase order</th><td th:text="${printGrn.poNumber}">PO0001</td><th>GRN number</th><td th:text="${printGrn.grnNo}">GRN0001</td></tr>
+                    <tr><th>GRN date</th><td th:text="${printGrn.grnDate}">2026-10-08</td><th>Invoice number</th><td th:text="${printGrn.invoiceNo}">-</td></tr>
+                    <tr><th>Vendor</th><td th:text="${printGrn.vendorName}">Vendor</td><th>GSTIN</th><td th:text="${printGrn.vendorGstin ?: '-'}">-</td></tr>
+                    <tr><th>Vendor address</th><td colspan="3" th:text="${printGrn.vendorAddress ?: '-'}">-</td></tr>
+                    <tr><th>Invoice date</th><td th:text="${printGrn.invoiceDate}">-</td><th>Received by</th><td th:text="${printGrn.receivedBy}">-</td></tr>
+                    <tr><th>Remarks</th><td colspan="3" th:text="${printGrn.remarks ?: '-'}">-</td></tr>
+                </tbody>
+            </table>
+            <div class="grn-table-wrap">
+                <table class="grn-print-table">
+                    <thead><tr><th>Sl. No.</th><th>Item description</th><th class="grn-number">Qty received</th><th class="grn-number">Qty accepted</th><th class="grn-number">Qty rejected</th><th>Remarks</th></tr></thead>
+                    <tbody>
+                        <tr th:each="item,stat : ${printGrn.items}">
+                            <td th:text="${stat.count}">1</td><td th:text="${item.description}">Item</td>
+                            <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyReceived,1,2)}">0.00</td>
+                            <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyAccepted,1,2)}">0.00</td>
+                            <td class="grn-number" th:text="${#numbers.formatDecimal(item.qtyRejected,1,2)}">0.00</td>
+                            <td th:text="${item.remarks ?: '-'}">-</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(printGrn.items)}"><td colspan="6" class="grn-empty">No items found for this GRN.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grn-signatures"><strong>Store In-Charge</strong><strong>Authorized Signatory <span class="grn-status-chip">RECEIVED</span></strong></div>
+            <div class="grn-print-actions">
+                <a class="grn-button grn-button-secondary" th:href="@{/grn/report}">Back to report</a>
+                <button type="button" class="grn-button grn-button-primary" onclick="window.print()">Print / Save PDF</button>
+            </div>
         </section>
-
-        <!-- GRN FORM SECTION -->
-        <form th:if="${entry != null}" method="post" th:action="@{/grn/entry}" onsubmit="return confirm('Save this Goods Received Note? Accepted quantities will update stock.')">
-            <input type="hidden" name="poNumber" th:value="${entry.poNumber}">
-
-            <!-- SECTION 01: RECEIPT DETAILS -->
-            <section class="po-table-card u-margin-bottom-1-5rem-f0b24e">
-                <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
-                    <div>
-                        <span class="po-object-subtitle">Section 01</span>
-                        <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">
-                            Receipt Details for Purchase Order <strong th:text="${entry.poNumber}" class="u-color-brand-7944f5">PO0001</strong>
-                        </h2>
-                    </div>
-                    <div class="u-margin-left-auto-538764">
-                        <span class="po-badge approved">Approved PO</span>
-                    </div>
-                </div>
-
-                <div class="u-padding-1-25rem-ba8bfc">
-                    <div class="u-display-grid-grid-template-columns-repeat-aut-f4a29a">
-                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                            Vendor Name
-                            <input class="po-filter-input u-background-color-surface-alt-font-weight-600-730594" th:value="${entry.vendorName}" readonly>
-                        </label>
-
-                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                            Invoice Number <span class="u-color-danger-f75d63">*</span>
-                            <input class="po-filter-input" name="invoiceNo" maxlength="100" required placeholder="Supplier invoice number">
-                        </label>
-
-                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                            Invoice Date <span class="u-color-danger-f75d63">*</span>
-                            <input class="po-filter-input" type="date" name="invoiceDate" required>
-                        </label>
-
-                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                            Received By <span class="u-color-danger-f75d63">*</span>
-                            <input class="po-filter-input" name="receivedBy" maxlength="100" th:value="${defaultReceivedBy}" required>
-                        </label>
-
-                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                            GRN Date <span class="u-color-danger-f75d63">*</span>
-                            <input class="po-filter-input" type="date" name="grnDate" th:value="${today}" required>
-                        </label>
-                    </div>
-
-                    <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
-                        GRN Remarks
-                        <input class="po-filter-input" name="remarks" maxlength="500" placeholder="Optional receipt notes">
-                    </label>
-                </div>
-            </section>
-
-            <!-- SECTION 02: LINE ITEMS & QUANTITY CHECK -->
-            <section class="po-table-card">
-                <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
-                    <div>
-                        <span class="po-object-subtitle">Section 02</span>
-                        <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">Quantity Verification & Stock Entry</h2>
-                    </div>
-                </div>
-
-                <div class="po-table-scroll">
-                    <table class="po-table">
-                        <thead>
-                            <tr>
-                                <th class="po-item-description">Item Description</th>
-                                <th class="u-width-70px-be8da0">UOM</th>
-                                <th class="po-amount-cell u-width-100px-807e51">Ordered</th>
-                                <th class="po-amount-cell u-width-120px-3b3384">Prev. Accepted</th>
-                                <th class="po-amount-cell u-width-100px-807e51">Balance</th>
-                                <th class="u-width-110px-9ed99d">Received</th>
-                                <th class="u-width-110px-9ed99d">Accepted</th>
-                                <th class="u-width-110px-9ed99d">Rejected</th>
-                                <th>Item Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="item : ${entry.items}">
-                                <td class="po-item-description">
-                                    <strong th:text="${item.description}">Item</strong>
-                                    <span th:text="|Item ID: ${item.itemId}|" class="u-display-block-font-size-0-6875rem-color-text--765c47">Item ID</span>
-                                    <input type="hidden" name="poItemId" th:value="${item.poItemId}">
-                                </td>
-                                <td th:text="${item.uom ?: '-'}">-</td>
-                                <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.orderedQty, 1, 2)}">0.00</td>
-                                <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.alreadyAccepted, 1, 2)}">0.00</td>
-                                <td class="po-amount-cell u-color-warning-font-weight-700-066c22" th:text="${#numbers.formatDecimal(item.remainingQty, 1, 2)}">0.00</td>
-                                <td>
-                                    <input class="po-filter-input u-width-100-text-align-right-693873" type="number" name="qtyReceived" min="0" step="0.01" value="0.00" required>
-                                </td>
-                                <td>
-                                    <input class="po-filter-input u-width-100-text-align-right-border-color-appro-36ad72" type="number" name="qtyAccepted" min="0" step="0.01" value="0.00" required>
-                                </td>
-                                <td>
-                                    <input class="po-filter-input u-width-100-text-align-right-border-color-dange-a2f860" type="number" name="qtyRejected" min="0" step="0.01" value="0.00" required>
-                                </td>
-                                <td>
-                                    <input class="po-filter-input u-width-100-69d66e" type="text" name="itemRemarks" maxlength="500" placeholder="Optional">
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(entry.items)}">
-                                <td colspan="9" class="po-empty">No remaining quantities available for receipt on this Purchase Order.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="u-display-flex-justify-content-space-between-al-24ca57">
-                    <a class="po-button secondary" th:href="@{/purchase-orders/approvals}">Cancel</a>
-                    <button class="po-button primary" type="submit" th:disabled="${#lists.isEmpty(entry.items)}">Save GRN</button>
-                </div>
-            </section>
-        </form>
-
     </div>
 </main>
+<script th:src="@{/js/GRN/grn-report.js(v=20261008)}" defer></script>
 </body>
 </html>

@@ -18,11 +18,11 @@ body:is(.indent-page, .indent-create-page, .indent-list-page, .indent-approval-p
 
 *, *::before, *::after { box-sizing: border-box; }
 
-body {
+body:is(.indent-page, .indent-create-page, .indent-list-page, .indent-approval-page) {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #b0adab;
+  background-color: #f3f3f3;
   color: inherit;
 }
 
@@ -33,7 +33,7 @@ body {
   margin: 0 auto;
 }
 :is(.indent-create-page, .indent-list-page, .indent-approval-page) {
-  background-color: #b0adab;
+  background-color: #f3f3f3;
   padding: 0.5rem;
 }
 
