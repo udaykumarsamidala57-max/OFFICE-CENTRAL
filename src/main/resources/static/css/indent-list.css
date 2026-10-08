@@ -1,0 +1,145 @@
+/* ==========================================================================
+   INDENT LIST PAGE - FILTERS & REPORT TABLE ENHANCEMENTS
+   ========================================================================== */
+
+/* 1. FILTER FORM GRID & INPUTS */
+.indent-list-page .indent-ui-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.indent-list-page .indent-ui-form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+/* 2. TEXT & ICON BASED STATUS INDICATORS (NO BADGE / CONTAINER BACKGROUNDS) */
+.indent-meta-item.status-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.indent-meta-item.status-text .meta-label {
+  font-size: 0.8125rem;
+  color: #706e6b;
+  font-weight: 500;
+}
+
+/* Base Inline Status Text Component */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* SVG Icon Controls */
+.status-indicator .status-icon {
+  display: none;
+  flex-shrink: 0;
+}
+
+/* Approved State (Green Color with Check Icon) */
+.status-indicator.status-approved {
+  color: #2e7d32;
+}
+.status-indicator.status-approved .icon-check {
+  display: inline-block;
+}
+
+/* Rejected State (Red Color with Cross Icon) */
+.status-indicator.status-rejected {
+  color: #c62828;
+}
+.status-indicator.status-rejected .icon-cross {
+  display: inline-block;
+}
+
+/* Pending State (Amber/Orange Color with Clock Icon) */
+.status-indicator.status-pending {
+  color: #b78103;
+}
+.status-indicator.status-pending .icon-clock {
+  display: inline-block;
+}
+
+/* Approval Date Typography */
+.approval-date {
+  display: block;
+  font-size: 0.6875rem;
+  color: #706e6b;
+  margin-top: 0.2rem;
+  font-weight: 400;
+}
+
+/* 3. FILTER ACTION BUTTON CONTAINER */
+.indent-list-page .filter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 1rem 0 1.25rem;
+  width: 100%;
+}
+
+/* 4. TABLE COLUMN WIDTH SPECIFICATIONS */
+.indent-list-page .indent-list-table :is(th.col-id, td.record-id) { width: 5%; min-width: 50px; }
+.indent-list-page .indent-list-table :is(th.col-name, td.item-name) { width: 10%; min-width: 150px; }
+.indent-list-page .indent-list-table :is(th.col-qty, td.stock-value, td.requested-qty) { width: 7%; min-width: 60px; }
+.indent-list-page .indent-list-table :is(th.col-uom, td.uom-cell) { width: 6%; min-width: 55px; }
+.indent-list-page .indent-list-table :is(th.col-purpose, td.purpose-cell) { width: 20%; min-width: 140px; }
+.indent-list-page .indent-list-table :is(th.col-l1-status, td.l1-status-cell) { width: 10%; min-width: 95px; }
+.indent-list-page .indent-list-table :is(th.col-l1-approved-by, td.l1-approved-by-cell) { width: 10%; min-width: 100px; }
+.indent-list-page .indent-list-table :is(th.col-l2-status, td.l2-status-cell) { width: 10%; min-width: 95px; }
+.indent-list-page .indent-list-table :is(th.col-l2-approved-by, td.l2-approved-by-cell) { width: 10%; min-width: 100px; }
+.indent-list-page .indent-list-table :is(th.col-indent-status, td.indent-status-cell) { width: 7%; min-width: 80px; }
+.indent-list-page .indent-list-table :is(th.col-actions, td.actions-cell) { width: 5%; min-width: 80px; }
+
+/* 5. GROUP HEADER OVERRIDES & TABLE HOVER POLISH */
+.indent-list-page .indent-group-header td {
+  padding: 0 !important;
+  background: transparent !important;
+  border-bottom: 0 !important;
+}
+
+.indent-list-page .indent-list-table tbody tr:not(.indent-group-header) {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.indent-list-page .indent-list-table tbody tr:not(.indent-group-header):hover td {
+  background-color: #f8f9fa;
+}
+
+/* 6. RESPONSIVE BREAKPOINTS (Desktop Layout Adjustments) */
+@media (min-width: 48rem) {
+  .indent-list-page .indent-ui-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    align-items: end;
+    gap: 1.25rem;
+  }
+
+  .indent-list-page .filter-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  .indent-list-page .indent-ui-button {
+    width: auto;
+  }
+}

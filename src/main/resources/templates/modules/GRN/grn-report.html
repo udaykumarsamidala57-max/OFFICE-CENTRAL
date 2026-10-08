@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GRN Report</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/GRN/grn.css(v=20261007)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body grn-page" th:classappend="${printGrn != null} ? ' grn-print-mode' : ''">
+<body class="app-body grn-page reports-page" th:classappend="${printGrn != null} ? ' grn-print-mode' : ''">
 <th:block th:if="${printGrn == null}"><div th:replace="~{fragments/app-header :: appHeader('grn-report')}"></div></th:block>
 <main class="app-main-content grn-content" th:classappend="${printGrn != null} ? ' grn-print-content' : ''"><div class="grn-shell">
     <th:block th:if="${printGrn == null}">
-        <div class="grn-page-heading"><div><span class="grn-eyebrow">INVENTORY RECEIPTS</span><h1>GRN Report</h1></div>
-            <div class="grn-heading-actions"><span class="grn-count">Records <strong th:text="${#lists.size(records)}">0</strong></span><button id="exportGrnCsv" type="button" class="grn-button success" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_GRN')}">Download CSV</button></div>
+        <div class="grn-page-heading page-subheader"><div><span class="grn-eyebrow">INVENTORY RECEIPTS</span><h1>GRN Report</h1></div>
+            <div class="grn-heading-actions"><span class="grn-count">Records <strong th:text="${#lists.size(records)}">0</strong></span><button id="exportGrnCsv" type="button" class="grn-button success export-button" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_GRN')}">Download CSV</button></div>
         </div>
         <div class="grn-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="grn-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
         <form method="get" th:action="@{/grn/report}" class="grn-filter-card">

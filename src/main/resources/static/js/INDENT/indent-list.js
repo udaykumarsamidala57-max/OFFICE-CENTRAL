@@ -1,5 +1,7 @@
 (() => {
     const table = document.getElementById('dataTable');
+    if (!table) return;
+
     const rows = [...document.querySelectorAll('.data-row')];
     const keyword = document.getElementById('keywordSearch');
     const fromDate = document.getElementById('fromDate');
@@ -10,6 +12,8 @@
     const tbody = table.tBodies[0];
     const groups = [];
     let currentGroup = null;
+
+    // Grouping setup
     [...tbody.children].forEach(row => {
         if (row.classList.contains('indent-group-header')) {
             currentGroup = { header: row, rows: [] };
@@ -18,6 +22,7 @@
             currentGroup.rows.push(row);
         }
     });
+
     function markGroupRows(group) {
         group.rows.forEach((row, index) => {
             row.classList.toggle('group-first', index === 0);
@@ -26,52 +31,83 @@
     }
     groups.forEach(markGroupRows);
 
+    // Filtering logic
     function applyFilters() {
-        const term = keyword.value.trim().toLocaleLowerCase();
-        const dept = department.value.trim().toLocaleLowerCase();
+        const term = keyword ? keyword.value.trim().toLocaleLowerCase() : '';
+        const dept = department ? department.value.trim().toLocaleLowerCase() : '';
         let shown = 0;
+
         rows.forEach(row => {
             const searchableText = (row.dataset.search || '') + ' ' + row.innerText;
             const textMatch = !term || searchableText.toLocaleLowerCase().includes(term);
             const rowDept = (row.dataset.department || '').trim().toLocaleLowerCase();
             const deptMatch = !dept || rowDept === dept;
             const rowDate = (row.dataset.reportDate || '').trim();
-            const dateMatch = (!fromDate.value || rowDate >= fromDate.value)
-                && (!toDate.value || rowDate <= toDate.value);
+            const dateMatch = (!fromDate || !fromDate.value || rowDate >= fromDate.value)
+                && (!toDate || !toDate.value || rowDate <= toDate.value);
+
             const visible = textMatch && deptMatch && dateMatch;
             row.hidden = !visible;
             if (visible) shown++;
         });
+
         groups.forEach(group => {
             group.header.hidden = !group.rows.some(row => !row.hidden);
         });
-        visibleCount.textContent = shown;
-        noMatches.hidden = shown !== 0 || rows.length === 0;
+
+        if (visibleCount) visibleCount.textContent = shown;
+        if (noMatches) noMatches.hidden = shown !== 0 || rows.length === 0;
     }
 
     const bindButton = (id, action) => {
         const button = document.getElementById(id);
         if (button) button.addEventListener('click', action);
     };
+
     bindButton('filterButton', applyFilters);
+
     [keyword, fromDate, toDate, department].forEach(control => {
-        control.addEventListener(control === keyword ? 'input' : 'change', applyFilters);
+        if (control) {
+            control.addEventListener(control === keyword ? 'input' : 'change', applyFilters);
+        }
     });
+
     bindButton('resetButton', () => {
-        keyword.value = '';
-        fromDate.value = '';
-        toDate.value = '';
-        department.value = '';
+        if (keyword) keyword.value = '';
+        if (fromDate) fromDate.value = '';
+        if (toDate) toDate.value = '';
+        if (department) department.value = '';
         applyFilters();
     });
+
     bindButton('printButton', () => window.print());
+
+    // CSV Exporting
     bindButton('csvButton', () => {
-        const visibleRows = [...tbody.querySelectorAll('.data-row')].filter(row => !row.hidden);
-        const data = [
-            [...table.tHead.querySelector('.column-header').cells].map(cell => cell.innerText.trim()),
-            ...visibleRows.map(row => [...row.cells].map(cell => cell.innerText.replace(/\s+/g, ' ').trim()))
-        ];
-        const csv = data.map(row => row.map(value => '"' + value.replace(/"/g, '""') + '"').join(',')).join('\r\n');
+        const headerRow = table.tHead.querySelector('tr');
+        if (!headerRow) return;
+
+        const headers = [...headerRow.cells].map(cell => cell.innerText.trim());
+        const exportData = [headers];
+
+        groups.forEach(group => {
+            const visibleRows = group.rows.filter(row => !row.hidden);
+            if (visibleRows.length > 0) {
+                // Include Group Header info in CSV output if visible
+                const groupTitle = group.header.innerText.replace(/\s+/g, ' ').trim();
+                exportData.push([`--- ${groupTitle} ---`]);
+
+                visibleRows.forEach(row => {
+                    const rowCells = [...row.cells].map(cell => cell.innerText.replace(/\s+/g, ' ').trim());
+                    exportData.push(rowCells);
+                });
+            }
+        });
+
+        const csv = exportData
+            .map(row => row.map(val => '"' + String(val).replace(/"/g, '""') + '"').join(','))
+            .join('\r\n');
+
         const blob = new Blob(['\ufeff', csv], { type: 'text/csv;charset=utf-8' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -80,29 +116,49 @@
         URL.revokeObjectURL(link.href);
     });
 
-    const sortableHeaders = table.tHead.querySelectorAll('.column-header th[data-sort]');
-    sortableHeaders.forEach((header, columnIndex) => {
+    // In-Group Table Sorting
+    const sortableHeaders = table.tHead.querySelectorAll('th[data-sort]');
+    sortableHeaders.forEach((header) => {
         header.addEventListener('click', () => {
+            // Find correct cell index dynamically
+            const columnIndex = header.cellIndex;
             const ascending = header.getAttribute('aria-sort') !== 'ascending';
+
             sortableHeaders.forEach(th => th.removeAttribute('aria-sort'));
             header.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+
             const type = header.dataset.sort;
             const compareRows = (a, b) => {
-                const left = a.cells[columnIndex].innerText.trim();
-                const right = b.cells[columnIndex].innerText.trim();
+                const left = (a.cells[columnIndex]?.innerText || '').trim();
+                const right = (b.cells[columnIndex]?.innerText || '').trim();
+
                 let result;
-                if (type === 'number') result = Number(left) - Number(right);
-                else if (type === 'date') result = left.localeCompare(right);
-                else result = left.localeCompare(right, undefined, { numeric: true, sensitivity: 'base' });
+                if (type === 'number') {
+                    const numA = parseFloat(left.replace(/[^0-9.-]+/g, '')) || 0;
+                    const numB = parseFloat(right.replace(/[^0-9.-]+/g, '')) || 0;
+                    result = numA - numB;
+                } else if (type === 'date') {
+                    result = left.localeCompare(right);
+                } else {
+                    result = left.localeCompare(right, undefined, { numeric: true, sensitivity: 'base' });
+                }
                 return ascending ? result : -result;
             };
-            groups.forEach((group, index) => {
-                const nextHeader = groups[index + 1]?.header || noMatches;
-                group.rows.sort(compareRows).forEach(row => tbody.insertBefore(row, nextHeader));
+
+            groups.forEach((group) => {
+                group.rows.sort(compareRows);
+                // Re-append rows directly after group header in correct order
+                let referenceNode = group.header;
+                group.rows.forEach(row => {
+                    referenceNode.after(row);
+                    referenceNode = row;
+                });
                 markGroupRows(group);
             });
+
             applyFilters();
         });
     });
+
     applyFilters();
 })();

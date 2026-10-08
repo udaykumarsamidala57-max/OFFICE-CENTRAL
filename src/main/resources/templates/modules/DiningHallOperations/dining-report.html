@@ -6,25 +6,18 @@
   <title>Dining Hall Consumption Report</title>
   
   <!-- Modern Typography & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Stylesheets -->
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body dining-page">
+<body class="app-body dining-page reports-page">
   <div th:replace="~{fragments/app-header :: appHeader('dining-report')}"></div>
 
   <main class="app-main-content dining-content">
     <div class="dining-shell dining-report-shell">
       
       <!-- Top Header Card -->
-      <div class="dining-heading">
+      <div class="dining-heading page-subheader">
         <div class="header-title-group">
           <div class="header-icon">
             <i class="fa-solid fa-utensils"></i>
@@ -124,16 +117,16 @@
                         <table class="dh-modal-table">
                           <thead>
                             <tr>
-                              <th style="text-align: left;">Item Name</th>
-                              <th style="text-align: center; width: 80px;">Qty</th>
-                              <th style="text-align: right; width: 110px;">Value</th>
+                              <th class="u-text-align-left-26cef2">Item Name</th>
+                              <th class="u-text-align-center-width-80px-76cd97">Qty</th>
+                              <th class="u-text-align-right-width-110px-881f4b">Value</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr th:each="item : ${meal.items}">
-                              <td style="text-align: left;" th:text="${item.item}">Item</td>
-                              <td style="text-align: center;" th:text="${#numbers.formatDecimal(item.quantity, 1, 2)}">0</td>
-                              <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.value, 1, 2)}">0.00</td>
+                              <td th:text="${item.item}" class="u-text-align-left-26cef2">Item</td>
+                              <td th:text="${#numbers.formatDecimal(item.quantity, 1, 2)}" class="u-text-align-center-72a68a">0</td>
+                              <td th:text="${#numbers.formatDecimal(item.value, 1, 2)}" class="u-text-align-right-13cbe0">0.00</td>
                             </tr>
                           </tbody>
                         </table>
@@ -171,7 +164,7 @@
       const modal = document.getElementById(id);
       if (!modal) return;
       modal.classList.toggle('is-open', open);
-      document.body.style.overflow = open ? 'hidden' : '';
+      document.body.classList.toggle('modal-open', open);
     }
 
     document.addEventListener('keydown', event => {

@@ -1,0 +1,112 @@
+:root {
+  /* Salesforce Lightning core palette */
+  --slds-c-brand-primary: #0176d3;
+  --slds-c-brand-primary-hover: #014486;
+  --slds-c-brand-primary-active: #032d60;
+  --slds-c-brand-primary-tint: #eef4ff;
+  --slds-c-brand-primary-border: #9ec8f5;
+  --slds-c-bg-page: #f3f3f3;
+  --slds-c-bg-surface: #ffffff;
+  --slds-c-bg-surface-alt: #fafaf9;
+  --slds-c-bg-hover: #f3f2f2;
+  --slds-c-text-primary: #181818;
+  --slds-c-text-secondary: #444444;
+  --slds-c-text-muted: #706e6b;
+  --slds-c-text-inverse: #ffffff;
+  --slds-c-border: #c9c7c5;
+  --slds-c-border-subtle: #dddbda;
+  --slds-c-focus-ring: rgba(1, 118, 211, .28);
+  --slds-c-success: #2e844a;
+  --slds-c-success-hover: #1c6b37;
+  --slds-c-success-tint: #eef7ee;
+  --slds-c-warning: #8c4b02;
+  --slds-c-warning-tint: #fff7e6;
+  --slds-c-danger: #ba0517;
+  --slds-c-danger-hover: #8e030f;
+  --slds-c-danger-tint: #fef1ee;
+  --slds-c-info: #0b5cab;
+  --slds-c-info-tint: #eef4ff;
+  --slds-c-overlay: rgba(8, 7, 7, .48);
+
+  /* Lightning typography */
+  --slds-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --slds-font-size-xx-small: .625rem;
+  --slds-font-size-x-small: .75rem;
+  --slds-font-size-small: .8125rem;
+  --slds-font-size-medium: .875rem;
+  --slds-font-size-large: 1rem;
+  --slds-font-size-x-large: 1.25rem;
+  --slds-font-size-xx-large: 1.5rem;
+  --slds-font-weight-regular: 400;
+  --slds-font-weight-medium: 500;
+  --slds-font-weight-semibold: 600;
+  --slds-font-weight-bold: 700;
+  --slds-line-height-tight: 1.25;
+  --slds-line-height-normal: 1.5;
+
+  /* Spacing, shape and elevation */
+  --slds-space-0: 0;
+  --slds-space-1: .25rem;
+  --slds-space-2: .5rem;
+  --slds-space-3: .75rem;
+  --slds-space-4: 1rem;
+  --slds-space-5: 1.25rem;
+  --slds-space-6: 1.5rem;
+  --slds-space-8: 2rem;
+  --slds-space-10: 2.5rem;
+  --slds-radius-small: .125rem;
+  --slds-radius-medium: .25rem;
+  --slds-radius-large: .5rem;
+  --slds-radius-pill: 999rem;
+  --slds-shadow-card: 0 1px 2px rgba(8, 7, 7, .12);
+  --slds-shadow-dropdown: 0 2px 8px rgba(8, 7, 7, .16);
+  --slds-shadow-modal: 0 8px 24px rgba(8, 7, 7, .24);
+  --slds-shadow-focus: 0 0 0 3px var(--slds-c-focus-ring);
+  --slds-control-height: 2.25rem;
+  --slds-content-width: 90rem;
+  --slds-transition: 150ms ease-in-out;
+
+  /* Indent: blue and slate, with a quiet dot-matrix texture */
+  --indent-brand: #0176d3;
+  --indent-brand-dark: #0b2545;
+  --indent-brand-soft: #eef4ff;
+  --indent-border: #9ec8f5;
+  --indent-pattern-dot: rgba(1, 118, 211, .12);
+  --indent-pattern-size: .5rem;
+  --indent-table-min-width: 42rem;
+  --indent-cell-divider: rgba(255, 255, 255, .12);
+  --indent-pattern: radial-gradient(circle, var(--indent-pattern-dot) .75px, transparent .9px);
+
+  /* PO: blue with a warm amber accent */
+  --po-brand: #0176d3;
+  --po-brand-dark: #014486;
+  --po-accent: #dd7a01;
+  --po-brand-soft: #eef4ff;
+  --po-accent-soft: #fff7e6;
+  --po-pattern-line: rgba(255, 255, 255, .15);
+  --po-pattern: repeating-linear-gradient(135deg, transparent 0 .65rem, var(--po-pattern-line) .65rem .72rem);
+  --po-accent-rule-width: .2rem;
+  --po-table-min-width: 44rem;
+
+  /* GRN: teal and emerald */
+  --grn-brand: #0b8275;
+  --grn-brand-dark: #075e54;
+  --grn-success: #2e844a;
+  --grn-brand-soft: #e6f6f4;
+  --grn-border: #91dbd1;
+  --grn-pattern-line: rgba(11, 130, 117, .08);
+  --grn-pattern: repeating-linear-gradient(0deg, transparent 0 .7rem, var(--grn-pattern-line) .7rem .75rem), repeating-linear-gradient(90deg, transparent 0 .7rem, var(--grn-pattern-line) .7rem .75rem);
+  --grn-pattern-size: .75rem;
+  --grn-table-min-width: 40rem;
+
+  /* Reports: clear blue and slate */
+  --reports-brand: #0b5cab;
+  --reports-brand-dark: #0b2545;
+  --reports-surface-dark: #17324d;
+  --reports-brand-soft: #eef4ff;
+  --reports-border: #9ec8f5;
+  --reports-pattern-line: rgba(11, 92, 171, .09);
+  --reports-pattern: linear-gradient(var(--reports-pattern-line) 1px, transparent 1px), linear-gradient(90deg, var(--reports-pattern-line) 1px, transparent 1px);
+  --reports-pattern-size: 1rem;
+  --reports-table-min-width: 42rem;
+}

@@ -1,0 +1,28 @@
+body.po-page { --module-brand: var(--po-brand); --module-brand-dark: var(--po-brand-dark); --module-accent: var(--po-accent); --module-brand-soft: var(--po-brand-soft); --module-pattern: var(--po-pattern); }
+.po-card { overflow: hidden; border: 1px solid var(--slds-c-border-subtle); border-inline-start: .25rem solid var(--module-accent); border-radius: var(--slds-radius-small); background: var(--slds-c-bg-surface); box-shadow: var(--slds-shadow-card); }
+.po-card__header, .po-meta-banner { padding: var(--slds-space-3) var(--slds-space-4); border-block-end: 1px solid var(--slds-c-border-subtle); background-color: var(--module-brand-dark); background-image: var(--module-pattern); color: var(--slds-c-text-inverse); }
+.po-btn { display: inline-flex; min-height: var(--slds-control-height); align-items: center; justify-content: center; gap: var(--slds-space-2); padding-inline: var(--slds-space-4); border: 1px solid var(--module-brand); border-inline-start: var(--po-accent-rule-width) solid var(--module-accent); border-radius: var(--slds-radius-small); background: var(--module-brand); color: var(--slds-c-text-inverse); font-weight: var(--slds-font-weight-bold); text-decoration: none; cursor: pointer; transition: var(--slds-transition); }
+.po-btn:hover { border-color: var(--module-brand-dark); background: var(--module-brand-dark); box-shadow: var(--slds-shadow-dropdown); }
+.po-btn_secondary { border-color: var(--slds-c-border); border-inline-start-color: var(--module-accent); background: var(--slds-c-bg-surface); color: var(--module-brand); }
+.po-btn_secondary:hover { border-color: var(--module-brand); background: var(--module-brand-soft); }
+.po-btn_danger { border-color: var(--slds-c-danger); border-inline-start-color: var(--slds-c-danger); background: var(--slds-c-danger); color: var(--slds-c-text-inverse); }
+.po-table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--slds-c-border-subtle); border-radius: var(--slds-radius-small); }
+.po-table { width: 100%; min-width: var(--po-table-min-width); border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
+.po-table th { padding: var(--slds-space-3); border-block-end: 2px solid var(--module-accent); background-color: var(--module-brand-dark); background-image: var(--module-pattern); color: var(--slds-c-text-inverse); font-size: var(--slds-font-size-x-small); font-weight: var(--slds-font-weight-bold); text-align: start; text-transform: uppercase; }
+.po-table td { padding: var(--slds-space-3); border-block-end: 1px solid var(--slds-c-border-subtle); background: var(--slds-c-bg-surface); }
+.po-table tbody tr:nth-child(even) td { background: var(--module-brand-soft); }
+.po-table tbody tr:hover td { background: var(--po-accent-soft); }
+.po-table tbody tr.is-active td, .po-table tbody tr[aria-selected="true"] td { background: var(--po-accent-soft); box-shadow: inset .2rem 0 0 var(--module-accent); }
+@media (max-width: 48rem) { .po-table-wrap { -webkit-overflow-scrolling: touch; } }
+/* Compatibility selectors for current Purchase Order templates */
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .app-main-content { padding-top: 5rem; }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-object-header, .page-subheader) { border-top-color: var(--po-accent); background-image: var(--po-pattern); background-size: auto; }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-object-icon { border-radius: var(--slds-radius-small); background: var(--po-brand); color: var(--slds-c-text-inverse); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-table-card { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-filter { border-top-color: var(--po-accent); background: var(--po-accent-soft); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table, .po-items-table) th { border-bottom: 2px solid var(--po-accent); background: linear-gradient(110deg, var(--po-brand-dark), var(--po-brand)); color: var(--slds-c-text-inverse); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table, .po-items-table) td { border-bottom: 1px solid var(--slds-c-border-subtle); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) :is(.po-table, .po-legacy-table) tbody tr:hover td { background: var(--po-accent-soft); box-shadow: inset .2rem 0 0 var(--po-accent); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-button.primary { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); background: var(--po-brand); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-button.secondary { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); color: var(--po-brand); }
+body.po-page:not(.indent-approval-page):not(.grn-page):not(.reports-page) .po-filter-input { border-inline-start: var(--po-accent-rule-width) solid var(--po-accent); }

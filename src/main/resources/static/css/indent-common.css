@@ -1,0 +1,581 @@
+/* ==========================================================================
+   INDENT MODULE CSS (custom Indent page styling)
+   ========================================================================== */
+
+/* 1. ROOT VARIABLES & BASE SCOPE */
+body:is(.indent-page, .indent-create-page, .indent-list-page, .indent-approval-page) {
+  --module-brand: #0176d3;
+  --module-brand-dark: #014486;
+  --module-brand-soft: #f3f3f3;
+  --module-border: #dddbda;
+  --module-pattern: none;
+  --module-pattern-size: auto;
+  --module-table-min-width: 100%;
+  --module-cell-divider: #e5e5e5;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #b0adab;
+  color: inherit;
+}
+
+/* 2. PAGE CONTAINERS & HEADERS */
+.indent-ui-page-container {
+  width: 100%;
+  max-width: var(--slds-content-width, 90rem);
+  margin: 0 auto;
+}
+:is(.indent-create-page, .indent-list-page, .indent-approval-page) {
+  background-color: #b0adab;
+  padding: 0.5rem;
+}
+
+.page-subheader, .indent-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--module-border);
+  background-color: #ffffff;
+  color: inherit;
+  word-break: break-word;
+}
+
+body:is(.indent-create-page, .indent-list-page, .indent-approval-page) :is(.indent-ui-page-header, .page-subheader, .po-object-header) {
+  border-top: 3px solid #0176d3;
+  border-bottom: 1px solid var(--module-border);
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body:is(.indent-create-page, .indent-list-page, .indent-approval-page) :is(.indent-ui-page-header__title, .po-object-header h1) {
+  color: inherit;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 4vw, 1.5rem);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.po-object-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.po-object-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.po-object-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+  background-color: #0176d3;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.125rem;
+  box-shadow: 0 2px 4px rgba(1, 118, 211, 0.25);
+}
+
+.po-object-subtitle {
+  display: block;
+  font-size: 0.75rem;
+  color: #706e6b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* 3. CARDS & CONTAINERS */
+.indent-card,
+body:is(.indent-list-page, .indent-approval-page) :is(.indent-ui-card, .po-table-card) {
+  overflow: hidden;
+  border: 1px solid var(--module-border);
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.indent-card:hover,
+body:is(.indent-list-page, .indent-approval-page) :is(.indent-ui-card, .po-table-card):hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.approval-card-wrapper { display: flex; flex-direction: column; gap: 1rem; }
+.indent-ui-card__body { padding: 1rem; }
+
+.indent-ui-card__footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--module-border);
+  background-color: #f3f3f3;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.indent-ui-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.indent-ui-section-icon { width: 1.25rem; height: 1.25rem; flex-shrink: 0; fill: currentColor; }
+
+.indent-ui-section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 1rem 0 0.75rem;
+}
+
+/* 4. INDENT GROUP HEADER */
+.indent-header, .report-indent-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--module-border);
+  background-color: #fafaf9;
+  color: inherit;
+}
+
+.indent-no {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.indent-group-icon { width: 1.25rem; height: 1.25rem; flex-shrink: 0; fill: #0176d3; }
+
+.indent-meta-item {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.indent-meta-item .meta-label { color: #706e6b; }
+.indent-meta-item .meta-value { font-weight: 600; word-break: break-all; color: inherit; }
+.indent-meta-item .meta-value.highlight { font-weight: 700; color: #0176d3; }
+
+/* 5. TABLES & ALIGNMENT */
+.indent-table-wrap,
+body:is(.indent-list-page, .indent-approval-page) :is(.indent-ui-table-container, .po-table-scroll) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--module-border);
+  border-radius: 0.25rem;
+  background: #ffffff;
+}
+
+.indent-table,
+body:is(.indent-list-page, .indent-approval-page) :is(.indent-ui-table, .inner-table) {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) :is(th, td) {
+  padding: 0.5rem 0.75rem;
+  border-inline-end: 1px solid var(--module-border);
+  border-block-end: 1px solid var(--module-border);
+  vertical-align: middle;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) th {
+  background: #fafaf9;
+  color: #444444;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: start;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) td {
+  background: #ffffff;
+  word-break: break-word;
+  color: inherit;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) :is(th:last-child, td:last-child) {
+  border-inline-end: 0;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) tbody tr:nth-child(even) td {
+  background: #fafaf9;
+}
+
+:is(.indent-table, .indent-ui-table, .inner-table) tbody tr:hover td {
+  background-color: #f3f3f3;
+}
+
+/* 5a. COLUMN WIDTH SPECIFICATIONS */
+/* Indent Approval Table */
+.indent-approval-table :is(th.col-id, td.record-id) { width: 5%; min-width: 50px; }
+.indent-approval-table :is(th.col-name, td.item-name) { width: 10%; min-width: 150px; }
+.indent-approval-table :is(th.col-qty, td.number-cell) { width: 7%; min-width: 60px; }
+.indent-approval-table :is(th.col-uom, td.uom-cell) { width: 6%; min-width: 55px; }
+.indent-approval-table :is(th.col-purpose, td.purpose-cell) { width: 20%; min-width: 140px; }
+.indent-approval-table :is(th.col-l1-action, td.ic-status) { width: 10%; min-width: 60px; }
+.indent-approval-table :is(th.col-l1-approved-by, td.approved-by) { width: 10%; min-width: 30px; }
+.indent-approval-table :is(th.col-l2-action, td.action-cell) { width: 17%; min-width: 340px; }
+
+/* Indent List / Report Table */
+.indent-list-table :is(th.col-id, td.record-id) { width: 5%; min-width: 50px; }
+.indent-list-table :is(th.col-name, td.item-name) { width: 10%; min-width: 150px; }
+.indent-list-table :is(th.col-qty, td.stock-value, td.requested-qty) { width: 7%; min-width: 60px; }
+.indent-list-table :is(th.col-uom, td.uom-cell) { width: 6%; min-width: 55px; }
+.indent-list-table :is(th.col-purpose, td.purpose-cell) { width: 20%; min-width: 140px; }
+.indent-list-table :is(th.col-l1-status, td.l1-status-cell) { width: 10%; min-width: 95px; }
+.indent-list-table :is(th.col-l1-approved-by, td.l1-approved-by-cell) { width: 10%; min-width: 100px; }
+.indent-list-table :is(th.col-l2-status, td.l2-status-cell) { width: 10%; min-width: 95px; }
+.indent-list-table :is(th.col-l2-approved-by, td.l2-approved-by-cell) { width: 10%; min-width: 100px; }
+.indent-list-table :is(th.col-indent-status, td.indent-status-cell) { width: 7%; min-width: 80px; }
+.indent-list-table :is(th.col-actions, td.actions-cell) { width: 5%; min-width: 80px; }
+
+.indent-group-header td { padding: 0 !important; background: transparent !important; }
+
+.empty-state, .empty-approvals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #706e6b;
+  background-color: #ffffff;
+  border: 1px dashed var(--module-border);
+  border-radius: 0.25rem;
+}
+
+.empty-approvals .empty-icon { width: 2.5rem; height: 2.5rem; margin-bottom: 0.5rem; opacity: 0.4; }
+
+/* 6. BUTTONS & ACTIONS */
+.po-button,
+.indent-btn,
+.indent-ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  border: 1px solid var(--module-border, #dddbda);
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  color: #0176d3;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.po-button:hover,
+.indent-btn:hover,
+.indent-ui-button:hover {
+  background-color: #f3f3f3;
+  color: #014486;
+  border-color: #c9c7c5;
+}
+
+.po-button:focus-visible,
+.indent-btn:focus-visible,
+.indent-ui-button:focus-visible {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.3);
+}
+
+.po-button:active,
+.indent-btn:active,
+.indent-ui-button:active {
+  background-color: #e5e5e5;
+  color: #014486;
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Primary button state */
+.po-button.primary {
+  background-color: #0176d3;
+  border-color: #0176d3;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(1, 118, 211, 0.2);
+}
+
+.po-button.primary:hover {
+  background-color: #014486;
+  border-color: #014486;
+  color: #ffffff;
+}
+
+.po-button.primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(1, 68, 134, 0.4);
+}
+
+.po-button.primary:active {
+  background-color: #013264;
+  border-color: #013264;
+  color: #ffffff;
+  transform: translateY(1px);
+}
+
+/* Neutral / Secondary Button State */
+.po-button.neutral {
+  background-color: #ffffff;
+  border-color: #dddbda;
+  color: #706e6b;
+}
+
+.po-button.neutral:hover {
+  background-color: #f3f3f3;
+  color: #181818;
+}
+
+/* Small Size Variant (Used inside data tables) */
+.po-button.small,
+.po-button--small {
+  width: auto;
+  height: 1.75rem;
+  min-height: 1.75rem;
+  padding: 0 0.625rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Final Action Cell Layout */
+.final-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.final-action .indent-ui-select-wrapper {
+  max-width: 130px;
+}
+
+.final-action .po-button {
+  flex-shrink: 0;
+}
+
+/* Badges & Status Indicators */
+.badge, .po-badge, .indent-ui-badge, .po-badge.neutral {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background-color: #f3f3f3;
+  color: #444444;
+  border: 1px solid var(--module-border);
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.badge-purchase {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.badge-issue {
+  background-color: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.approved-badge {
+  display: inline-flex;
+  align-items: center;
+  color: #2e7d32;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.approval-date {
+  display: block;
+  font-size: 0.7rem;
+  color: #706e6b;
+  margin-top: 0.125rem;
+  line-height: 1.2;
+}
+
+.status, .status.approved, .status.pending {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  background-color: #f3f3f3;
+  border: 1px solid var(--module-border);
+  color: inherit;
+}
+
+/* 7. FORM CONTROLS & INPUTS */
+.indent-ui-grid { display: flex; flex-direction: column; gap: 0.875rem; margin-bottom: 1rem; width: 100%; }
+.indent-ui-form-element { display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; width: 100%; }
+.indent-ui-label { display: inline-flex; align-items: center; font-size: 0.75rem; color: #706e6b; line-height: 1.2; font-weight: 600; }
+
+.indent-ui-input, .indent-ui-select, .po-filter-input {
+  width: 100%;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--module-border);
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  color: inherit;
+  font-size: 0.8125rem;
+  line-height: 2.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-appearance: none;
+}
+
+:is(.indent-ui-input, .indent-ui-select, .po-filter-input):focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.2);
+}
+
+.indent-ui-select-wrapper { position: relative; display: inline-flex; align-items: center; width: 100%; }
+.indent-ui-select-wrapper .indent-ui-select { padding-right: 2rem; }
+.indent-ui-select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #706e6b;
+  pointer-events: none;
+}
+
+.filter-actions { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.75rem 0 1rem; width: 100%; }
+
+/* 8. UTILITIES */
+.align-left, .u-text-align-left { text-align: left !important; }
+.align-center { text-align: center !important; }
+.align-right { text-align: right !important; }
+.u-margin-0-ff227d { margin: 0 !important; }
+
+/* 9. RESPONSIVE BREAKPOINTS (>= 768px) */
+@media (min-width: 48rem) {
+  :is(.indent-create-page, .indent-list-page, .indent-approval-page) { padding: 1.5rem; }
+
+  .po-object-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .po-object-title { width: auto; }
+
+  :is(.indent-header, .report-indent-header) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .indent-ui-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    align-items: end;
+    gap: 1rem;
+  }
+
+  :is(.filter-actions, .indent-ui-card__footer) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: auto;
+  }
+
+  :is(.indent-btn, .indent-ui-button, .po-button) { width: auto; }
+}
+/* Table Action Link Styling */
+.row-action,
+a.row-action {
+  color: #0176d3 !important;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.8125rem;
+  transition: color 0.15s ease-in-out;
+}
+
+.row-action:visited,
+a.row-action:visited {
+  color: #0176d3 !important;
+}
+
+.row-action:hover,
+a.row-action:hover,
+.row-action:focus,
+a.row-action:focus {
+  color: #014486 !important;
+  text-decoration: underline;
+}

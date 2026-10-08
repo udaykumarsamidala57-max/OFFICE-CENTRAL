@@ -3,15 +3,12 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Issue Stock</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
 <body class="app-body inventory-page">
 <div th:replace="~{fragments/app-header :: appHeader('issue-entry')}"></div>
 <main class="app-main-content inventory-content"><div class="inventory-shell">
-  <div class="inventory-heading"><div><span class="inventory-eyebrow">INVENTORY CONTROL</span><h1>Issue Stock</h1></div><a class="inv-button secondary" th:href="@{/issues/report}">Issue Report</a></div>
+  <div class="inventory-heading page-subheader"><div><span class="inventory-eyebrow">INVENTORY CONTROL</span><h1>Issue Stock</h1></div><a class="inv-button secondary" th:href="@{/issues/report}">Issue Report</a></div>
   <div class="inv-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="inv-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
   <section class="inv-card">
     <div class="inv-section-heading"><div><span class="inventory-eyebrow">APPROVED REQUESTS</span><h2>Indents Pending Issue</h2></div><span class="inv-count" th:text="|${#lists.size(pendingIssues)} pending|">0 pending</span></div>

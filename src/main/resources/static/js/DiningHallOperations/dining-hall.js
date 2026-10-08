@@ -3,10 +3,10 @@ window.toggleModal = function (modalId, isOpen) {
   if (modalTarget) {
     if (isOpen) {
       modalTarget.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
     } else {
       modalTarget.classList.remove('is-open');
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
     }
   }
 };

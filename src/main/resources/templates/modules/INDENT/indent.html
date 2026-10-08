@@ -3,84 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Indent - Salesforce SLDS</title>
-    
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/INDENT/indent.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Create Indent</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <th:block th:replace="~{fragments/indent-styles :: styles}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/indent.css(v=20261008-indent)}">
 </head>
 
-<body class="app-body">
+<body class="app-body indent-create-page">
 <div th:replace="~{fragments/app-header :: appHeader('create')}"></div>
 
 <div class="app-main-content">
-    <div class="slds-page-container">
+    <div class="indent-ui-page-container">
 
-        <!-- ===================== PAGE HEADER ===================== -->
-        <header class="slds-page-header">
-            <div class="slds-page-header__row">
-                <div class="slds-page-header__col-title">
-                    <div class="slds-media">
-                        <div class="slds-media__figure">
-                            <span class="slds-icon_container slds-icon-standard-orders">
-                                <svg class="slds-icon" aria-hidden="true" viewBox="0 0 52 52">
-                                    <path d="M42 10H10c-1.1 0-2 .9-2 2v28c0 1.1.9 2 2 2h32c1.1 0 2-.9 2-2V12c0-1.1-.9-2-2-2zm-2 26H12V14h28v22z"/>
-                                    <path d="M16 18h20v4H16zm0 7h20v4H16zm0 7h12v4H16z"/>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="slds-media__body">
-                            <p class="slds-breadcrumb">Inventory &bull; Indents</p>
-                            <h1 class="slds-page-header__title">Create New Indent</h1>
+        <!-- PAGE HEADER -->
+        <header class="indent-ui-page-header page-subheader">
+            <div class="indent-ui-page-header__row">
+                <div class="indent-ui-page-header__col-title">
+                    <div class="indent-ui-media">
+                        <div class="indent-ui-media__body">
+                            <p class="indent-ui-breadcrumb">Inventory &bull; Indents</p>
+                            <h1 class="indent-ui-page-header__title">Create New Indent</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- ===================== MAIN CARD ===================== -->
-        <div class="slds-card">
+        <!-- MAIN CARD -->
+        <div class="indent-ui-card">
             <form th:action="@{/IndentServlet}" method="post" id="indentForm">
 
-                <!-- SECTION 1: HEADER DETAILS -->
-                <div class="slds-card__body">
-                    <h2 class="slds-section-title">
-                        <svg class="slds-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
+                <div class="indent-ui-card__body">
+                    <!-- SECTION 1: HEADER DETAILS -->
+                    <h2 class="indent-ui-section-title">
+                        <svg class="indent-ui-section-icon" viewBox="0 0 24 24"><path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
                         Indent Details
                     </h2>
                     
-                    <div class="slds-grid">
-                        <div class="slds-form-element">
-                            <label class="slds-label" for="indentNo">Indent No</label>
-                            <div class="slds-input-group">
+                    <div class="indent-ui-grid">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label" for="indentNo">Indent No</label>
+                            <div class="indent-ui-input-group">
                                 <input type="text"
                                        id="indentNo"
-                                       class="slds-input slds-input--readonly"
+                                       class="indent-ui-input indent-ui-input--readonly"
                                        th:value="${nextIndentNo}"
                                        readonly>
                             </div>
                         </div>
 
-                        <div class="slds-form-element">
-                            <label class="slds-label slds-required" for="date">Date</label>
-                            <div class="slds-input-group">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label indent-ui-required" for="date">Date</label>
+                            <div class="indent-ui-input-group">
                                 <input type="date"
                                        id="date"
                                        name="date"
-                                       class="slds-input"
+                                       class="indent-ui-input"
                                        required>
                             </div>
                         </div>
 
-                        <div class="slds-form-element">
-                            <label class="slds-label slds-required" for="indentType">Indent Type</label>
-                            <div class="slds-select-wrapper">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label indent-ui-required" for="indentType">Indent Type</label>
+                            <div class="indent-ui-select-wrapper">
                                 <select id="indentType"
                                         name="indentType"
-                                        class="slds-select"
+                                        class="indent-ui-select"
                                         required>
                                     <option value="">Select Type</option>
                                     <option value="Purchase">Purchase</option>
@@ -91,18 +81,18 @@
                     </div>
 
                     <!-- SECTION 2: CATEGORY SELECTION -->
-                    <h2 class="slds-section-title" style="margin-top: 1.5rem;">
-                        <svg class="slds-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/></svg>
+                    <h2 class="indent-ui-section-title">
+                        <svg class="indent-ui-section-icon" viewBox="0 0 24 24"><path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/></svg>
                         Classification Selection
                     </h2>
 
-                    <div class="slds-grid">
-                        <div class="slds-form-element">
-                            <label class="slds-label slds-required" for="department">Department</label>
-                            <div class="slds-select-wrapper">
+                    <div class="indent-ui-grid">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label indent-ui-required" for="department">Department</label>
+                            <div class="indent-ui-select-wrapper">
                                 <select id="department"
                                         name="department"
-                                        class="slds-select"
+                                        class="indent-ui-select"
                                         required
                                         onchange="loadCategories()">
                                     <option value="">Select Department</option>
@@ -114,11 +104,11 @@
                             </div>
                         </div>
 
-                        <div class="slds-form-element">
-                            <label class="slds-label slds-required" for="category">Category</label>
-                            <div class="slds-select-wrapper">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label indent-ui-required" for="category">Category</label>
+                            <div class="indent-ui-select-wrapper">
                                 <select id="category"
-                                        class="slds-select"
+                                        class="indent-ui-select"
                                         required
                                         onchange="loadSubCategories()">
                                     <option value="">Select Category</option>
@@ -126,11 +116,11 @@
                             </div>
                         </div>
 
-                        <div class="slds-form-element">
-                            <label class="slds-label slds-required" for="subcategory">Sub-Category</label>
-                            <div class="slds-select-wrapper">
+                        <div class="indent-ui-form-element">
+                            <label class="indent-ui-label indent-ui-required" for="subcategory">Sub-Category</label>
+                            <div class="indent-ui-select-wrapper">
                                 <select id="subcategory"
-                                        class="slds-select"
+                                        class="indent-ui-select"
                                         required
                                         onchange="loadItemsForSelection()">
                                     <option value="">Select Sub-Category</option>
@@ -140,59 +130,63 @@
                     </div>
 
                     <!-- SELECTION BADGE -->
-                    <div id="selectionInfo" class="slds-scoped-notification" style="display:none;">
-                        <svg class="slds-scoped-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-                        <span>
-                            <strong>Active Context:</strong>
-                            <span id="selectedDepartment" class="slds-badge"></span> &rsaquo;
-                            <span id="selectedCategory" class="slds-badge"></span> &rsaquo;
-                            <span id="selectedSubCategory" class="slds-badge"></span>
-                        </span>
+                    <div id="selectionInfo" class="indent-ui-scoped-notification" hidden>
+                        <div>
+                            <strong>Active Context:</strong><br/>
+                            <span id="selectedDepartment" class="indent-ui-badge"></span> &rsaquo;
+                            <span id="selectedCategory" class="indent-ui-badge"></span> &rsaquo;
+                            <span id="selectedSubCategory" class="indent-ui-badge"></span>
+                        </div>
                     </div>
 
                     <!-- SECTION 3: LINE ITEMS -->
-                    <div class="slds-section-header">
-                        <h2 class="slds-section-title" style="margin: 0;">
-                            <svg class="slds-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    <div class="indent-ui-section-header">
+                        <h2 class="indent-ui-section-title">
+                            <svg class="indent-ui-section-icon" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
                             Line Items
                         </h2>
-                        <button type="button"
-                                class="slds-button slds-button--neutral"
-                                th:if="${isSuperAdmin or allowedButtonCodes.contains('ADD_ITEM')}"
-                                onclick="addItem()">
-                            <svg class="slds-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                            Add Line Item
-                        </button>
                     </div>
 
-                    <div class="slds-table-container">
-                        <table class="slds-table">
+                    <div class="indent-ui-table-container">
+                        <table class="indent-ui-table responsive-item-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 35%;">Item Name</th>
-                                    <th style="width: 15%;">Quantity</th>
-                                    <th style="width: 12%;">UOM</th>
-                                    <th style="width: 12%;">Stock</th>
-                                    <th style="width: 20%;">Purpose</th>
-                                    <th style="width: 6%; text-align: center;">Action</th>
+                                    <th style="width:30%;">Item Name</th>
+                                    <th style="width:15%;">Quantity</th>
+                                    <th style="width:12%;">UOM</th>
+                                    <th style="width:12%;">Stock</th>
+                                    <th style="width:23%;">Purpose</th>
+                                    <th style="width:8%; text-align:center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="itemTable"></tbody>
                         </table>
                     </div>
+
+                    <!-- ADD ITEM ACTION BUTTON -->
+                    <div class="add-item-action-wrapper">
+                        <button type="button"
+                                class="indent-ui-button indent-ui-button--neutral"
+                                th:if="${isSuperAdmin or allowedButtonCodes.contains('ADD_ITEM')}"
+                                onclick="addItem()">
+                            <svg class="indent-ui-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            Add Line Item
+                        </button>
+                    </div>
+
                 </div>
 
-                <!-- ===================== HIDDEN VALUES ===================== -->
+                <!-- HIDDEN DATA FIELDS -->
                 <input type="hidden" name="itemIds" id="itemIds">
                 <input type="hidden" name="itemNames" id="itemNames">
                 <input type="hidden" name="quantities" id="quantities">
                 <input type="hidden" name="purposes" id="purposes">
                 <input type="hidden" name="uoms" id="uoms">
 
-                <!-- FOOTER ACTIONS -->
-                <div class="slds-card__footer">
-                    <button type="submit" class="slds-button slds-button--brand" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_INDENT')}">
-                        <svg class="slds-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                <!-- FIXED / STICKY FOOTER ACTIONS -->
+                <div class="indent-ui-card__footer">
+                    <button type="submit" class="indent-ui-button indent-ui-button--brand" th:if="${isSuperAdmin or allowedButtonCodes.contains('SAVE_INDENT')}">
+                        <svg class="indent-ui-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
                         Save Indent
                     </button>
                 </div>
@@ -208,9 +202,6 @@ const INDENT_BASE_URL = /*[[@{/IndentServlet}]]*/ "/IndentServlet";
 const CAN_REMOVE_ITEM = /*[[${isSuperAdmin or allowedButtonCodes.contains('REMOVE_ITEM')}]]*/ false;
 let currentItems = [];
 
-/* =============================================================
-   PAGE LOAD
-   ============================================================= */
 $(document).ready(function () {
     const dateInput = document.getElementById("date");
     if (!dateInput.value) {
@@ -224,9 +215,6 @@ $(document).ready(function () {
     }
 });
 
-/* =============================================================
-   LOAD CATEGORIES
-   ============================================================= */
 function loadCategories() {
     const department = $("#department").val();
 
@@ -273,9 +261,6 @@ function loadCategories() {
     });
 }
 
-/* =============================================================
-   LOAD SUB-CATEGORIES
-   ============================================================= */
 function loadSubCategories() {
     const department = $("#department").val();
     const category = $("#category").val();
@@ -324,9 +309,6 @@ function loadSubCategories() {
     });
 }
 
-/* =============================================================
-   LOAD ITEMS
-   ============================================================= */
 function loadItemsForSelection() {
     const department = $("#department").val();
     const category = $("#category").val();
@@ -352,7 +334,7 @@ function loadItemsForSelection() {
             $("#selectedCategory").text(category);
             $("#selectedSubCategory").text(subCategory);
 
-            $("#selectionInfo").css("display", "flex");
+            document.getElementById("selectionInfo").hidden = false;
 
             if (currentItems.length === 0) {
                 alert("No items found for the selected Category and Sub-Category.");
@@ -366,9 +348,6 @@ function loadItemsForSelection() {
     });
 }
 
-/* =============================================================
-   ADD ITEM ROW
-   ============================================================= */
 function addItem() {
     const department = $("#department").val();
     const category = $("#category").val();
@@ -387,10 +366,10 @@ function addItem() {
     const rowId = "row_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
 
     const row = $(
-        `<tr id="${rowId}">
-            <td data-label="Item">
-                <div class="slds-select-wrapper">
-                    <select class="item slds-select" required onchange="setItem(this)">
+        `<tr id="${rowId}" class="indent-item-row">
+            <td data-label="Item Name">
+                <div class="indent-ui-select-wrapper">
+                    <select class="item indent-ui-select" required onchange="setItem(this)">
                         ${getItemOptionsHtml(currentItems)}
                     </select>
                 </div>
@@ -398,23 +377,26 @@ function addItem() {
 
             <td data-label="Quantity">
                 <input type="number"
-                       class="qty slds-input"
+                       class="qty indent-ui-input"
                        min="0.01"
                        step="0.01"
+                       placeholder="0.00"
+                       inputmode="decimal"
                        required>
             </td>
 
-            <td data-label="UOM" class="uom"><span class="slds-pill-val">-</span></td>
-            <td data-label="Stock" class="stock"><span class="slds-pill-val">-</span></td>
+            <td data-label="UOM" class="uom"><span class="indent-ui-pill-val">-</span></td>
+            <td data-label="Stock" class="stock"><span class="indent-ui-pill-val">-</span></td>
 
             <td data-label="Purpose">
-                <input type="text" class="purpose slds-input" placeholder="e.g. Project usage">
+                <input type="text" class="purpose indent-ui-input" placeholder="e.g. Project usage">
             </td>
 
-            <td data-label="Action" style="text-align: center;">
+            <td data-label="Action">
                 ${CAN_REMOVE_ITEM ? `
-                    <button type="button" class="slds-button-icon-danger" title="Remove Item" onclick="removeItem(this)">
-                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    <button type="button" class="indent-ui-button-icon-danger" title="Remove Item" onclick="removeItem(this)">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                        <span>Remove Item</span>
                     </button>
                 ` : ''}
             </td>
@@ -422,63 +404,45 @@ function addItem() {
     );
 
     row.data("items", currentItems.slice());
-
     $("#itemTable").append(row);
     row.find(".item").focus();
 }
 
-/* =============================================================
-   CREATE ITEM OPTIONS
-   ============================================================= */
 function getItemOptionsHtml(items) {
     let html = '<option value="">Select Item</option>';
-
     $.each(items, function (index, item) {
-        html +=
-            '<option value="' + index + '">' +
-            escapeHtml(item.itemName || "") +
-            '</option>';
+        html += '<option value="' + index + '">' + escapeHtml(item.itemName || "") + '</option>';
     });
-
     return html;
 }
 
-/* =============================================================
-   SET SELECTED ITEM DETAILS
-   ============================================================= */
 function setItem(selectElement) {
     const row = $(selectElement).closest("tr");
     const index = $(selectElement).val();
     const items = row.data("items");
 
     if (index === "" || index === null || !items) {
-        row.find(".uom").html('<span class="slds-pill-val">-</span>');
-        row.find(".stock").html('<span class="slds-pill-val">-</span>');
+        row.find(".uom").html('<span class="indent-ui-pill-val">-</span>');
+        row.find(".stock").html('<span class="indent-ui-pill-val">-</span>');
         return;
     }
 
     const item = items[Number(index)];
 
     if (!item) {
-        row.find(".uom").html('<span class="slds-pill-val">-</span>');
-        row.find(".stock").html('<span class="slds-pill-val">-</span>');
+        row.find(".uom").html('<span class="indent-ui-pill-val">-</span>');
+        row.find(".stock").html('<span class="indent-ui-pill-val">-</span>');
         return;
     }
 
-    row.find(".uom").html('<span class="slds-pill-val">' + escapeHtml(item.uom || "-") + '</span>');
-    row.find(".stock").html('<span class="slds-pill-val">' + (item.stock != null ? item.stock : 0) + '</span>');
+    row.find(".uom").html('<span class="indent-ui-pill-val">' + escapeHtml(item.uom || "-") + '</span>');
+    row.find(".stock").html('<span class="indent-ui-pill-val">' + (item.stock != null ? item.stock : 0) + '</span>');
 }
 
-/* =============================================================
-   REMOVE ROW
-   ============================================================= */
 function removeItem(buttonElement) {
     $(buttonElement).closest("tr").remove();
 }
 
-/* =============================================================
-   FORM SUBMIT
-   ============================================================= */
 $("#indentForm").on("submit", function (e) {
     const rows = $("#itemTable tr");
 
@@ -525,17 +489,6 @@ $("#indentForm").on("submit", function (e) {
         return;
     }
 
-    if (ids.length !== validCount ||
-        names.length !== validCount ||
-        quantities.length !== validCount ||
-        purposes.length !== validCount ||
-        uoms.length !== validCount) {
-
-        alert("Please check all item rows.");
-        e.preventDefault();
-        return;
-    }
-
     $("#itemIds").val(ids.join(","));
     $("#itemNames").val(names.join(","));
     $("#quantities").val(quantities.join(","));
@@ -543,9 +496,6 @@ $("#indentForm").on("submit", function (e) {
     $("#uoms").val(uoms.join(","));
 });
 
-/* =============================================================
-   HELPERS
-   ============================================================= */
 function resetSelect(selector, placeholder) {
     $(selector)
         .empty()
@@ -558,7 +508,8 @@ function resetSelect(selector, placeholder) {
 }
 
 function hideSelection() {
-    $("#selectionInfo").hide();
+    const selectionInfo = document.getElementById("selectionInfo");
+    if (selectionInfo) selectionInfo.hidden = true;
 }
 
 function cleanValue(value) {

@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Current Stock</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
 <body class="app-body inventory-page"><div th:replace="~{fragments/app-header :: appHeader('stock')}"></div>
 <main class="app-main-content inventory-content"><div class="inventory-shell">
-  <div class="inventory-heading"><div><span class="inventory-eyebrow">INVENTORY POSITION</span><h1>Stock on Hand</h1></div><a class="inv-button secondary" th:href="@{/stock/report}">Stock Report</a></div>
+  <div class="inventory-heading page-subheader"><div><span class="inventory-eyebrow">INVENTORY POSITION</span><h1>Stock on Hand</h1></div><a class="inv-button secondary" th:href="@{/stock/report}">Stock Report</a></div>
   <div class="inv-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
   <form class="inv-filter stock-filter" method="get" th:action="@{/stock}">
     <label>Item Search<input name="search" th:value="${search}" placeholder="Item name, ID or subcategory"></label>
     <label>Category<select name="category"><option value="">All categories</option><option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}">Category</option></select></label>
-    <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_STOCK')}">Apply</button><a class="inv-button secondary" th:href="@{/stock}">Clear</a><button type="button" class="inv-button success" id="exportStockCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_STOCK')}">Export CSV</button></div>
+    <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_STOCK')}">Apply</button><a class="inv-button secondary" th:href="@{/stock}">Clear</a><button type="button" class="inv-button success export-button" id="exportStockCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_STOCK')}">Export CSV</button></div>
   </form>
   <section class="inv-card"><div class="inv-section-heading"><h2>Current Inventory</h2><span class="inv-count" th:text="|${#lists.size(stockRows)} items|">0 items</span></div>
     <div class="inv-table-scroll"><table class="inv-table" id="stockTable"><thead><tr><th>Item ID</th><th>Item Name</th><th>Category</th><th>Subcategory</th><th>UOM</th><th>Total Received</th><th>Total Issued</th><th>Balance</th><th>Unit Price (₹)</th><th>Stock Value (₹)</th><th>Last Updated</th></tr></thead>

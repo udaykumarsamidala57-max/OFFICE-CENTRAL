@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Page Access</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/page-catalog.css}">
-    <link rel="stylesheet" th:href="@{/css/page-access.css}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body">
+<body class="app-body page-access-page">
 <div th:replace="~{fragments/app-header :: appHeader('page-access')}"></div>
 <main class="app-main-content page-catalog-content">
     <section class="catalog-shell">
-        <header class="catalog-heading"><div><span class="catalog-kicker">ADMINISTRATION</span><h1>Page access</h1>
+        <header class="catalog-heading page-subheader"><div><span class="catalog-kicker">ADMINISTRATION</span><h1>Page access</h1>
             <p>Choose a user or role, then grant only the pages and actions they need.</p></div>
             <span class="access-policy-note">Changes apply to the selected target</span></header>
         <div class="catalog-message success" th:if="${success}" th:text="${success}" role="status"></div>

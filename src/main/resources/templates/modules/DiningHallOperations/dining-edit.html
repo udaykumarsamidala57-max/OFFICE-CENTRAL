@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Edit Dining Hall Consumption</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/DiningHallOperations/dining-hall.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
 <body class="app-body dining-page"><div th:replace="~{fragments/app-header :: appHeader('dining-edit')}"></div>
 <main class="app-main-content dining-content"><div class="dining-shell">
-  <div class="dining-heading"><div><span class="dining-eyebrow">DINING HALL OPERATIONS</span><h1>Edit Consumption Entries</h1></div><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a></div>
+  <div class="dining-heading page-subheader"><div><span class="dining-eyebrow">DINING HALL OPERATIONS</span><h1>Edit Consumption Entries</h1></div><a class="dh-button secondary" th:href="@{/dining-hall/dashboard}">Dashboard</a></div>
   <div class="dh-alert success" th:if="${success}" th:text="${success}" role="status"></div><div class="dh-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
   <form class="dh-filter dh-date-search" method="get" th:action="@{/dining-hall/consumption/edit}"><label>Consumption Date<input type="date" name="selectedDate" th:value="${selectedDate}" required></label><button class="dh-button primary" type="submit" th:if="${isSuperAdmin or allowedButtonCodes.contains('LOAD_DINING_EDIT')}">Load Entries</button></form>
   <form method="post" th:if="${!#lists.isEmpty(consumptions)}" th:action="@{/dining-hall/consumption/edit}" onsubmit="return confirm('Save selected changes to consumption, stock, and ledger?')">

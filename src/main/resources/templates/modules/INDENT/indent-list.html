@@ -4,83 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indent Report - Salesforce SLDS</title>
-
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/INDENT/indent-list.css}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+    <title>Indent Report</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <th:block th:replace="~{fragments/indent-styles :: styles}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/indent-list.css(v=20261008-indent)}">
 </head>
 
-<body class="app-body">
+<body class="app-body indent-list-page reports-page">
 <div th:replace="~{fragments/app-header :: appHeader('report')}"></div>
 
 <div class="app-main-content">
-    <div class="slds-page-container">
+    <div class="indent-ui-page-container">
 
         <!-- ===================== PAGE HEADER ===================== -->
-        <header class="slds-page-header">
-            <div class="slds-page-header__row">
-                <div class="slds-page-header__col-title">
-                    <div class="slds-media">
-                        <div class="slds-media__figure">
-                            <span class="slds-icon_container slds-icon-standard-reports">
-                                <svg class="slds-icon" aria-hidden="true" viewBox="0 0 52 52">
-                                    <path d="M38 6H14c-1.1 0-2 .9-2 2v36c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-4 32H18v-4h16v4zm0-8H18v-4h16v4zm0-8H18v-4h16v4zm0-8H18v-4h16v4z"/>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="slds-media__body">
-                            <p class="slds-breadcrumb">Inventory &bull; Reports</p>
-                            <h1 class="slds-page-header__title">Indent Report</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="slds-page-header__col-meta">
-                    <span class="record-count">
-                        <strong id="visibleCount" th:text="${#lists.size(indents)}">0</strong> Records
-                    </span>
+        <header class="po-object-header page-subheader">
+            <div class="po-object-title">
+                <span class="po-object-icon" aria-hidden="true">IN</span>
+                <div>
+                    <span class="po-object-subtitle">Inventory &bull; Reports</span>
+                    <h1>Indent Report</h1>
                 </div>
             </div>
+            <span class="po-badge neutral">
+                <strong id="visibleCount" th:text="${#lists.size(indents)}">0</strong>&nbsp;Records
+            </span>
         </header>
 
         <!-- ===================== MAIN CARD ===================== -->
-        <div class="slds-card">
-            <div class="slds-card__body">
+        <div class="indent-ui-card">
+            <div class="indent-ui-card__body">
 
                 <!-- SECTION 1: FILTERS -->
-                <h2 class="slds-section-title">
-                    <svg class="slds-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                <h2 class="indent-ui-section-title">
+                    <svg class="indent-ui-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
                     Report Filters
                 </h2>
 
-                <div class="slds-grid">
-                    <div class="slds-form-element keyword-field">
-                        <label class="slds-label" for="keywordSearch">Search</label>
-                        <input type="search" id="keywordSearch" class="slds-input" placeholder="Search any field…" autocomplete="off">
+                <div class="indent-ui-grid">
+                    <div class="indent-ui-form-element keyword-field">
+                        <label class="indent-ui-label" for="keywordSearch">Search</label>
+                        <input type="search" id="keywordSearch" class="indent-ui-input" placeholder="Search any field…" autocomplete="off">
                     </div>
 
-                    <div class="slds-form-element">
-                        <label class="slds-label" for="fromDate">From Date</label>
-                        <input type="date" id="fromDate" class="slds-input">
+                    <div class="indent-ui-form-element">
+                        <label class="indent-ui-label" for="fromDate">From Date</label>
+                        <input type="date" id="fromDate" class="indent-ui-input">
                     </div>
 
-                    <div class="slds-form-element">
-                        <label class="slds-label" for="toDate">To Date</label>
-                        <input type="date" id="toDate" class="slds-input">
+                    <div class="indent-ui-form-element">
+                        <label class="indent-ui-label" for="toDate">To Date</label>
+                        <input type="date" id="toDate" class="indent-ui-input">
                     </div>
 
-                    <div class="slds-form-element">
-                        <label class="slds-label" for="deptFilter">Department</label>
-                        <div class="slds-select-wrapper">
-                            <select id="deptFilter" class="slds-select">
+                    <div class="indent-ui-form-element">
+                        <label class="indent-ui-label" for="deptFilter">Department</label>
+                        <div class="indent-ui-select-wrapper">
+                            <select id="deptFilter" class="indent-ui-select">
                                 <option value="">All Departments</option>
                                 <option value="Electrical">Electrical</option>
                                 <option value="Housekeeping">Housekeeping</option>
                                 <option value="Plumbing">Plumbing</option>
-                                <option value="Dininghall">Dining Hall</option>
                                 <option value="Dining Hall">Dining Hall</option>
                                 <option value="RO Plant">RO Plant</option>
                                 <option value="Store">Store</option>
@@ -92,45 +76,47 @@
                 </div>
 
                 <div class="filter-actions">
-                    <button type="button" class="slds-button slds-button--brand" id="filterButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_REPORT')}">
-                        <svg class="slds-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                    <button type="button" class="indent-ui-button primary" id="filterButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_REPORT')}">
+                        <svg class="indent-ui-btn-icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
                         Apply Filters
                     </button>
-                    <button type="button" class="slds-button slds-button--neutral" id="resetButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('RESET_FILTER')}">Reset</button>
-                    <button type="button" class="slds-button slds-button--success" id="csvButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_CSV')}">
-                        <svg class="slds-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <button type="button" class="indent-ui-button neutral" id="resetButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('RESET_FILTER')}">
+                        Reset
+                    </button>
+                    <button type="button" class="indent-ui-button neutral export-button" id="csvButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_CSV')}">
+                        <svg class="indent-ui-btn-icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                         Export CSV
                     </button>
-                    <button type="button" class="slds-button slds-button--neutral" id="printButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_REPORT')}">
-                        <svg class="slds-btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-4 11H9v-5h6v5zm4-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                    <button type="button" class="indent-ui-button neutral" id="printButton" th:if="${isSuperAdmin or allowedButtonCodes.contains('PRINT_REPORT')}">
+                        <svg class="indent-ui-btn-icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-4 11H9v-5h6v5zm4-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
                         Print
                     </button>
                 </div>
 
                 <!-- SECTION 2: DATA TABLE -->
-                <div class="slds-section-header">
-                    <h2 class="slds-section-title" style="margin: 0;">
-                        <svg class="slds-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                <div class="indent-ui-section-header">
+                    <h2 class="indent-ui-section-title u-margin-0-ff227d">
+                        <svg class="indent-ui-section-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
                         Indent Records
                     </h2>
                 </div>
 
-                <div class="slds-table-container">
-                    <table id="dataTable" class="slds-table">
+                <div class="indent-ui-table-container po-table-scroll">
+                    <table id="dataTable" class="indent-ui-table inner-table po-legacy-table indent-list-table">
                         <thead>
                             <tr class="column-header">
-                                <th data-sort="number" style="width: 65px;">ID</th>
-                                <th data-sort="text" style="width: 180px;">Item</th>
-                                <th data-sort="number" style="width: 70px;">Avl</th>
-                                <th data-sort="number" style="width: 70px;">Req</th>
-                                <th data-sort="text" style="width: 60px;">UOM</th>
-                                <th data-sort="text" style="width: 180px;">Purpose</th>
-                                <th data-sort="text" style="width: 110px;">L1 Status</th>
-                                <th data-sort="text" style="width: 130px;">L1 Approved By</th>
-                                <th data-sort="text" style="width: 110px;">L2 Status</th>
-                                <th data-sort="text" style="width: 130px;">L2 Approved By</th>
-                                <th data-sort="text" style="width: 110px;">Indent Status</th>
-                                <th style="width: 100px; text-align: center;">Actions</th>
+                                <th data-sort="number" class="col-id align-right">ID</th>
+                                <th data-sort="text" class="col-name align-left">Item</th>
+                                <th data-sort="number" class="col-qty align-right">Avl</th>
+                                <th data-sort="number" class="col-qty align-right">Req</th>
+                                <th data-sort="text" class="col-uom align-center">UOM</th>
+                                <th data-sort="text" class="col-purpose align-left">Purpose</th>
+                                <th data-sort="text" class="col-l1-status align-center">L1 Status</th>
+                                <th data-sort="text" class="col-l1-approved-by align-left">L1 Approved By</th>
+                                <th data-sort="text" class="col-l2-status align-center">L2 Status</th>
+                                <th data-sort="text" class="col-l2-approved-by align-left">L2 Approved By</th>
+                                <th data-sort="text" class="col-indent-status align-center">Indent Status</th>
+                                <th class="col-actions align-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="indentRows">
@@ -139,38 +125,83 @@
                             <td colspan="12">
                                 <div class="indent-header report-indent-header">
                                     <div class="indent-no">
+                                        <svg class="indent-group-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
                                         <strong th:text="|Indent #${item.indentNo}|">Indent #1001</strong>
                                         <span class="badge" th:classappend="${#strings.equalsIgnoreCase(item.type, 'Purchase')} ? ' badge-purchase' : (${#strings.equalsIgnoreCase(item.type, 'Issue')} ? ' badge-issue' : '')" th:text="${item.type}">Purchase</span>
                                     </div>
-                                    <div><strong>Date:</strong> <span th:text="${item.date}">2026-10-05</span></div>
-                                    <div><strong>Department:</strong> <span th:text="${item.department}">Store</span></div>
-                                    <div><strong>Requested By:</strong> <span th:text="${item.requestedBy}">User</span></div>
-                                    <div class="status-text">
-                                        <strong>Status:</strong>
-                                        <span th:text="${#strings.isEmpty(item.indentStatus) ? 'Pending' : item.indentStatus}">Pending</span>
+                                    <div class="indent-meta-item">
+                                        <span class="meta-label">Date:</span>
+                                        <span class="meta-value" th:text="${item.date}">2026-10-05</span>
+                                    </div>
+                                    <div class="indent-meta-item">
+                                        <span class="meta-label">Department:</span>
+                                        <span class="meta-value" th:text="${item.department}">Store</span>
+                                    </div>
+                                    <div class="indent-meta-item">
+                                        <span class="meta-label">Requested By:</span>
+                                        <span class="meta-value" th:text="${item.requestedBy}">User</span>
+                                    </div>
+                                    <div class="indent-meta-item status-text align-right">
+                                        <span class="meta-label">Status:</span>
+                                        <span class="status-indicator" 
+                                              th:classappend="${#strings.equalsIgnoreCase(item.indentStatus, 'Approved') ? ' status-approved' : (#strings.equalsIgnoreCase(item.indentStatus, 'Rejected') ? ' status-rejected' : ' status-pending')}">
+                                            <svg class="status-icon icon-check" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                            <svg class="status-icon icon-cross" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                                            <svg class="status-icon icon-clock" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                            <span th:text="${#strings.isEmpty(item.indentStatus) ? 'Pending' : item.indentStatus}">Pending</span>
+                                        </span>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr class="data-row" th:attr="data-indent-no=${item.indentNo},data-report-date=${item.date},data-department=${item.department},data-search=${item.indentNo + ' ' + item.type + ' ' + item.date + ' ' + item.department + ' ' + item.requestedBy}">
-                            <td data-label="ID" class="record-id" th:text="${item.id}">1</td>
-                            <td data-label="Item" class="item-name" th:text="${item.itemName}">Item</td>
-                            <td data-label="Available Qty" class="stock-value" th:text="${item.balanceQty}">0</td>
-                            <td data-label="Requested Qty" class="requested-qty" th:text="${item.qty}">1</td>
-                            <td data-label="UOM" th:text="${item.uom}">Nos</td>
-                            <td data-label="Purpose" th:text="${item.purpose}">Purpose</td>
-                            <td data-label="L1 Status">
-                                <span class="status" th:classappend="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')} ? ' approved' : ' pending'" th:text="${#strings.isEmpty(item.levelOneStatus) ? 'Pending' : item.levelOneStatus}">Pending</span>
-                                <small class="approval-date" th:text="${item.levelOneApprovedDate != null ? 'Approved: ' + #dates.format(item.levelOneApprovedDate, 'dd MMM yyyy') : 'Approved: -'}">Approved: -</small>
+                            <td data-label="ID" class="record-id align-right" th:text="${item.id}">1</td>
+                            <td data-label="Item" class="item-name align-left" th:text="${item.itemName}">Item</td>
+                            <td data-label="Available Qty" class="stock-value align-right" th:text="${item.balanceQty}">0</td>
+                            <td data-label="Requested Qty" class="requested-qty align-right" th:text="${item.qty}">1</td>
+                            <td data-label="UOM" class="uom-cell align-center" th:text="${item.uom}">Nos</td>
+                            <td data-label="Purpose" class="purpose-cell align-left" th:text="${item.purpose}">Purpose</td>
+
+                            <!-- L1 Status Indicator -->
+                            <td data-label="L1 Status" class="l1-status-cell align-center">
+                                <span class="status-indicator" 
+                                      th:classappend="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved') ? ' status-approved' : (#strings.equalsIgnoreCase(item.levelOneStatus, 'Rejected') ? ' status-rejected' : ' status-pending')}">
+                                    <svg class="status-icon icon-check" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    <svg class="status-icon icon-cross" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                                    <svg class="status-icon icon-clock" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                    <span th:text="${#strings.isEmpty(item.levelOneStatus) ? 'Pending' : item.levelOneStatus}">Pending</span>
+                                </span>
+                                <small class="approval-date" th:text="${item.levelOneApprovedDate != null ? #dates.format(item.levelOneApprovedDate, 'dd MMM yyyy') : '-'}">-</small>
                             </td>
-                            <td data-label="L1 Approved By" th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">-</td>
-                            <td data-label="L2 Status">
-                                <span class="status" th:classappend="${#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved')} ? ' approved' : ' pending'" th:text="${#strings.isEmpty(item.levelTwoStatus) ? 'Pending' : item.levelTwoStatus}">Pending</span>
-                                <small class="approval-date" th:text="${item.levelTwoApprovedDate != null ? 'Approved: ' + #dates.format(item.levelTwoApprovedDate, 'dd MMM yyyy') : 'Approved: -'}">Approved: -</small>
+
+                            <td data-label="L1 Approved By" class="l1-approved-by-cell align-left" th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">-</td>
+
+                            <!-- L2 Status Indicator -->
+                            <td data-label="L2 Status" class="l2-status-cell align-center">
+                                <span class="status-indicator" 
+                                      th:classappend="${#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved') ? ' status-approved' : (#strings.equalsIgnoreCase(item.levelTwoStatus, 'Rejected') ? ' status-rejected' : ' status-pending')}">
+                                    <svg class="status-icon icon-check" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    <svg class="status-icon icon-cross" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                                    <svg class="status-icon icon-clock" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                    <span th:text="${#strings.isEmpty(item.levelTwoStatus) ? 'Pending' : item.levelTwoStatus}">Pending</span>
+                                </span>
+                                <small class="approval-date" th:text="${item.levelTwoApprovedDate != null ? #dates.format(item.levelTwoApprovedDate, 'dd MMM yyyy') : '-'}">-</small>
                             </td>
-                            <td data-label="L2 Approved By" th:text="${#strings.isEmpty(item.levelTwoApprovedBy) ? '-' : item.levelTwoApprovedBy}">-</td>
-                            <td data-label="Indent Status" th:text="${item.indentStatus}">-</td>
-                            <td data-label="Actions" style="text-align: center;">
+
+                            <td data-label="L2 Approved By" class="l2-approved-by-cell align-left" th:text="${#strings.isEmpty(item.levelTwoApprovedBy) ? '-' : item.levelTwoApprovedBy}">-</td>
+
+                            <!-- Indent Overall Status Indicator -->
+                            <td data-label="Indent Status" class="indent-status-cell align-center">
+                                <span class="status-indicator" 
+                                      th:classappend="${#strings.equalsIgnoreCase(item.indentStatus, 'Approved') ? ' status-approved' : (#strings.equalsIgnoreCase(item.indentStatus, 'Rejected') ? ' status-rejected' : ' status-pending')}">
+                                    <svg class="status-icon icon-check" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    <svg class="status-icon icon-cross" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                                    <svg class="status-icon icon-clock" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                    <span th:text="${#strings.isEmpty(item.indentStatus) ? 'Pending' : item.indentStatus}">Pending</span>
+                                </span>
+                            </td>
+
+                            <td data-label="Actions" class="actions-cell align-center">
                                 <a class="row-action" th:if="${isSuperAdmin or allowedButtonCodes.contains('VIEW_PRINT')}" th:href="@{/IndentPrint(IndentNumber=${item.indentNo})}">View / Print</a>
                             </td>
                         </tr>

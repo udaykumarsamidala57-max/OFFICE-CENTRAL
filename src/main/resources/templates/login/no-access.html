@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page access required</title>
+    
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
+</head>
+<body class="no-access-page">
+    <main>
+        <p class="eyebrow">Office Central ERP</p>
+        <h1>Page access required</h1>
+        <p th:text="${accessMessage}">Your account does not currently have access to an application page.</p>
+        <p class="company">Selected company: <strong th:text="${selectedCompany}">Company</strong></p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Sign out</button>
+        </form>
+    </main>
+</body>
+</html>

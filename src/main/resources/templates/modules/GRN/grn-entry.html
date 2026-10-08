@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GRN Entry - Salesforce Inventory Management</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/GRN/grn.css(v=20261007)}">
-    <link rel="stylesheet" th:href="@{/css/PO/purchase-order.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body po-page">
+<body class="app-body po-page grn-page">
 <div th:replace="~{fragments/app-header :: appHeader('grn-entry')}"></div>
 
 <main class="app-main-content po-content">
     <div class="po-shell">
 
         <!-- Salesforce SLDS Record Header -->
-        <header class="po-object-header">
+        <header class="po-object-header page-subheader">
             <div class="po-object-title">
                 <div class="po-object-icon" aria-hidden="true">GRN</div>
                 <div>
@@ -33,22 +29,22 @@
         <div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
 
         <!-- PO SEARCH PANEL -->
-        <section class="po-table-card" style="margin-bottom: 1.5rem;">
-            <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+        <section class="po-table-card u-margin-bottom-1-5rem-f0b24e">
+            <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
                 <div>
                     <span class="po-object-subtitle">Search Record</span>
-                    <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">Locate Purchase Order</h2>
+                    <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">Locate Purchase Order</h2>
                 </div>
             </div>
-            <form method="get" th:action="@{/grn/entry}" style="padding: 1.25rem;">
-                <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+            <form method="get" th:action="@{/grn/entry}" class="u-padding-1-25rem-ba8bfc">
+                <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
                     Purchase Order Number
-                    <div style="display: flex; gap: 8px; margin-top: 6px;">
-                        <input class="po-filter-input" id="poNumber" name="poNumber" th:value="${poNumber}" placeholder="Enter approved PO number (e.g. PO0001)" required style="flex: 1;">
+                    <div class="u-display-flex-gap-8px-margin-top-6px-2cb199">
+                        <input class="po-filter-input u-flex-1-ee3d55" id="poNumber" name="poNumber" th:value="${poNumber}" placeholder="Enter approved PO number (e.g. PO0001)" required>
                         <button type="submit" class="po-button primary">Load PO</button>
                     </div>
                 </label>
-                <p style="margin: 8px 0 0; font-size: 0.75rem; color: var(--text-muted);">Only approved purchase orders with a remaining balance can be received.</p>
+                <p class="u-margin-8px-0-0-font-size-0-75rem-color-text-m-f7959d">Only approved purchase orders with a remaining balance can be received.</p>
             </form>
         </section>
 
@@ -57,48 +53,48 @@
             <input type="hidden" name="poNumber" th:value="${entry.poNumber}">
 
             <!-- SECTION 01: RECEIPT DETAILS -->
-            <section class="po-table-card" style="margin-bottom: 1.5rem;">
-                <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+            <section class="po-table-card u-margin-bottom-1-5rem-f0b24e">
+                <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
                     <div>
                         <span class="po-object-subtitle">Section 01</span>
-                        <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">
-                            Receipt Details for Purchase Order <strong th:text="${entry.poNumber}" style="color: var(--slds-brand);">PO0001</strong>
+                        <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">
+                            Receipt Details for Purchase Order <strong th:text="${entry.poNumber}" class="u-color-brand-7944f5">PO0001</strong>
                         </h2>
                     </div>
-                    <div style="margin-left: auto;">
+                    <div class="u-margin-left-auto-538764">
                         <span class="po-badge approved">Approved PO</span>
                     </div>
                 </div>
 
-                <div style="padding: 1.25rem;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                <div class="u-padding-1-25rem-ba8bfc">
+                    <div class="u-display-grid-grid-template-columns-repeat-aut-f4a29a">
+                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
                             Vendor Name
-                            <input class="po-filter-input" th:value="${entry.vendorName}" readonly style="background-color: var(--surface-alt); font-weight: 600;">
+                            <input class="po-filter-input u-background-color-surface-alt-font-weight-600-730594" th:value="${entry.vendorName}" readonly>
                         </label>
 
-                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
-                            Invoice Number <span style="color: var(--danger);">*</span>
+                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
+                            Invoice Number <span class="u-color-danger-f75d63">*</span>
                             <input class="po-filter-input" name="invoiceNo" maxlength="100" required placeholder="Supplier invoice number">
                         </label>
 
-                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
-                            Invoice Date <span style="color: var(--danger);">*</span>
+                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
+                            Invoice Date <span class="u-color-danger-f75d63">*</span>
                             <input class="po-filter-input" type="date" name="invoiceDate" required>
                         </label>
 
-                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
-                            Received By <span style="color: var(--danger);">*</span>
+                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
+                            Received By <span class="u-color-danger-f75d63">*</span>
                             <input class="po-filter-input" name="receivedBy" maxlength="100" th:value="${defaultReceivedBy}" required>
                         </label>
 
-                        <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
-                            GRN Date <span style="color: var(--danger);">*</span>
+                        <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
+                            GRN Date <span class="u-color-danger-f75d63">*</span>
                             <input class="po-filter-input" type="date" name="grnDate" th:value="${today}" required>
                         </label>
                     </div>
 
-                    <label class="po-filter" style="flex-direction: column; align-items: stretch; margin: 0; padding: 0; border: none; box-shadow: none;">
+                    <label class="po-filter u-flex-direction-column-align-items-stretch-mar-826c72">
                         GRN Remarks
                         <input class="po-filter-input" name="remarks" maxlength="500" placeholder="Optional receipt notes">
                     </label>
@@ -107,10 +103,10 @@
 
             <!-- SECTION 02: LINE ITEMS & QUANTITY CHECK -->
             <section class="po-table-card">
-                <div class="po-filter" style="border: none; box-shadow: none; border-bottom: 1px solid var(--border-color); margin-bottom: 0;">
+                <div class="po-filter u-border-none-box-shadow-none-border-bottom-1px-1ce09a">
                     <div>
                         <span class="po-object-subtitle">Section 02</span>
-                        <h2 style="margin: 0; font-size: 1rem; color: var(--slds-slate-dark);">Quantity Verification & Stock Entry</h2>
+                        <h2 class="u-margin-0-font-size-1rem-color-slate-dark-e3ccc6">Quantity Verification & Stock Entry</h2>
                     </div>
                 </div>
 
@@ -119,13 +115,13 @@
                         <thead>
                             <tr>
                                 <th class="po-item-description">Item Description</th>
-                                <th style="width: 70px;">UOM</th>
-                                <th class="po-amount-cell" style="width: 100px;">Ordered</th>
-                                <th class="po-amount-cell" style="width: 120px;">Prev. Accepted</th>
-                                <th class="po-amount-cell" style="width: 100px;">Balance</th>
-                                <th style="width: 110px;">Received</th>
-                                <th style="width: 110px;">Accepted</th>
-                                <th style="width: 110px;">Rejected</th>
+                                <th class="u-width-70px-be8da0">UOM</th>
+                                <th class="po-amount-cell u-width-100px-807e51">Ordered</th>
+                                <th class="po-amount-cell u-width-120px-3b3384">Prev. Accepted</th>
+                                <th class="po-amount-cell u-width-100px-807e51">Balance</th>
+                                <th class="u-width-110px-9ed99d">Received</th>
+                                <th class="u-width-110px-9ed99d">Accepted</th>
+                                <th class="u-width-110px-9ed99d">Rejected</th>
                                 <th>Item Remarks</th>
                             </tr>
                         </thead>
@@ -133,24 +129,24 @@
                             <tr th:each="item : ${entry.items}">
                                 <td class="po-item-description">
                                     <strong th:text="${item.description}">Item</strong>
-                                    <span style="display: block; font-size: 0.6875rem; color: var(--text-muted);" th:text="|Item ID: ${item.itemId}|">Item ID</span>
+                                    <span th:text="|Item ID: ${item.itemId}|" class="u-display-block-font-size-0-6875rem-color-text--765c47">Item ID</span>
                                     <input type="hidden" name="poItemId" th:value="${item.poItemId}">
                                 </td>
                                 <td th:text="${item.uom ?: '-'}">-</td>
                                 <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.orderedQty, 1, 2)}">0.00</td>
                                 <td class="po-amount-cell" th:text="${#numbers.formatDecimal(item.alreadyAccepted, 1, 2)}">0.00</td>
-                                <td class="po-amount-cell" style="color: var(--palette-warning); font-weight: 700;" th:text="${#numbers.formatDecimal(item.remainingQty, 1, 2)}">0.00</td>
+                                <td class="po-amount-cell u-color-warning-font-weight-700-066c22" th:text="${#numbers.formatDecimal(item.remainingQty, 1, 2)}">0.00</td>
                                 <td>
-                                    <input class="po-filter-input" type="number" name="qtyReceived" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right;">
+                                    <input class="po-filter-input u-width-100-text-align-right-693873" type="number" name="qtyReceived" min="0" step="0.01" value="0.00" required>
                                 </td>
                                 <td>
-                                    <input class="po-filter-input" type="number" name="qtyAccepted" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right; border-color: var(--palette-approved-border);">
+                                    <input class="po-filter-input u-width-100-text-align-right-border-color-appro-36ad72" type="number" name="qtyAccepted" min="0" step="0.01" value="0.00" required>
                                 </td>
                                 <td>
-                                    <input class="po-filter-input" type="number" name="qtyRejected" min="0" step="0.01" value="0.00" required style="width: 100%; text-align: right; border-color: var(--palette-danger-border);">
+                                    <input class="po-filter-input u-width-100-text-align-right-border-color-dange-a2f860" type="number" name="qtyRejected" min="0" step="0.01" value="0.00" required>
                                 </td>
                                 <td>
-                                    <input class="po-filter-input" type="text" name="itemRemarks" maxlength="500" placeholder="Optional" style="width: 100%;">
+                                    <input class="po-filter-input u-width-100-69d66e" type="text" name="itemRemarks" maxlength="500" placeholder="Optional">
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(entry.items)}">
@@ -160,7 +156,7 @@
                     </table>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: var(--surface-alt); border-top: 1px solid var(--border-color);">
+                <div class="u-display-flex-justify-content-space-between-al-24ca57">
                     <a class="po-button secondary" th:href="@{/purchase-orders/approvals}">Cancel</a>
                     <button class="po-button primary" type="submit" th:disabled="${#lists.isEmpty(entry.items)}">Save GRN</button>
                 </div>

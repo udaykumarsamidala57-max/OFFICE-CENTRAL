@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stock Issue Report</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body inventory-page" th:classappend="${printIndentNo != null} ? ' issue-print-mode' : ''">
+<body class="app-body inventory-page reports-page" th:classappend="${printIndentNo != null} ? ' issue-print-mode' : ''">
 <th:block th:if="${printIndentNo == null}"><div th:replace="~{fragments/app-header :: appHeader('issue-report')}"></div></th:block>
 <main class="app-main-content inventory-content" th:classappend="${printIndentNo != null} ? ' issue-print-content' : ''"><div class="inventory-shell">
   <th:block th:if="${printIndentNo == null}">
-    <div class="inventory-heading"><div><span class="inventory-eyebrow">INVENTORY CONTROL</span><h1>Stock Issue Report</h1></div><a class="inv-button secondary" th:href="@{/issues/entry}">Issue Stock</a></div>
+    <div class="inventory-heading page-subheader"><div><span class="inventory-eyebrow">INVENTORY CONTROL</span><h1>Stock Issue Report</h1></div><a class="inv-button secondary" th:href="@{/issues/entry}">Issue Stock</a></div>
     <div class="inv-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
     <form class="inv-filter" method="get" th:action="@{/issues/report}">
       <label>Search<input name="search" th:value="${search}" placeholder="Indent, issue, item or person"></label>
       <label>From Date<input type="date" name="fromDate" th:value="${fromDate}"></label><label>To Date<input type="date" name="toDate" th:value="${toDate}"></label>
       <label>Department<select name="department"><option value="">All Departments</option><option th:each="dept : ${departments}" th:value="${dept}" th:text="${dept}" th:selected="${dept == department}">Department</option></select></label>
-      <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_ISSUE_REPORT')}">Apply</button><a class="inv-button secondary" th:href="@{/issues/report}">Clear</a><button type="button" class="inv-button success" id="exportIssueCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_ISSUE_REPORT')}">Export CSV</button></div>
+      <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_ISSUE_REPORT')}">Apply</button><a class="inv-button secondary" th:href="@{/issues/report}">Clear</a><button type="button" class="inv-button success export-button" id="exportIssueCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_ISSUE_REPORT')}">Export CSV</button></div>
     </form>
     <section class="inv-card"><div class="inv-section-heading"><h2>Issue Register</h2><span class="inv-count" th:text="|${#lists.size(issueRows)} records|">0 records</span></div>
       <div class="inv-table-scroll"><table class="inv-table" id="issueReportTable"><thead><tr><th>Indent No</th><th>Issue No</th><th>Item</th><th>Issued To</th><th>Department</th><th>Quantity</th><th>Unit Price</th><th>Total Value</th><th>Issue Date</th><th>Remarks</th><th>Voucher</th></tr></thead>

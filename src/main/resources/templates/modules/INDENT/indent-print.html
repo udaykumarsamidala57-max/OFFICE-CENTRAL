@@ -5,26 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="|Indent ${indentNumber}|">Indent</title>
     
-    <style>
-        .print-sheet { max-width: 850px; margin: 24px auto; padding: 30px; background: var(--surface); border: 1px solid var(--border-color); }
-        .print-title { padding: 12px 0; border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); text-align: center; text-transform: uppercase; }
-        .print-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin: 18px 0; padding: 14px; border: 1px solid var(--border-color); background: var(--bg-main); }
-        .print-meta div:last-child { grid-column: 1 / -1; }
-        .print-meta strong { display: inline-block; min-width: 115px; color: var(--text-muted); }
-        .print-table { min-width: 0; }
-        .print-table td { text-align: center; }
-        .print-table td:nth-child(2) { text-align: left; }
-        .print-actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
-        .signature { display: flex; justify-content: flex-end; margin-top: 52px; }
-        .signature span { min-width: 190px; padding-top: 6px; border-top: 1px solid var(--text-main); text-align: center; }
-        @media (max-width: 600px) { .print-sheet { margin: 10px auto; padding: 14px; } .print-meta { grid-template-columns: 1fr; } .print-meta div:last-child { grid-column: auto; } }
-        @media print { body { padding: 0; background: var(--palette-white); } .print-sheet { margin: 0; padding: 0; border: 0; } .print-actions, .session-context { display: none !important; } }
-    </style>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/INDENT/indent-list.css}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+    
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body>
+<body class="indent-print-page">
 <main class="print-sheet" th:if="${!#lists.isEmpty(items)}">
     <div class="session-context">
         <span>Company: <strong th:text="${selectedCompany}">SRS</strong></span>

@@ -1,0 +1,327 @@
+/* ==========================================================================
+   OFFICE CENTRAL & INDENT MODULE CSS (Salesforce SLDS Theme Aligned)
+   App Shell, Topbar & Navigation Sidebar CSS Only
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. RESET & INITIALIZATION
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(html) {
+  min-height: 100%;
+  background: var(--slds-c-bg-page, #f3f3f3);
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+:where(body) {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--slds-c-bg-page, #f3f3f3);
+  overflow-x: hidden;
+  font-family: var(--slds-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  color: var(--slds-c-text-primary, #181818);
+}
+
+:where(button, input, select, textarea) {
+  color: inherit;
+  font: inherit;
+}
+
+:where(button, a, input, select, textarea, summary) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(:focus-visible) {
+  outline: 2px solid var(--slds-c-brand-primary, #0070d2);
+  outline-offset: 2px;
+}
+
+:where([hidden]) {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. MODULE SCOPE VARIABLES & THEMES
+   -------------------------------------------------------------------------- */
+
+
+
+
+/* --------------------------------------------------------------------------
+   3. APP SHELL, NAVIGATION & SIDEBAR
+   -------------------------------------------------------------------------- */
+.app-topbar {
+  position: fixed;
+  z-index: 100;
+  inset: 0 0 auto;
+  display: flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--slds-space-3, 0.75rem);
+  padding: 0 var(--slds-space-3, 0.75rem);
+  border-bottom: 1px solid var(--slds-c-border-subtle, #dddbda);
+  background: var(--slds-c-bg-surface, #ffffff);
+  box-shadow: var(--slds-shadow-card, 0 2px 4px 0 rgba(0, 0, 0, 0.1));
+  transition: inset var(--slds-transition, 0.2s ease-in-out);
+}
+
+.app-sidebar {
+  position: fixed;
+  z-index: 200;
+  inset: 0 auto 0 0;
+  display: flex;
+  width: 16rem;
+  flex-direction: column;
+  padding: var(--slds-space-4, 1rem) var(--slds-space-3, 0.75rem);
+  overflow-y: auto;
+  transform: translateX(-102%);
+  background: var(--module-brand-dark, #005fb2);
+  color: var(--slds-c-text-inverse, #ffffff);
+  box-shadow: var(--slds-shadow-dropdown, 0 4px 8px 0 rgba(0, 0, 0, 0.16));
+  transition: transform var(--slds-transition, 0.2s ease-in-out);
+}
+
+body.sidebar-open .app-sidebar {
+  transform: translateX(0);
+}
+
+.app-overlay {
+  position: fixed;
+  z-index: 150;
+  inset: 0;
+  visibility: hidden;
+  background: var(--slds-c-overlay, rgba(0, 0, 0, 0.5));
+  opacity: 0;
+  transition: opacity var(--slds-transition, 0.2s ease-in-out), visibility var(--slds-transition, 0.2s ease-in-out);
+}
+
+body.sidebar-open .app-overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-space-3, 0.75rem);
+  padding: var(--slds-space-2, 0.5rem);
+  color: var(--slds-c-text-inverse, #ffffff);
+  text-decoration: none;
+}
+
+.brand-symbol {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--slds-radius-medium, 0.25rem);
+  background: var(--slds-c-brand-primary, #0070d2);
+  color: var(--slds-c-text-inverse, #ffffff);
+  font-weight: var(--slds-font-weight-bold, 700);
+}
+
+.app-brand strong,
+.app-brand small {
+  display: block;
+}
+
+.app-brand small,
+.sidebar-footer-label {
+  color: var(--slds-c-text-muted, #919191);
+  font-size: var(--slds-font-size-xx-small, 0.625rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nav-section-label {
+  padding: var(--slds-space-5, 1.25rem) var(--slds-space-2, 0.5rem) var(--slds-space-2, 0.5rem);
+  color: var(--slds-c-text-muted, #919191);
+  font-size: var(--slds-font-size-xx-small, 0.625rem);
+  font-weight: var(--slds-font-weight-bold, 700);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-modules {
+  display: grid;
+  gap: var(--slds-space-1, 0.25rem);
+}
+
+.nav-module-toggle,
+.app-nav-link {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: var(--slds-space-2, 0.5rem);
+  padding: 0 var(--slds-space-3, 0.75rem);
+  border: 1px solid transparent;
+  border-radius: var(--slds-radius-medium, 0.25rem);
+  color: var(--slds-c-text-inverse, #ffffff);
+  font-size: var(--slds-font-size-small, 0.875rem);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-module-toggle {
+  font-weight: var(--slds-font-weight-semibold, 600);
+  list-style: none;
+}
+
+.nav-module-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.nav-module-toggle::marker {
+  content: "";
+}
+
+.nav-module-toggle:hover,
+.nav-module[open] > .nav-module-toggle,
+.app-nav-link:hover {
+  background: var(--slds-c-brand-primary-active, #005fb2);
+}
+
+.nav-module-name {
+  min-width: 0;
+  flex: 1;
+}
+
+.nav-module-chevron {
+  margin-inline-start: auto;
+}
+
+.nav-module-links {
+  margin-inline-start: var(--slds-space-3, 0.75rem);
+  padding-inline-start: var(--slds-space-2, 0.5rem);
+  border-inline-start: 1px solid var(--slds-c-text-muted, #919191);
+}
+
+.app-nav-link.active {
+  border-inline-start: 3px solid var(--slds-c-brand-primary, #0070d2);
+  background: var(--slds-c-brand-primary-active, #005fb2);
+  font-weight: var(--slds-font-weight-bold, 700);
+}
+
+.sidebar-footer {
+  margin-block-start: auto;
+  padding: var(--slds-space-4, 1rem) var(--slds-space-2, 0.5rem) 0;
+  border-top: 1px solid var(--slds-c-text-muted, #919191);
+}
+
+.sidebar-footer-label {
+  display: block;
+}
+
+.sidebar-footer strong {
+  display: block;
+  margin-block: var(--slds-space-1, 0.25rem);
+}
+
+.change-company {
+  color: var(--slds-c-brand-primary-border, #1589ee);
+  font-size: var(--slds-font-size-x-small, 0.75rem);
+}
+
+.sidebar-toggle,
+.topbar-logout button {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--slds-c-border, #dddbda);
+  border-radius: var(--slds-radius-medium, 0.25rem);
+  background: var(--slds-c-bg-surface, #ffffff);
+  color: var(--slds-c-brand-primary, #0070d2);
+  cursor: pointer;
+}
+
+.topbar-company,
+.topbar-session {
+  display: flex;
+  align-items: center;
+  gap: var(--slds-space-2, 0.5rem);
+}
+
+.topbar-company {
+  padding: var(--slds-space-2, 0.5rem) var(--slds-space-3, 0.75rem);
+  border: 1px solid var(--slds-c-border-subtle, #dddbda);
+  border-radius: var(--slds-radius-medium, 0.25rem);
+}
+
+.company-caption,
+.user-details > span {
+  color: var(--slds-c-text-muted, #706e6b);
+  font-size: var(--slds-font-size-xx-small, 0.625rem);
+}
+
+.company-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--slds-radius-pill, 15rem);
+  background: var(--slds-c-success, #2e7d32);
+}
+
+.user-avatar {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: var(--slds-radius-pill, 15rem);
+  background: var(--slds-c-brand-primary-tint, #f4f6f9);
+  color: var(--slds-c-brand-primary, #0070d2);
+  font-weight: var(--slds-font-weight-bold, 700);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-logout {
+  margin: 0;
+}
+
+.app-main-content {
+  min-height: 100vh;
+  margin: 0;
+  padding: 4.5rem var(--slds-space-3, 0.75rem) var(--slds-space-5, 1.25rem);
+  background: var(--slds-c-bg-page, #f3f3f3);
+  transition: margin-inline-start var(--slds-transition, 0.2s ease-in-out);
+}
+
+.slds-page-container,
+:where(.catalog-shell, .po-shell, .grn-shell, .inv-shell, .dining-shell) {
+  width: 100%;
+  max-width: var(--slds-content-width, 80rem);
+  margin-inline: auto;
+}
+
+/* Responsive Media Queries for Topbar & Layout Shifts */
+@media (min-width: 48rem) {
+  .app-main-content {
+    padding: 5rem var(--slds-space-5, 1.25rem) var(--slds-space-8, 2rem);
+  }
+}
+
+@media (min-width: 62rem) {
+  body.sidebar-open .app-topbar {
+    inset-inline-start: 16rem;
+  }
+
+  body.sidebar-open .app-main-content {
+    margin-inline-start: 16rem;
+  }
+
+  body.sidebar-open .app-overlay {
+    display: none;
+  }
+}

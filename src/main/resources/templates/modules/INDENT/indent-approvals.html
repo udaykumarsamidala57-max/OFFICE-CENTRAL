@@ -3,145 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Approve Indent - Salesforce SLDS</title>
-    
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/INDENT/indent-approvals.css}">
+    <title>Approve Indents</title>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <th:block th:replace="~{fragments/indent-styles :: styles}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/indent-approvals.css(v=20261008-indent)}">
 </head>
-<body class="app-body" th:attr="data-approval-base=@{/AIndentListServlet}">
+<body class="app-body indent-approval-page" th:attr="data-approval-base=@{/AIndentListServlet}">
 <div th:replace="~{fragments/app-header :: appHeader('approve')}"></div>
 
-<div class="approval-content">
-    <div class="slds-page-container">
+<main class="app-main-content po-content">
+    <div class="po-shell">
 
-        <!-- ===================== PAGE HEADER ===================== -->
-        <header class="slds-page-header">
-            <div class="slds-page-header__row">
-                <div class="slds-page-header__col-title">
-                    <div class="slds-media">
-                        <div class="slds-media__figure">
-                            <span class="slds-icon_container slds-icon-standard-approval">
-                                <svg class="slds-icon" aria-hidden="true" viewBox="0 0 52 52">
-                                    <path d="M26 2C12.7 2 2 12.7 2 26s10.7 24 24 24 24-10.7 24-24S39.3 2 26 2zm-3.3 35.4L11.4 26.1l4.2-4.2 7.1 7.1 13.7-13.7 4.2 4.2-17.9 17.9z"/>
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="slds-media__body">
-                            <p class="slds-breadcrumb">Inventory &bull; Approvals</p>
-                            <h1 class="slds-page-header__title">Approve Indents</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="slds-page-header__col-meta">
-                    <span class="record-count">
-                        <strong th:text="${#lists.size(approvalGroups)}">0</strong> Open
-                    </span>
-                </div>
+        <header class="po-object-header page-subheader">
+            <div class="po-object-title">
+                <span class="po-object-subtitle">Inventory Approval Workflow</span>
+                <h1>Approve Indents</h1>
             </div>
+            <span class="po-badge neutral"><strong th:text="${#lists.size(approvalGroups)}">0</strong>&nbsp;Open</span>
         </header>
 
-        <!-- ===================== NOTIFICATION ALERT ===================== -->
-        <div id="approvalMessage" class="slds-scoped-notification" role="alert" hidden></div>
+        <div id="approvalMessage" class="indent-ui-scoped-notification" role="alert" hidden></div>
 
-        <!-- ===================== MAIN CARD LIST ===================== -->
-        <div class="approval-card-wrapper">
-            <div class="slds-card indent-card" th:each="group : ${approvalGroups}" th:attr="data-indent-no=${group.indentNo}">
-                
-                <!-- GROUP HEADER BANNER -->
-                <header class="indent-header">
-                    <div class="indent-no">
-                        <svg class="indent-group-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                        <strong th:text="|Indent #${group.indentNo}|">Indent #1001</strong>
-                        <span class="badge" th:classappend="${#strings.equalsIgnoreCase(group.type, 'Purchase')} ? ' badge-purchase' : (${#strings.equalsIgnoreCase(group.type, 'Issue')} ? ' badge-issue' : '')" th:text="${group.type}">Purchase</span>
-                    </div>
-                    <div class="indent-meta-item">
-                        <span class="meta-label">Date:</span>
-                        <span class="meta-value" th:text="${group.date}">2026-10-05</span>
-                    </div>
-                    <div class="indent-meta-item">
-                        <span class="meta-label">Department:</span>
-                        <span class="meta-value" th:text="${group.department}">Store</span>
-                    </div>
-                    <div class="indent-meta-item">
-                        <span class="meta-label">Requested By:</span>
-                        <span class="meta-value" th:text="${group.requestedBy}">User</span>
-                    </div>
-                    <div class="indent-meta-item status-text align-right">
-                        <span class="meta-label">Status:</span>
-                        <span class="meta-value highlight" th:text="${#strings.isEmpty(group.status) ? 'Pending' : group.status}">Pending</span>
-                    </div>
-                </header>
-
-                <!-- ITEMS TABLE CONTAINER -->
-                <div class="slds-table-container">
-                    <table class="slds-table inner-table">
-                        <thead>
-                            <tr>
-                                <th class="col-id align-right">ID</th>
-                                <th class="col-name align-left">Item Name</th>
-                                <th class="col-qty align-right">Avl</th>
-                                <th class="col-qty align-right">Req</th>
-                                <th class="col-uom align-center">UOM</th>
-                                <th class="col-purpose align-left">Purpose</th>
-                                <th class="col-action align-center">L1 Action</th>
-                               <th class="col-action align-center">L2 Action</th>
-                               
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="approval-item" th:each="item : ${group.items}" th:attr="data-item-id=${item.id}">
-                                <td data-label="ID" class="record-id align-right" th:text="${item.id}">1</td>
-                                <td data-label="Item Name" class="item-name align-left" th:text="${item.itemName}">Item name</td>
-                                <td data-label="Available" class="number-cell align-right" th:text="${item.balanceQty}">0</td>
-                                <td data-label="Requested" class="number-cell requested-qty align-right" th:text="${item.qty}">1</td>
-                                <td data-label="UOM" class="uom-cell align-center" th:text="${item.uom}">Nos</td>
-                                <td data-label="Purpose" class="purpose-cell align-left" th:text="${item.purpose}">Purpose</td>
-                                <td data-label="L1 Action" class="ic-status align-center">
-                                    <button type="button" class="slds-button slds-button--success approve-l1" th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_L1')) and !#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}" th:attr="data-id=${item.id}">
-                                        Approve
-                                    </button>
-                                    <span class="approved-badge" th:if="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}">✔ Approved</span>
-                                    <small class="approval-date" th:if="${item.levelOneApprovedDate != null}" th:text="${#dates.format(item.levelOneApprovedDate, 'dd MMM yyyy')}">05 Oct 2026</small>
-                                </td>
-                                <td data-label="L1 Approved By" class="approved-by align-left" th:attr="data-id=${item.id}">
-                                    <span th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">-</span>
-                                    <small class="approval-date" th:if="${item.levelOneApprovedDate != null}" th:text="${#dates.format(item.levelOneApprovedDate, 'dd MMM yyyy')}">05 Oct 2026</small>
-                                </td>
-                                
-                                <td data-label="Final Action" class="action-cell align-center">
-                                    <div class="final-action" th:if="${(isSuperAdmin or (canFinalApprove and allowedButtonCodes.contains('CONFIRM_L2'))) and #strings.equalsIgnoreCase(item.levelOneStatus, 'Approved') and !#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved') and !#strings.equalsIgnoreCase(item.indentStatus, 'Management Note')}">
-                                        <div class="slds-select-wrapper">
-                                            <select class="next-step slds-select" th:attr="data-id=${item.id}" aria-label="Choose next action">
-                                                <option value="">Select Action</option>
-                                                <option th:if="${#strings.equalsIgnoreCase(group.type, 'Issue')}" value="Issue">Issue</option>
-                                                <option th:if="${#strings.equalsIgnoreCase(group.type, 'Purchase')}" value="PO">PO</option>
-                                                <option value="Cancelled">Cancel</option>
-                                                <option value="Management Note">Management Note</option>
-                                            </select>
-                                        </div>
-                                        <button type="button" class="slds-button slds-button--brand confirm-final" th:attr="data-id=${item.id}">Confirm</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <!-- 50/50 SIDE-BY-SIDE GRID -->
+        <div class="split-approval-container" th:if="${not #lists.isEmpty(approvalGroups)}">
+            
+            <!-- LEFT SIDE: PURCHASE INDENTS -->
+            <section class="approval-column purchase-column">
+                <div class="column-header purchase-header">
+                    <h2>PURCHASE INDENTS</h2>
                 </div>
 
-            </div>
+                <div class="approval-card-wrapper">
+                    <div class="po-table-card indent-card" 
+                         th:each="group : ${approvalGroups}" 
+                         th:if="${#strings.equalsIgnoreCase(group.type, 'Purchase')}" 
+                         th:attr="data-indent-no=${group.indentNo}">
+                        
+                        <header class="indent-header">
+                            <div class="indent-no">
+                                <strong th:text="|#${group.indentNo}|">#1001</strong>
+                                <span class="badge badge-purchase" th:text="${group.type}">Purchase</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">Date:</span>
+                                <span class="meta-value" th:text="${group.date}">2026-10-05</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">Dept:</span>
+                                <span class="meta-value" th:text="${group.department}">Store</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">By:</span>
+                                <span class="meta-value" th:text="${group.requestedBy}">User</span>
+                            </div>
+                        </header>
+
+                        <div class="indent-ui-table-container po-table-scroll">
+                            <table class="indent-ui-table inner-table po-legacy-table indent-approval-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-id align-right">ID</th>
+                                        <th class="col-name align-left">Item Name</th>
+                                        <th class="col-qty align-right">Avl</th>
+                                        <th class="col-qty align-right">Req</th>
+                                        <th class="col-uom align-center">UOM</th>
+                                        <th class="col-purpose align-left">Purpose</th>
+                                        <th class="col-l1-info align-left">L1 Approval</th>
+                                        <th class="col-l2-action align-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="approval-item" th:each="item : ${group.items}" th:attr="data-item-id=${item.id}">
+                                        <td class="record-id align-right" th:text="${item.id}">1</td>
+                                        <td class="item-name align-left" th:text="${item.itemName}">Item name</td>
+                                        <td class="number-cell align-right">
+                                            <span class="badge" th:text="${item.balanceQty}">0</span>
+                                        </td>
+                                        <td class="number-cell requested-qty align-right" th:text="${item.qty}">1</td>
+                                        <td class="uom-cell align-center" th:text="${item.uom}">Nos</td>
+                                        <td class="purpose-cell align-left" th:text="${item.purpose}">Purpose</td>
+                                        
+                                        <!-- L1 APPROVAL DETAILS COLUMN -->
+                                        <td class="l1-info-cell align-left">
+                                            <button type="button" class="po-button primary micro approve-l1" th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_L1')) and !#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}" th:attr="data-id=${item.id}">
+                                                Approve
+                                            </button>
+                                            <div class="l1-details" th:if="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}">
+                                                <span class="l1-user" th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">User</span>
+                                                <small class="l1-date" th:if="${item.levelOneApprovedDate != null}" th:text="${#dates.format(item.levelOneApprovedDate, 'dd/MM/yy')}">05/10/26</small>
+                                            </div>
+                                        </td>
+
+                                        <td class="action-cell align-center">
+                                            <div class="final-action" th:if="${(isSuperAdmin or (canFinalApprove and allowedButtonCodes.contains('CONFIRM_L2'))) and #strings.equalsIgnoreCase(item.levelOneStatus, 'Approved') and !#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved') and !#strings.equalsIgnoreCase(item.indentStatus, 'Management Note')}">
+                                                <select class="next-step micro-select" th:attr="data-id=${item.id}" aria-label="Next action">
+                                                    <option value="PO" selected>PO</option>
+                                                </select>
+                                                <button type="button" class="po-button primary micro confirm-final" th:attr="data-id=${item.id}">Confirm</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT SIDE: ISSUE INDENTS -->
+            <section class="approval-column issue-column">
+                <div class="column-header issue-header">
+                    <h2>ISSUE INDENTS</h2>
+                </div>
+
+                <div class="approval-card-wrapper">
+                    <div class="po-table-card indent-card" 
+                         th:each="group : ${approvalGroups}" 
+                         th:if="${#strings.equalsIgnoreCase(group.type, 'Issue')}" 
+                         th:attr="data-indent-no=${group.indentNo}">
+                        
+                        <header class="indent-header">
+                            <div class="indent-no">
+                                <strong th:text="|#${group.indentNo}|">#1002</strong>
+                                <span class="badge badge-issue" th:text="${group.type}">Issue</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">Date:</span>
+                                <span class="meta-value" th:text="${group.date}">2026-10-05</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">Dept:</span>
+                                <span class="meta-value" th:text="${group.department}">Store</span>
+                            </div>
+                            <div class="indent-meta-item">
+                                <span class="meta-label">By:</span>
+                                <span class="meta-value" th:text="${group.requestedBy}">User</span>
+                            </div>
+                        </header>
+
+                        <div class="indent-ui-table-container po-table-scroll">
+                            <table class="indent-ui-table inner-table po-legacy-table indent-approval-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-id align-right">ID</th>
+                                        <th class="col-name align-left">Item Name</th>
+                                        <th class="col-qty align-right">Avl</th>
+                                        <th class="col-qty align-right">Req</th>
+                                        <th class="col-uom align-center">UOM</th>
+                                        <th class="col-purpose align-left">Purpose</th>
+                                        <th class="col-l1-info align-left">L1 Approval</th>
+                                        <th class="col-l2-action align-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="approval-item" th:each="item : ${group.items}" th:attr="data-item-id=${item.id}">
+                                        <td class="record-id align-right" th:text="${item.id}">1</td>
+                                        <td class="item-name align-left" th:text="${item.itemName}">Item name</td>
+                                        <td class="number-cell align-right">
+                                            <span class="badge" th:text="${item.balanceQty}">0</span>
+                                        </td>
+                                        <td class="number-cell requested-qty align-right" th:text="${item.qty}">1</td>
+                                        <td class="uom-cell align-center" th:text="${item.uom}">Nos</td>
+                                        <td class="purpose-cell align-left" th:text="${item.purpose}">Purpose</td>
+                                        
+                                        <!-- L1 APPROVAL DETAILS COLUMN -->
+                                        <td class="l1-info-cell align-left">
+                                            <button type="button" class="po-button primary micro approve-l1" th:if="${(isSuperAdmin or allowedButtonCodes.contains('APPROVE_L1')) and !#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}" th:attr="data-id=${item.id}">
+                                                Approve
+                                            </button>
+                                            <div class="l1-details" th:if="${#strings.equalsIgnoreCase(item.levelOneStatus, 'Approved')}">
+                                                <span class="l1-user" th:text="${#strings.isEmpty(item.levelOneApprovedBy) ? '-' : item.levelOneApprovedBy}">User</span>
+                                                <small class="l1-date" th:if="${item.levelOneApprovedDate != null}" th:text="${#dates.format(item.levelOneApprovedDate, 'dd/MM/yy')}">05/10/26</small>
+                                            </div>
+                                        </td>
+
+                                        <td class="action-cell align-center">
+                                            <div class="final-action" th:if="${(isSuperAdmin or (canFinalApprove and allowedButtonCodes.contains('CONFIRM_L2'))) and #strings.equalsIgnoreCase(item.levelOneStatus, 'Approved') and !#strings.equalsIgnoreCase(item.levelTwoStatus, 'Approved') and !#strings.equalsIgnoreCase(item.indentStatus, 'Management Note')}">
+                                                <select class="next-step micro-select" th:attr="data-id=${item.id}" aria-label="Next action">
+                                                    <option value="Issue" selected>Issue</option>
+                                                </select>
+                                                <button type="button" class="po-button primary micro confirm-final" th:attr="data-id=${item.id}">Confirm</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
 
-        <!-- EMPTY STATE -->
         <div class="empty-approvals" th:if="${#lists.isEmpty(approvalGroups)}">
-            <svg class="empty-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             <p>No open indents require approval at this time.</p>
         </div>
 
     </div>
-</div>
+</main>
 
 <script th:src="@{/js/INDENT/indent-approvals.js}"></script>
 </body>

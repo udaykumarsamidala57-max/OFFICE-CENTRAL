@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Stock Summary Report</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/stock/issue-stock.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
-<body class="app-body inventory-page"><div th:replace="~{fragments/app-header :: appHeader('stock-report')}"></div>
+<body class="app-body inventory-page reports-page"><div th:replace="~{fragments/app-header :: appHeader('stock-report')}"></div>
 <main class="app-main-content inventory-content"><div class="inventory-shell">
-  <div class="inventory-heading"><div><span class="inventory-eyebrow">INVENTORY MOVEMENT</span><h1>Stock Summary Report</h1></div><a class="inv-button secondary" th:href="@{/stock}">Stock on Hand</a></div>
+  <div class="inventory-heading page-subheader"><div><span class="inventory-eyebrow">INVENTORY MOVEMENT</span><h1>Stock Summary Report</h1></div><a class="inv-button secondary" th:href="@{/stock}">Stock on Hand</a></div>
   <div class="inv-alert error" th:if="${error}" th:text="${error}" role="alert"></div>
   <form class="inv-filter" method="get" th:action="@{/stock/report}">
     <label>From Date<input type="date" name="fromDate" th:value="${fromDate}" required></label><label>To Date<input type="date" name="toDate" th:value="${toDate}" required></label>
     <label>Category<select name="category"><option value="">All categories</option><option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}">Category</option></select></label>
     <label>Subcategory<input type="text" name="subCategory" th:value="${subCategory}" placeholder="All subcategories"></label>
-    <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_STOCK_REPORT')}">View Report</button><a class="inv-button secondary" th:href="@{/stock/report}">Reset</a><button type="button" class="inv-button success" id="exportStockReportCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_STOCK_REPORT')}">Export CSV</button></div>
+    <div class="inv-filter-actions"><button type="submit" class="inv-button primary" th:if="${isSuperAdmin or allowedButtonCodes.contains('FILTER_STOCK_REPORT')}">View Report</button><a class="inv-button secondary" th:href="@{/stock/report}">Reset</a><button type="button" class="inv-button success export-button" id="exportStockReportCsv" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_STOCK_REPORT')}">Export CSV</button></div>
   </form>
   <section class="inv-card"><div class="inv-section-heading"><h2>Stock Movement</h2><span class="inv-count" th:text="|${fromDate} to ${toDate} · ${#lists.size(stockRows)} items|">Date range</span></div>
     <div class="inv-table-scroll"><table class="inv-table" id="stockReportTable"><thead><tr><th>Category</th><th>Subcategory</th><th>Item ID</th><th>Item Name</th><th>Opening Balance</th><th>Receipts</th><th>Issues</th><th>Closing Balance</th><th>Unit Price (₹)</th><th>Closing Value (₹)</th></tr></thead>

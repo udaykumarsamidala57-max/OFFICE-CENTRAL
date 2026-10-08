@@ -1,0 +1,156 @@
+/* High-Density Side-by-Side Layout */
+.indent-approval-page .po-shell { 
+  width: 100%; 
+  max-width: 100%; 
+  padding: 0 0.5rem; 
+}
+
+/* Page Header Compact */
+.indent-approval-page .po-object-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 0.5rem 0.75rem; 
+  margin-bottom: 0.5rem; 
+}
+.indent-approval-page .po-object-title h1 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+/* 50/50 Split Container */
+.split-approval-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.approval-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 0.35rem;
+  border: 1px solid #cbd5e1;
+}
+
+/* Column Section Headers */
+.column-header {
+  padding: 0.35rem 0.5rem;
+  border-radius: 3px;
+  text-align: center;
+}
+.column-header h2 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.purchase-header {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+.issue-header {
+  background: #14532d;
+  color: #ffffff;
+}
+
+.approval-card-wrapper { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.5rem; 
+}
+
+/* Compact Card Styling */
+.indent-card {
+  box-shadow: none;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.indent-header {
+  padding: 0.25rem 0.5rem !important;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+/* Table Column Adjustments for L1 Details */
+.indent-approval-table {
+  font-size: 0.75rem !important;
+  margin: 0 !important;
+}
+
+.indent-approval-table th {
+  padding: 3px 4px !important;
+  background: #f1f5f9;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.indent-approval-table td {
+  padding: 2px 4px !important;
+  vertical-align: middle;
+}
+
+.indent-approval-table .col-id { width: 5%; }
+.indent-approval-table .col-name { width: 25%; }
+.indent-approval-table .col-qty { width: 7%; }
+.indent-approval-table .col-uom { width: 7%; }
+.indent-approval-table .col-purpose { width: 18%; }
+.indent-approval-table .col-l1-info { width: 8%; }
+.indent-approval-table .col-l2-action { width: 20%; }
+
+/* L1 Approved By & Date Layout */
+.l1-details {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.l1-user {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.725rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.l1-date {
+  color: #64748b;
+  font-size: 0.65rem;
+}
+
+/* Micro Actions */
+.final-action { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 2px; 
+}
+
+.micro-select {
+  padding: 1px 2px;
+  font-size: 0.7rem;
+  height: 22px;
+  border: 1px solid #94a3b8;
+  border-radius: 2px;
+}
+
+.po-button.micro {
+  padding: 0.5px 4px;
+  font-size: 0.7rem;
+  height: 2px;
+  line-height: 2px;
+  border-radius: 2px;
+}

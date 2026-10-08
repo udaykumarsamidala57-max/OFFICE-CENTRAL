@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Approve Purchase Orders</title>
-    <link rel="stylesheet" th:href="@{/css/app-theme.css}">
-    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
-    <link rel="stylesheet" th:href="@{/css/PO/purchase-order.css(v=20261006)}">
-    <link rel="stylesheet" th:href="@{/css/procurement-ui.css(v=20261007)}">
+        <th:block th:replace="~{fragments/slds-styles :: styles}"></th:block>
 </head>
 <body class="app-body po-page">
 <div th:replace="~{fragments/app-header :: appHeader('po-approvals')}"></div>
 <main class="app-main-content po-content"><div class="po-shell">
-    <div class="po-object-header">
+    <div class="po-object-header page-subheader">
         <div class="po-object-title"><span class="po-object-icon">PO</span><div><span class="po-object-subtitle">Procurement Release Workflow</span><h1>Purchase Orders</h1></div></div>
-        <button class="po-button excel" type="button" id="exportApprovalExcel" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_PO_APPROVALS')}">Download Excel Report</button>
+        <button class="po-button excel export-button" type="button" id="exportApprovalExcel" th:if="${isSuperAdmin or allowedButtonCodes.contains('EXPORT_PO_APPROVALS')}">Download Excel Report</button>
     </div>
     <div class="po-message success" th:if="${success}" th:text="${success}" role="status"></div><div class="po-message error" th:if="${error}" th:text="${error}" role="alert"></div>
     <div class="po-filter">
@@ -40,7 +37,7 @@
                     <td data-label="GRN"><a class="po-button primary small" th:if="${(isSuperAdmin or allowedButtonCodes.contains('CREATE_GRN')) and po.approval == 'Approved' and (po.status == 'Open' or po.status == 'Partially Received')}" th:href="@{/grn/entry(poNumber=${po.number})}">GRN Entry</a></td>
                     <td data-label="Items"><button type="button" class="po-button secondary small po-expand-button" th:id="|btn-${po.id}|" th:if="${isSuperAdmin or allowedButtonCodes.contains('SHOW_PO_ITEMS')}" th:attr="data-row-id=${po.id}">Show Items</button></td>
                 </tr>
-                <tr class="po-nested-row" th:id="|row-nested-${po.id}|" style="display:none"><td colspan="9" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
+                <tr class="po-nested-row" th:id="|row-nested-${po.id}|" hidden><td colspan="9" class="po-nested-cell"><div class="po-items-block" th:id="|items-${po.id}|"><h2 th:text="|Items for PO: ${po.number}|">Items</h2>
                     <div class="po-table-scroll"><table class="po-items-table"><thead><tr><th>Item ID</th><th>Description</th><th>PO Quantity</th><th>Received Qty</th><th>Balance to Receive</th><th>Rate</th><th>Discount %</th><th>GST %</th></tr></thead><tbody>
                         <tr th:each="item : ${po.items}"><td data-label="Item ID" th:text="${item.itemId}">1</td><td data-label="Description" class="po-item-description" th:text="${item.description}">Item</td><td data-label="PO Quantity" th:text="${#numbers.formatDecimal(item.quantity,1,2)}">0.00</td><td data-label="Received Qty" th:text="${#numbers.formatDecimal(item.receivedQty,1,2)}">0.00</td><td data-label="Balance to Receive" class="po-balance-cell" th:classappend="${item.balanceToReceive.signum() > 0} ? ' balance-pending' : ''" th:text="${#numbers.formatDecimal(item.balanceToReceive,1,2)}">0.00</td><td data-label="Rate" th:text="${#numbers.formatDecimal(item.rate,1,2)}">0.00</td><td data-label="Discount %" th:text="${#numbers.formatDecimal(item.discountPercent,1,2)}">0.00</td><td data-label="GST %" th:text="${#numbers.formatDecimal(item.gstPercent,1,2)}">0.00</td></tr>
                         <tr th:if="${#lists.isEmpty(po.items)}"><td colspan="8" class="po-empty">No items found for this PO.</td></tr>

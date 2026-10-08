@@ -1,0 +1,408 @@
+/* Salesforce Lightning Design System (SLDS) Ultra-Compact Mobile Style */
+
+:root {
+  --slds-brand: #0176d3;
+  --slds-brand-hover: #005fb2;
+  --slds-text-primary: #181818;
+  --slds-text-secondary: #444444;
+  --slds-bg-page: #b0c4df;
+  --slds-bg-card: #ffffff;
+  --slds-border-color: #c9c7c5;
+  --slds-radius: 0.2rem;
+  --slds-danger: #ba0517;
+  --slds-danger-bg: #fef1f1;
+}
+
+/* Base Page Layout */
+body.indent-create-page {
+  background-color: var(--slds-bg-page);
+  color: var(--slds-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 3.25rem;
+}
+
+.indent-ui-page-container {
+  padding: 0.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.indent-ui-card {
+  background: var(--slds-bg-card);
+  border: 1px solid var(--slds-border-color);
+  border-radius: var(--slds-radius);
+  overflow: hidden;
+}
+
+.indent-create-page .indent-ui-card__body {
+  padding: 0.5rem;
+}
+
+/* Compressed Page Header */
+.indent-ui-page-header {
+  padding: 0.15rem 0.1rem 0.35rem 0.1rem;
+}
+
+.indent-ui-breadcrumb {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: #514f4d;
+  margin: 0 0 0.05rem 0;
+  font-weight: 600;
+}
+
+.indent-ui-page-header__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: #080707;
+  line-height: 1.1;
+}
+
+/* Compact Section Headers */
+.indent-ui-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #080707;
+  margin: 0.4rem 0 0.25rem 0;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid var(--slds-border-color);
+}
+
+.indent-ui-section-title:first-of-type {
+  margin-top: 0;
+}
+
+.indent-ui-section-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  fill: var(--slds-brand);
+  flex-shrink: 0;
+}
+
+/* Tight Form Controls */
+.indent-create-page .indent-ui-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.indent-create-page .indent-ui-form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+}
+
+.indent-ui-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--slds-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.indent-create-page .indent-ui-required::after {
+  content: " *";
+  color: var(--slds-danger);
+}
+
+/* Maximum-Density Form Fields */
+.indent-ui-input, 
+.indent-ui-select {
+  width: 100%;
+  min-height: 32px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--slds-text-primary);
+  border: 1px solid var(--slds-border-color);
+  border-radius: var(--slds-radius);
+  background-color: #ffffff;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.indent-ui-input:focus,
+.indent-ui-select:focus {
+  outline: none;
+  border-color: var(--slds-brand);
+  box-shadow: 0 0 0 1px var(--slds-brand);
+}
+
+.indent-ui-input--readonly {
+  background-color: #f3f3f3;
+  color: #706e6b;
+  border-color: #dddbda;
+}
+
+.indent-ui-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.indent-ui-select-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid #706e6b;
+  pointer-events: none;
+}
+
+/* Context Badge Row */
+.indent-ui-scoped-notification {
+  background: #f4f6f9;
+  border: 1px solid var(--slds-border-color);
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--slds-radius);
+  font-size: 0.6875rem;
+  margin: 0.35rem 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.indent-ui-badge {
+  background: #e0e5ee;
+  color: #080707;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.15rem;
+  font-weight: 600;
+  font-size: 0.625rem;
+}
+
+/* Dense Mobile Item Cards */
+.indent-ui-table-container {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.responsive-item-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+@media (max-width: 47.99rem) {
+  .responsive-item-table thead {
+    display: none;
+  }
+
+  .responsive-item-table, 
+  .responsive-item-table tbody, 
+  .responsive-item-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Ultra-compact Item Card */
+  .responsive-item-table tr.indent-item-row {
+    background: #ffffff;
+    border: 1px solid var(--slds-border-color);
+    border-radius: 0.2rem;
+    padding: 0.35rem;
+    margin-bottom: 0.35rem;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.35rem;
+  }
+
+  .responsive-item-table tr.indent-item-row td[data-label="Item Name"],
+  .responsive-item-table tr.indent-item-row td[data-label="Purpose"],
+  .responsive-item-table tr.indent-item-row td[data-label="Action"] {
+    grid-column: span 2;
+  }
+
+  .responsive-item-table td {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: none;
+  }
+
+  .responsive-item-table td::before {
+    content: attr(data-label);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #706e6b;
+    margin-bottom: 0.05rem;
+  }
+
+  .indent-ui-button-icon-danger {
+    width: 100%;
+    min-height: 28px;
+    margin-top: 0.1rem;
+    background: var(--slds-danger-bg);
+    color: var(--slds-danger);
+    border: 1px solid var(--slds-danger);
+    border-radius: var(--slds-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    font-weight: 600;
+    font-size: 0.6875rem;
+  }
+}
+
+/* Compact Buttons */
+.add-item-action-wrapper {
+  margin: 0.25rem 0 0 0;
+}
+
+.indent-ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 32px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: var(--slds-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.indent-ui-button--brand {
+  background-color: var(--slds-brand);
+  color: #ffffff;
+}
+
+.indent-ui-button--brand:active {
+  background-color: var(--slds-brand-hover);
+}
+
+.indent-ui-button--neutral {
+  background-color: #ffffff;
+  border-color: var(--slds-border-color);
+  color: var(--slds-brand);
+}
+
+.indent-ui-button--neutral:active {
+  background-color: #f3f3f3;
+}
+
+.indent-ui-btn-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex-shrink: 0;
+}
+
+.indent-ui-pill-val {
+  display: inline-block;
+  padding: 0.15rem 0.25rem;
+  background: #f3f3f3;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--slds-text-primary);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Fixed Bottom Action Bar */
+.indent-create-page .indent-ui-card__footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 0.25rem 0.5rem;
+  border-top: 1px solid var(--slds-border-color);
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  z-index: 99;
+}
+
+/* Desktop Styles */
+@media (min-width: 48rem) {
+  body.indent-create-page {
+    padding-bottom: 0;
+  }
+
+  .indent-ui-page-container {
+    padding: 0.75rem;
+  }
+
+  .indent-create-page .indent-ui-card__body {
+    padding: 0.75rem;
+  }
+
+  .indent-create-page .indent-ui-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .indent-create-page .indent-ui-card__footer {
+    position: static;
+    background: transparent;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--slds-border-color);
+    box-shadow: none;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .indent-create-page .indent-ui-button {
+    width: auto;
+  }
+
+  .responsive-item-table {
+    display: table;
+  }
+
+  .responsive-item-table thead {
+    display: table-header-group;
+    background: #fafaf9;
+  }
+
+  .responsive-item-table th {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    color: #514f4d;
+    font-weight: 700;
+    border-bottom: 1px solid var(--slds-border-color);
+    text-align: left;
+  }
+
+  .responsive-item-table td {
+    display: table-cell;
+    padding: 0.25rem 0.375rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  .responsive-item-table td::before {
+    display: none;
+  }
+
+  .indent-ui-button-icon-danger {
+    background: none;
+    border: none;
+    color: var(--slds-danger);
+    cursor: pointer;
+    padding: 0.1rem;
+    width: auto;
+    min-height: auto;
+  }
+}

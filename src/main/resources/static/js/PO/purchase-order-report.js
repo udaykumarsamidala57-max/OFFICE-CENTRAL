@@ -8,8 +8,8 @@
         const row = document.getElementById(`row-nested-${id}`);
         const button = document.getElementById(`btn-${id}`);
         if (!row || !button) return;
-        const open = row.style.display === 'none' || row.style.display === '';
-        row.style.display = open ? '' : 'none';
+        const open = row.hidden;
+        row.hidden = !open;
         button.textContent = open ? 'Hide Items' : 'Show Items';
     }
 
@@ -39,10 +39,10 @@
         table?.querySelectorAll('.po-master-row').forEach(row => {
             const date = parseDate(row.dataset.rawDate);
             const show = !date || (date >= from && date <= to);
-            row.style.display = show ? '' : 'none';
+            row.hidden = !show;
             const nested = document.getElementById(`row-nested-${row.dataset.nestedId}`);
             const button = document.getElementById(`btn-${row.dataset.nestedId}`);
-            if (!show && nested) nested.style.display = 'none';
+            if (!show && nested) nested.hidden = true;
             if (!show && button) button.textContent = 'Show Items';
             if (show) visible++;
         });
@@ -52,7 +52,7 @@
     function clearDateFilters() {
         if (dateFrom) dateFrom.value = '';
         if (dateTo) dateTo.value = '';
-        table?.querySelectorAll('.po-master-row').forEach(row => { row.style.display = ''; });
+        table?.querySelectorAll('.po-master-row').forEach(row => { row.hidden = false; });
         if (emptyMessage) emptyMessage.hidden = true;
     }
 
@@ -67,7 +67,7 @@
                 : 'PO Number,PO Date,Vendor Name,Status,Approval Status,Total Amount,Item ID,Item Description,Qty,Rate,Amount,Discount,GST,Net Amount'];
         let count = 0;
         rows.forEach(row => {
-            if (row.style.display === 'none') return;
+            if (row.hidden) return;
             const value = label => row.querySelector(`[data-label="${label}"]`)?.innerText || '';
             const nestedId = row.dataset.nestedId;
             const items = document.querySelectorAll(`#items-${CSS.escape(nestedId)} .po-items-table tbody tr`);
